@@ -63,13 +63,17 @@ export default function Home() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {files.map((file) => (
-              <div key={file.path} className="p-4 bg-white/10 rounded-lg">
+              <a
+                href={`/video/${encodeURIComponent(file.path)}`}
+                key={file.path}
+                className="p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors cursor-pointer"
+              >
                 <p className="text-white font-semibold">{file.folderName}</p>
                 <p className="text-white text-sm">{file.videoName}</p>
                 <p className="text-sm text-gray-400">
                   Taille: {Math.round(file.size / 1024)} KB
                 </p>
-              </div>
+              </a>
             ))}
           </div>
         )}
