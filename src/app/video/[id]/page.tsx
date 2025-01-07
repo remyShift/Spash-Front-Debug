@@ -1,16 +1,18 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FileInfo } from "@/types/files";
-import '@vidstack/react/player/styles/base.css';
-import { MediaPlayer, MediaProvider } from '@vidstack/react';
+import ReactPlayer from 'react-player'
+import { drawSquare, generateSquareParams } from "@/utils/b-boxPlayer";
 
 export default function VideoPage() {
     const params = useParams();
     const [video, setVideo] = useState<FileInfo | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         const fetchVideoDetails = () => {
@@ -34,6 +36,20 @@ export default function VideoPage() {
 
         fetchVideoDetails();
     }, [params.id]);
+
+    useEffect(() => {
+        if (isPlaying && video) {
+            const initialParams = generateSquareParams();
+            drawSquare(initialParams.x, initialParams.y, initialParams.width, initialParams.height, canvasRef);
+            
+            const interval = setInterval(() => {
+                const params = generateSquareParams();
+                drawSquare(params.x, params.y, params.width, params.height, canvasRef);
+            }, 1000);
+
+            return () => clearInterval(interval);
+        }
+    }, [isPlaying, video]);
 
     if (loading) {
         return (
@@ -77,9 +93,31 @@ export default function VideoPage() {
                     </p>
                 </div>
             </div>
-            <MediaPlayer title={video.videoName} src={video.path}>
-                <MediaProvider />
-            </MediaPlayer>
+
+            <div className="relative">
+                <ReactPlayer
+                    url={video?.path}
+                    controls
+                    width="800px"
+                    height="600px"
+                    style={{
+                        borderRadius: "10px",
+                    }}
+                    type="video/x-matroska"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => setIsPlaying(false)}
+                />
+                <canvas
+                    ref={canvasRef}
+                    width={800}
+                    height={600}
+                    className="absolute top-0 left-0 pointer-events-none"
+                    style={{
+                        zIndex: 1
+                    }}
+                />
+            </div>
         </div>
     );
 }
