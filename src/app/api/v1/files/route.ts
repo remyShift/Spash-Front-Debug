@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { useStoreVideo, useStoreJSON } from "@/context/store";
 
 interface VideoInfo {
     folderName: string;
@@ -22,13 +23,17 @@ export async function GET() {
 
             for (const entry of entries) {
                 const fullPath = path.join(directoryPath, entry.name);
-                const stats = await fs.promises.stat(fullPath);
 
                 if (entry.isDirectory()) {
                     const files = await fs.promises.readdir(fullPath);
                     const videoFile = files.find(file => {
                         const ext = path.extname(file).toLowerCase();
                         return ['.mkv', '.mp4', '.avi', '.mov'].includes(ext);
+                    });
+
+                    const jsonFile = files.find(file => {
+                        const ext = path.extname(file).toLowerCase();
+                        return ['.json'].includes(ext);
                     });
 
                     if (videoFile) {
@@ -42,19 +47,15 @@ export async function GET() {
                             createdAt: videoStats.birthtime
                         });
                     }
-                } else {
-                    const ext = path.extname(entry.name).toLowerCase();
-                    if (['.mkv', '.mp4', '.avi', '.mov'].includes(ext)) {
-                        allVideos.push({
-                            folderName: '',
-                            videoName: entry.name,
-                            path: `/videos/${entry.name}`,
-                            size: stats.size,
-                            createdAt: stats.birthtime
-                        });
+
+                    if (jsonFile) {
+                        useStoreJSON.setState({ json: jsonFile });
                     }
+
                 }
             }
+
+            useStoreVideo.setState({ video: allVideos });
 
             return NextResponse.json({ files: allVideos }, { status: 200 });
         })
