@@ -1,15 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { useStoreVideo, useStoreJSON } from "@/context/store";
-
-interface VideoInfo {
-    folderName: string;
-    videoName: string;
-    path: string;
-    size: number;
-    createdAt: Date;
-}
+import { VideoInfo } from "@/types/files";
 
 export async function GET() {
     const directoryPath = path.join(process.cwd(), "public", "videos");
@@ -17,9 +9,8 @@ export async function GET() {
     return fs.promises.access(directoryPath)
         .then(() => fs.promises.readdir(directoryPath, { withFileTypes: true }))
         .then(async entries => {
-            console.log("------------entries----------");
-            console.log("entries", entries);
             const allVideos: VideoInfo[] = [];
+            const allJSON: object[] = [];
 
             for (const entry of entries) {
                 const fullPath = path.join(directoryPath, entry.name);
@@ -39,36 +30,46 @@ export async function GET() {
                     if (videoFile) {
                         const videoPath = path.join(fullPath, videoFile);
                         const videoStats = await fs.promises.stat(videoPath);
+                        let jsonContent: object | undefined;
+
+                        if (jsonFile) {
+                            const jsonPath = path.join(fullPath, jsonFile);
+                            await fs.promises.readFile(jsonPath, 'utf8')
+                                .then(jsonData => {
+                                    jsonContent = JSON.parse(jsonData);
+                                })
+                                .catch(error => {
+                                    console.error(`Error reading JSON ${jsonPath}:`, error);
+                                });
+                        }
+
                         allVideos.push({
                             folderName: entry.name,
                             videoName: videoFile,
                             path: `/videos/${entry.name}/${videoFile}`,
                             size: videoStats.size,
-                            createdAt: videoStats.birthtime
+                            createdAt: videoStats.birthtime.toISOString(),
                         });
-                    }
 
-                    if (jsonFile) {
-                        useStoreJSON.setState({ json: jsonFile });
+                        if (jsonContent) {
+                            allJSON.push(jsonContent);
+                        }
                     }
-
                 }
             }
 
-            useStoreVideo.setState({ video: allVideos });
-
-            return NextResponse.json({ files: allVideos }, { status: 200 });
+            return NextResponse.json({ allVideos, allJSON }, { status: 200 });
         })
         .catch(error => {
-            console.error("Erreur lors de la lecture des fichiers :", error);
+            console.error("Error reading files:", error);
             if (error.code === 'ENOENT') {
                 return NextResponse.json(
-                    { error: "Le dossier videos n'existe pas" },
+                    { error: "The videos folder does not exist" },
                     { status: 404 }
                 );
             }
             return NextResponse.json(
-                { error: "Erreur lors de la lecture des fichiers" },
+                { error: "Error reading files" },
                 { status: 500 }
             );
         });

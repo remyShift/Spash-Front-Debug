@@ -1,17 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import VideoBtn from "./VideoBtn";
-
-interface FileInfo {
-  folderName: string;
-  videoName: string;
-  path: string;
-  size: number;
-  createdAt: string;
-}
+import { useStoreVideo, useStoreJSON } from "@/context/store";
+import { VideoList } from "./VideoList";
 
 export default function Home() {
-  const [files, setFiles] = useState<FileInfo[]>([]);
+  const { videos, setVideos } = useStoreVideo();
+  const { setJSON } = useStoreJSON();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
@@ -26,18 +20,22 @@ export default function Home() {
           return response.json();
         })
         .then(data => {
-          setFiles(data.files);
+          const fetchedVideos = data.allVideos;
+          setVideos(fetchedVideos);
+
+          const fetchedJSON = data.allJSON;
+          setJSON(fetchedJSON);
           setLoading(false);
         })
         .catch(err => {
-          console.error("Erreur:", err);
-          setError("Can't load files. Please try again later.");
+          console.error("Error:", err);
+          setError("Impossible de charger les fichiers.");
           setLoading(false);
         });
     };
 
     fetchFiles();
-  }, []);
+  }, [setVideos, setJSON]);
 
   if (loading) {
     return (
@@ -59,16 +57,14 @@ export default function Home() {
 
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
-        ) : files.length === 0 ? (
+        ) : videos.length === 0 ? (
           <p className="text-white text-center">No files found in the videos folder, please add one !</p>
         ) : (
-          <div className="flex flex-col gap-4 w-full">
-            {files.map((file) => (
-              <VideoBtn file={file} key={file.path} />
-            ))}
-          </div>
+          <VideoList videos={videos}/>
         )}
       </div>
     </div>
   );
 }
+
+

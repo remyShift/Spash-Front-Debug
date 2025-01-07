@@ -2,45 +2,40 @@
 
 import { useParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { FileInfo } from "@/types/files";
+import { VideoInfo } from "@/types/files";
 import ReactPlayer from 'react-player'
 import { drawSquare, generateSquareParams } from "@/utils/b-boxPlayer";
 import BackBtn from "@/components/devtool/BackBtn";
+import { useStoreVideo } from "@/context/store";
 
 export default function VideoPage() {
     const params = useParams();
-    const [video, setVideo] = useState<FileInfo | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string>("");
+    const { videos, setVideos } = useStoreVideo();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const playerContainerRef = useRef<HTMLDivElement>(null);
+    const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
 
     useEffect(() => {
-        const fetchVideoDetails = () => {
-            fetch(`/api/v1/files/${params.id}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error: ${response.status}`);
-                    }
-                    return response.json();
-                })
+        if (videos.length === 0) {
+            fetch("/api/v1/files")
+                .then(response => response.json())
                 .then(data => {
-                    setVideo(data.file);
-                    setLoading(false);
+                    setVideos(data.allVideos);
                 })
                 .catch(err => {
-                    console.error("Error:", err);
-                    setError("Impossible to load the video details.");
-                    setLoading(false);
+                    console.error("Error loading videos:", err);
                 });
-        };
-
-        fetchVideoDetails();
-    }, [params.id]);
+        }
+        
+        const video = videos.find(v => v.path === decodeURIComponent(params.id as string));
+        if (video) {
+            setCurrentVideo(video);
+        }
+    }, [params.id, videos, setVideos]);
 
     useEffect(() => {
-        if (isPlaying && video && playerContainerRef.current) {
+        if (isPlaying && currentVideo && playerContainerRef.current) {
             const videoWidth = playerContainerRef.current.offsetWidth;
             const videoHeight = playerContainerRef.current.offsetHeight;
 
@@ -59,29 +54,13 @@ export default function VideoPage() {
 
             return () => clearInterval(interval);
         }
-    }, [isPlaying, video]);
+    }, [isPlaying, currentVideo]);
 
-    if (loading) {
+    if (!currentVideo) {
         return (
-        <div className="flex items-center justify-center h-screen">
-            <p className="text-white">Loading...</p>
-        </div>
-        );
-    }
-
-    if (error) {
-        return (
-        <div className="flex items-center justify-center h-screen">
-            <p className="text-red-500">{error}</p>
-        </div>
-        );
-    }
-
-    if (!video) {
-        return (
-        <div className="flex items-center justify-center h-screen">
-            <p className="text-white">Video not found</p>
-        </div>
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-red-500">Video not found</p>
+            </div>
         );
     }
 
@@ -90,24 +69,24 @@ export default function VideoPage() {
             <BackBtn />
             <div className="relative w-full h-full" ref={playerContainerRef}>
                 <ReactPlayer
-                    url={video?.path}
+                    url={currentVideo.path}
                     controls
                     width="65%"
                     height="100%"
                     style={{
-                            position: "relative",
-                            zIndex: 1,
-                            backgroundColor: "black"
-                        }}
-                        type="video/x-matroska"
-                        onPlay={() => setIsPlaying(true)}
-                        onPause={() => setIsPlaying(false)}
-                        onEnded={() => setIsPlaying(false)}
-                    />
-                    <canvas
-                        ref={canvasRef}
-                        className={`absolute z-50 top-0 left-0 pointer-events-none w-[65%] h-full`}
-                    />
+                        position: "relative",
+                        zIndex: 1,
+                        backgroundColor: "black"
+                    }}
+                    type="video/x-matroska"
+                    onPlay={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onEnded={() => setIsPlaying(false)}
+                />
+                <canvas
+                    ref={canvasRef}
+                    className={`absolute z-50 top-0 left-0 pointer-events-none w-[65%] h-full`}
+                />
             </div>
         </div>
     );

@@ -1,11 +1,37 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { VideoInfo } from "@/types/files";
 
-export const useStoreVideo = create((set) => ({
-    video: [],
-    setVideo: (video: []) => set({ video }),
-}))
+interface VideoStore {
+    videos: VideoInfo[];
+    setVideos: (videos: VideoInfo[]) => void;
+}
 
-export const useStoreJSON = create((set) => ({
-    json: Object,
-    setJSON: (json: object) => set({ json }),
-}))
+interface JSONStore {
+    json: object[];
+    setJSON: (json: object[]) => void;
+}
+
+export const useStoreVideo = create<VideoStore>()(
+    persist(
+        (set) => ({
+            videos: [],
+            setVideos: (videos) => set({ videos }),
+        }),
+        {
+            name: 'video-storage',
+        }
+    )
+);
+
+export const useStoreJSON = create<JSONStore>()(
+    persist(
+        (set) => ({
+            json: [],
+            setJSON: (json) => set({ json }),
+        }),
+        {
+            name: 'json-storage',
+        }
+    )
+);
