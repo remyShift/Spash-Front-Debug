@@ -12,6 +12,9 @@ export default {
         background: "#353540",
         primary: "#FF5F49",
       },
+      fontFamily: {
+        gilroy: ["var(--font-gilroy)"],
+      },
     },
   },
   plugins: [],

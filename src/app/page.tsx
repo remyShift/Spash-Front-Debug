@@ -1,8 +1,9 @@
-export default function Home() {
+import Home from "@/components/home/Home";
+
+export default function HomePage() {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+    <div className="flex flex-col items-center justify-center p-16">
+      <Home />
+    </div>
   );
 }
-
