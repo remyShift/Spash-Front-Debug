@@ -15,7 +15,7 @@ export default function VideoPage() {
             fetch(`/api/v1/files/${params.id}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`Erreur HTTP: ${response.status}`);
+                        throw new Error(`HTTP error: ${response.status}`);
                     }
                     return response.json();
                 })
@@ -24,8 +24,8 @@ export default function VideoPage() {
                     setLoading(false);
                 })
                 .catch(err => {
-                    console.error("Erreur:", err);
-                    setError("Impossible de charger les détails de la vidéo.");
+                    console.error("Error:", err);
+                    setError("Impossible to load the video details.");
                     setLoading(false);
                 });
         };
@@ -36,7 +36,7 @@ export default function VideoPage() {
     if (loading) {
         return (
         <div className="flex items-center justify-center h-screen">
-            <p className="text-white">Chargement...</p>
+            <p className="text-white">Loading...</p>
         </div>
         );
     }
@@ -52,7 +52,7 @@ export default function VideoPage() {
     if (!video) {
         return (
         <div className="flex items-center justify-center h-screen">
-            <p className="text-white">Vidéo non trouvée</p>
+            <p className="text-white">Video not found</p>
         </div>
         );
     }
@@ -64,19 +64,15 @@ export default function VideoPage() {
             </h1>
             <div className="bg-white/10 p-8 rounded-lg w-full max-w-2xl">
                 <div className="space-y-4">
-                <p className="text-white">
-                    <span className="font-semibold">Nom du dossier:</span> {video.folderName || "Aucun"}
-                </p>
-                <p className="text-white">
-                    <span className="font-semibold">Nom de la vidéo:</span> {video.videoName}
-                </p>
-                <p className="text-white">
-                    <span className="font-semibold">Taille:</span> {Math.round(video.size / 1024)} KB
-                </p>
-                <p className="text-white">
-                    <span className="font-semibold">Date de création:</span>{" "}
-                    {new Date(video.createdAt).toLocaleDateString()}
-                </p>
+                    <p className="text-white">
+                        <span className="font-semibold">Folder name :</span> {video.folderName || "Aucun"}
+                    </p>
+                    <p className="text-white">
+                        <span className="font-semibold">Video name :</span> {video.videoName}
+                    </p>
+                    <p className="text-white">
+                        <span className="font-semibold">Size :</span> {Math.round(video.size / 1024)} KB
+                    </p>
                 </div>
             </div>
         </div>
