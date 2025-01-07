@@ -3,6 +3,8 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FileInfo } from "@/types/files";
+import '@vidstack/react/player/styles/base.css';
+import { MediaPlayer, MediaProvider } from '@vidstack/react';
 
 export default function VideoPage() {
     const params = useParams();
@@ -75,6 +77,9 @@ export default function VideoPage() {
                     </p>
                 </div>
             </div>
+            <MediaPlayer title={video.videoName} src={video.path}>
+                <MediaProvider />
+            </MediaPlayer>
         </div>
     );
 }

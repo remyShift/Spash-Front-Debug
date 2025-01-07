@@ -6,7 +6,8 @@ export async function GET(
     request: Request,
     { params }: { params: { id: string } }
 ) {
-    const videoPath = decodeURIComponent(params.id);
+    const { id } = await params;
+    const videoPath = decodeURIComponent(id);
     const directoryPath = path.join(process.cwd(), "public");
     const fullPath = path.join(directoryPath, videoPath);
 
