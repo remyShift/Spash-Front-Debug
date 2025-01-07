@@ -11,6 +11,7 @@ export default {
       colors: {
         background: "#353540",
         primary: "#FF5F49",
+        tertiary: "#DBDBDB",
       },
       fontFamily: {
         gilroy: ["var(--font-gilroy)"],

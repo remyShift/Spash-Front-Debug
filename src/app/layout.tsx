@@ -10,6 +10,11 @@ export const metadata: Metadata = {
 const gilRoy = localFont({
   src: [
     {
+      path: "../../public/fonts/Gilroy-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
       path: "../../public/fonts/Gilroy-Italic.ttf",
       weight: "400",
       style: "italic",
@@ -18,6 +23,11 @@ const gilRoy = localFont({
       path: "../../public/fonts/Gilroy-SemiBold-Italic.ttf",
       weight: "600",
       style: "italic",
+    },
+    {
+      path: "../../public/fonts/Gilroy-SemiBold.ttf",
+      weight: "600",
+      style: "normal",
     },
   ],
   variable: "--font-gilroy",
@@ -30,7 +40,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className={`${gilRoy.variable}`}>{children}</body>
+      <body className={`${gilRoy.variable} font-gilroy`}>
+        {children}
+      </body>
     </html>
   );
 }

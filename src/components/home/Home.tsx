@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import VideoBtn from "./VideoBtn";
 
 interface FileInfo {
   folderName: string;
@@ -20,7 +21,7 @@ export default function Home() {
       fetch("/api/v1/files")
         .then(response => {
           if (!response.ok) {
-            throw new Error(`Erreur HTTP: ${response.status}`);
+            throw new Error(`HTTP error: ${response.status}`);
           }
           return response.json();
         })
@@ -30,7 +31,7 @@ export default function Home() {
         })
         .catch(err => {
           console.error("Erreur:", err);
-          setError("Impossible de charger les fichiers. Veuillez réessayer plus tard.");
+          setError("Can't load files. Please try again later.");
           setLoading(false);
         });
     };
@@ -41,39 +42,29 @@ export default function Home() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-white">Chargement...</p>
+        <p className="text-white">Loading...</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-16">
-      <div className="flex flex-col items-center justify-center gap-8">
-        <h1 className="text-4xl text-white font-gilroy font-italic font-semibold">
+      <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl">
+        <h1 className="text-4xl text-white font-semibold italic">
           Welcome to the debug devtool !
         </h1>
-        <h2 className="text-white text-3xl font-gilroy font-italic">
+        <h2 className="text-white text-3xl italic">
           Please choose a video below :
         </h2>
-        
+
         {error ? (
           <p className="text-red-500 text-center">{error}</p>
         ) : files.length === 0 ? (
-          <p className="text-white">Aucun fichier trouvé dans le dossier videos</p>
+          <p className="text-white text-center">No files found in the videos folder, please add one !</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-4 w-full">
             {files.map((file) => (
-              <a
-                href={`/video/${encodeURIComponent(file.path)}`}
-                key={file.path}
-                className="p-4 bg-white/10 rounded-lg hover:bg-white/20 transition-colors cursor-pointer"
-              >
-                <p className="text-white font-semibold">{file.folderName}</p>
-                <p className="text-white text-sm">{file.videoName}</p>
-                <p className="text-sm text-gray-400">
-                  Taille: {Math.round(file.size / 1024)} KB
-                </p>
-              </a>
+              <VideoBtn file={file} key={file.path} />
             ))}
           </div>
         )}
