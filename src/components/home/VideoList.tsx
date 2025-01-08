@@ -1,12 +1,12 @@
 import VideoBtn from "./VideoBtn";
-import { VideoInfo } from "@/types/files";
+import { VideoJSONPair } from "@/context/store";
 
-export const VideoList = ({ videos }: { videos: VideoInfo[] }) => {
+export const VideoList = ({ pairs }: { pairs: VideoJSONPair[] }) => {
     return (
         <div className="flex flex-col gap-4">
-            {videos.map((video) => (
-                <div key={video.path}>
-                    <VideoBtn video={video} />
+            {pairs.map((pair) => (
+                <div key={pair.video.videoPath}>
+                    <VideoBtn pair={pair} />
                 </div>
             ))}
         </div>

@@ -1,20 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useStoreVideo, useStoreJSON } from "@/context/store";
+import { useStore } from "@/context/store";
 import { VideoList } from "./VideoList";
 import { fetchFiles } from "@/utils/fetchFiles";
 import Loader from "../Loader";
 import ErrorMsg from "../ErrorMsg";
 
 export default function Home() {
-  const { videos, setVideos } = useStoreVideo();
-  const { setJSON } = useStoreJSON();
+  const { pairs, setPairs } = useStore();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchFiles({ setLoading, setError, setVideos, setJSON });
-  }, [setVideos, setJSON]);
+    fetchFiles({ setLoading, setError, setPairs });
+  }, [setPairs]);
 
   if (loading) {
     return (
@@ -38,10 +37,10 @@ export default function Home() {
           Please choose a video below :
         </h2>
 
-        {videos.length === 0 ? (
+        {pairs.length === 0 ? (
           <p className="text-white text-center">No files found in the videos folder, please add one !</p>
         ) : (
-          <VideoList videos={videos}/>
+          <VideoList pairs={pairs}/>
         )}
       </div>
     </div>

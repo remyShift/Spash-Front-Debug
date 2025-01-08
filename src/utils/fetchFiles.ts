@@ -1,13 +1,13 @@
+import { JSONData, VideoJSONPair } from "@/context/store";
 import { VideoInfo } from "@/types/files";
 
 type FetchFilesProps = {
     setLoading: (loading: boolean) => void;
     setError: (error: string) => void;
-    setVideos: (videos: VideoInfo[]) => void;
-    setJSON: (json: object[]) => void;
+    setPairs: (pairs: VideoJSONPair[]) => void;
 }
 
-export const fetchFiles = ({ setLoading, setError, setVideos, setJSON }: FetchFilesProps) => {
+export const fetchFiles = ({ setLoading, setError, setPairs }: FetchFilesProps) => {
 
     setLoading(true);
     fetch("/api/v1/files")
@@ -18,15 +18,21 @@ export const fetchFiles = ({ setLoading, setError, setVideos, setJSON }: FetchFi
             return response.json();
         })
         .then(data => {
-            const fetchedVideos = data.allVideos;
-            setVideos(fetchedVideos);
-
-            const fetchedJSON = data.allJSON;
-            setJSON(fetchedJSON);
+            const pairs = data.allVideos.map((video: VideoInfo) => {
+                const matchingJson = data.allJSON.find(
+                    (json: JSONData) => json.path === video.path
+                );
+                return {
+                    video,
+                    json: matchingJson || null
+                };
+            });
+            console.log(pairs);
+            setPairs(pairs);
             setLoading(false);
         })
         .catch(err => {
-            console.error("Error:", err);
+            console.error("Erreur:", err);
             setError("Impossible de charger les fichiers.");
             setLoading(false);
         });
