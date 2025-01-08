@@ -19,6 +19,8 @@ export default function VideoPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
 
+    const paramsId = params.id;
+
     useEffect(() => {
         if (videos.length === 0) {
             fetchFiles({ setLoading, setError, setVideos });
@@ -26,7 +28,7 @@ export default function VideoPage() {
     }, [setVideos, videos.length]);
 
     useEffect(() => {
-        const video = videos.find(v => v.videoPath === decodeURIComponent(params.id as string));
+        const video = videos.find(v => v.videoPath === decodeURIComponent(paramsId as string));
         setCurrentVideo(video || null);
 
         if (video) {
@@ -41,7 +43,7 @@ export default function VideoPage() {
                     setLoading(false);
                 });
         }
-    }, [params.id, videos]);
+    }, [paramsId, videos]);
 
     if (loading) {
         return <Loader />;
@@ -56,12 +58,17 @@ export default function VideoPage() {
     }
 
     return (
-        <div className="flex flex-col h-full gap-4 p-4">
+        <div className="flex flex-col gap-4 p-4">
             <BackBtn />
-            <VideoPlayer 
-                currentVideo={currentVideo} 
-                jsonData={jsonData as JSONData}
-            />
+            <div className="flex flex-col gap-0">
+                <div className="w-fit px-2 h-8 bg-primary rounded-t-md">
+                    <p className="text-white text-center font-semibold text-base pt-1">Layer</p>
+                </div>
+                <VideoPlayer 
+                    currentVideo={currentVideo} 
+                    jsonData={jsonData as JSONData}
+                />
+            </div>
         </div>
     );
 }
