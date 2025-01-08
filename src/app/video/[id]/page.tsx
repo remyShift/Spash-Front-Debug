@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { VideoInfo } from "@/types/files";
 import ReactPlayer from 'react-player'
 import { drawSquare, generateSquareParams } from "@/utils/b-boxPlayer";
@@ -10,29 +10,18 @@ import { useStoreVideo } from "@/context/store";
 
 export default function VideoPage() {
     const params = useParams();
-    const { videos, setVideos } = useStoreVideo();
+    const { videos } = useStoreVideo();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
     const playerContainerRef = useRef<HTMLDivElement>(null);
     const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (videos.length === 0) {
-            fetch("/api/v1/files")
-                .then(response => response.json())
-                .then(data => {
-                    setVideos(data.allVideos);
-                })
-                .catch(err => {
-                    console.error("Error loading videos:", err);
-                });
-        }
-        
-        const video = videos.find(v => v.path === decodeURIComponent(params.id as string));
-        if (video) {
-            setCurrentVideo(video);
-        }
-    }, [params.id, videos, setVideos]);
+    useLayoutEffect(() => {
+        setLoading(true);
+        setCurrentVideo(videos.find(v => v.path === decodeURIComponent(params.id as string)) || null);
+        setLoading(false);
+    }, [videos, params.id]);
 
     useEffect(() => {
         if (isPlaying && currentVideo && playerContainerRef.current) {
@@ -56,10 +45,18 @@ export default function VideoPage() {
         }
     }, [isPlaying, currentVideo]);
 
-    if (!currentVideo) {
+    if (!currentVideo && !loading) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <p className="text-red-500">Video not found</p>
+            </div>
+        );
+    }
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <p className="text-white">Loading...</p>
             </div>
         );
     }
@@ -69,7 +66,7 @@ export default function VideoPage() {
             <BackBtn />
             <div className="relative w-full h-full" ref={playerContainerRef}>
                 <ReactPlayer
-                    url={currentVideo.path}
+                    url={currentVideo?.path || ""}
                     controls
                     width="65%"
                     height="100%"
