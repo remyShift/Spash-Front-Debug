@@ -1,22 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { VideoInfo } from "@/types/files";
-
-export interface JSONData {
-    path: string;
-    data: {
-        [frame: number]: {
-            [key: string]: {
-                rect: [number, number, number, number];
-            };
-        };
-    };
-}
-
-export interface VideoJSONPair {
-    video: VideoInfo;
-    json: JSONData | null;
-}
+import { VideoJSONPair } from "@/types/files";
 
 interface Store {
     pairs: VideoJSONPair[];
@@ -30,7 +14,7 @@ export const useStore = create<Store>()(
         setPairs: (pairs) => set({ pairs }),
         }),
         {
-        name: 'video-json-storage',
+            name: 'video-json-storage',
         }
     )
 );
