@@ -10,6 +10,7 @@ import ErrorMsg from "@/components/ErrorMsg";
 import { VideoPlayer } from "@/components/videoPlayer/VideoPlayer";
 import Loader from "@/components/Loader";
 import { fetchFiles } from "@/utils/fetchFiles";
+import ButtonLayer from "@/components/videoPlayer/layers/ButtonLayer";
 
 export default function VideoPage() {
     const params = useParams();
@@ -61,8 +62,12 @@ export default function VideoPage() {
         <div className="flex flex-col gap-4 p-4">
             <BackBtn />
             <div className="flex flex-col gap-0">
-                <div className="w-fit px-2 h-8 bg-primary rounded-t-md">
-                    <p className="text-white text-center font-semibold text-base pt-1">Layer</p>
+                <div className="flex flex-row gap-1">
+                    <ButtonLayer content="Layer" isActive={true} handleClick={() => {}} />
+                    <ButtonLayer content="Homography" isActive={false} handleClick={() => {}} />
+                    <ButtonLayer content="Players" isActive={false} handleClick={() => {}} />
+                    <ButtonLayer content="Ball" isActive={false} handleClick={() => {}} />
+                    <ButtonLayer content="Zones" isActive={false} handleClick={() => {}} />
                 </div>
                 <VideoPlayer 
                     currentVideo={currentVideo} 

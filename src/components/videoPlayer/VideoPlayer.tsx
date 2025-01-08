@@ -22,7 +22,7 @@ export const VideoPlayer = ({ currentVideo, jsonData }: VideoPlayerProps) => {
         const currentFrame = Math.round(video.currentTime * fps);
         const videoWidth = video.videoWidth;
         const videoHeight = video.videoHeight;
-        const frameData = jsonData?.data[currentFrame + 2];
+        const frameData = jsonData?.data[currentFrame];
 
         if (isPlaying) {
             console.log('Frame:', frameData);
@@ -67,6 +67,7 @@ export const VideoPlayer = ({ currentVideo, jsonData }: VideoPlayerProps) => {
                 ref={videoRef}
                 src={currentVideo.videoPath}
                 className="w-full h-full"
+                controls
                 onPlay={handlers.handlePlay}
                 onPause={handlers.handlePause}
                 onEnded={handlers.handleEnded}
@@ -76,16 +77,6 @@ export const VideoPlayer = ({ currentVideo, jsonData }: VideoPlayerProps) => {
                 ref={canvasRef}
                 className="absolute top-0 left-0 z-50 pointer-events-none w-full h-full bg-red-500/20"
             />
-            <button onClick={() => {
-                videoRef.current?.pause();
-            }}>
-                Test
-            </button>
-            <button onClick={() => {
-                videoRef.current?.play();
-            }}>
-                Toto
-            </button>
         </div>
     );
 };
