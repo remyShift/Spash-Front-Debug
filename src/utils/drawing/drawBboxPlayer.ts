@@ -1,7 +1,8 @@
 import { PersonTracking } from "@/types/files";
-import { configureContext, clearCanvas } from './canvas';
+import { configureContext } from './canvas';
 import { calculateBoundedDimensions, isValidBBox } from './boundingBox';
 import { BoundingBoxDimensions } from '@/types/draw';
+import { getPlayerColor } from "./colors";
 
 export const drawSquare = (
     dimensions: BoundingBoxDimensions,
@@ -14,8 +15,6 @@ export const drawSquare = (
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    clearCanvas(ctx, canvas.width, canvas.height);
     
     const boundedDimensions = calculateBoundedDimensions(dimensions, videoWidth, videoHeight);
     configureContext(ctx);
@@ -27,19 +26,6 @@ export const drawSquare = (
     );
 };
 
-export const generateSquareParams = (
-    videoWidth: number,
-    videoHeight: number
-): BoundingBoxDimensions => {
-    const squareSize = 100;
-    return {
-        x: Math.floor(Math.random() * (videoWidth - squareSize)),
-        y: Math.floor(Math.random() * (videoHeight - squareSize)),
-        width: squareSize,
-        height: squareSize
-    };
-};
-
 export const drawPlayerBBox = (
     personCoordinates: PersonTracking,
     videoWidth: number,
@@ -48,25 +34,36 @@ export const drawPlayerBBox = (
 ): void => {
     if (!personCoordinates?.bbox) return;
 
-    const [x, y, width, height] = personCoordinates.bbox;
-    if (!isValidBBox(x, y, width, height, videoWidth, videoHeight)) return;
+    const canvas = context.canvas;
+    const scaleX = canvas.width / videoWidth;
+    const scaleY = canvas.height / videoHeight;
 
-    const boxWidth = width - x;
-    const boxHeight = height - y;
+    const [x1, y1, x2, y2] = personCoordinates.bbox;
+    if (!isValidBBox(x1, y1, x2, y2, videoWidth, videoHeight)) return;
 
-    configureContext(context);
-    context.strokeRect(x, y, boxWidth, boxHeight);
-    context.fillText(`Player ${personCoordinates.id}`, x, y - 5);
-};
+    const [, legsY] = personCoordinates.legs;
 
-export const drawFrameNumber = (
-    frameNumber: number,
-    context: CanvasRenderingContext2D,
-    allFrames: number
-): void => {
-    configureContext(context, { 
-        strokeStyle: '#000000'
-    });
-    context.fillText(`Frame ${frameNumber}`, 10, 20);
-    context.fillText(`${allFrames}`, 10, 40);
+    const scaledX1 = x1 * scaleX;
+    const scaledY1 = y1 * scaleY;
+    const scaledX2 = x2 * scaleX;
+    const scaledLegsY = legsY * scaleY;
+
+    const boxWidth = Math.abs(scaledX2 - scaledX1);
+    const boxHeight = Math.abs(scaledLegsY - scaledY1);
+
+    const playerColor = getPlayerColor(personCoordinates.id);
+    configureContext(context, { strokeStyle: playerColor });
+    
+    context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
+    context.fillStyle = playerColor;
+    context.fillText(`Player ${personCoordinates.id}`, scaledX1, scaledY1 - 5);
+
+    const centerX = scaledX1 + (boxWidth / 2);
+    const bottomY = scaledLegsY;
+
+    context.beginPath();
+    context.arc(centerX, bottomY, 5, 0, 2 * Math.PI);
+    context.fillStyle = playerColor;
+    context.fill();
+    context.closePath();
 };

@@ -7,6 +7,20 @@ export interface VideoInfo {
     createdAt: string;
 }
 
+export interface VideoJSONPair {
+    video: VideoInfo;
+    json: JSONData;
+}
+
+export type PersonTracking = {
+    bbox: [number, number, number, number];
+    class: number;
+    confidence: number;
+    id: number;
+    legs: [number, number];
+    player_legs: [number, number];
+};
+
 export interface JSONData {
     path: string;
     data: {
@@ -22,16 +36,3 @@ export interface JSONData {
     };
 }
 
-export interface VideoJSONPair {
-    video: VideoInfo;
-    json: JSONData;
-}
-
-export type PersonTracking = {
-    bbox: [number, number, number, number];
-    class: number;
-    confidence: number;
-    id: number;
-    legs: [number, number];
-    player_legs: [number, number];
-};

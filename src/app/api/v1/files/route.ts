@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import { VideoInfo } from "@/types/files";
-import { JSONData } from "@/context/store";
 
 export async function GET() {
     const directoryPath = path.join(process.cwd(), "public", "videos");
@@ -31,7 +30,7 @@ export async function GET() {
                     if (videoFile) {
                         const videoPath = path.join(fullPath, videoFile);
                         const videoStats = await fs.promises.stat(videoPath);
-                        let jsonContent: JSONData | undefined;
+                        let jsonContent: object | undefined;
 
                         if (jsonFile) {
                             const jsonPath = path.join(fullPath, jsonFile);

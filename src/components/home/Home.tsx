@@ -7,13 +7,13 @@ import Loader from "../Loader";
 import ErrorMsg from "../ErrorMsg";
 
 export default function Home() {
-  const { pairs, setPairs } = useStore();
+  const { videos, setVideos } = useStore();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchFiles({ setLoading, setError, setPairs });
-  }, [setPairs]);
+    fetchFiles({ setLoading, setError, setVideos });
+  }, [setVideos]);
 
   if (loading) {
     return (
@@ -37,10 +37,10 @@ export default function Home() {
           Please choose a video below :
         </h2>
 
-        {pairs.length === 0 ? (
+        {videos.length === 0 ? (
           <p className="text-white text-center">No files found in the videos folder, please add one !</p>
         ) : (
-          <VideoList pairs={pairs}/>
+          <VideoList videos={videos}/>
         )}
       </div>
     </div>

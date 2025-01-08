@@ -1,20 +1,12 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { VideoJSONPair } from "@/types/files";
+import { VideoInfo } from "@/types/files";
 
 interface Store {
-    pairs: VideoJSONPair[];
-    setPairs: (pairs: VideoJSONPair[]) => void;
+    videos: VideoInfo[];
+    setVideos: (videos: VideoInfo[]) => void;
 }
 
-export const useStore = create<Store>()(
-    persist(
-        (set) => ({
-        pairs: [],
-        setPairs: (pairs) => set({ pairs }),
-        }),
-        {
-            name: 'video-json-storage',
-        }
-    )
-);
+export const useStore = create<Store>((set) => ({
+    videos: [],
+    setVideos: (videos) => set({ videos }),
+}));
