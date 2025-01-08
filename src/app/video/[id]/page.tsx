@@ -7,6 +7,8 @@ import ReactPlayer from 'react-player'
 import { drawSquare, generateSquareParams } from "@/utils/b-boxPlayer";
 import BackBtn from "@/components/devtool/BackBtn";
 import { useStoreVideo } from "@/context/store";
+import ErrorMsg from "@/components/ErrorMsg";
+import Loader from "@/components/Loader";
 
 export default function VideoPage() {
     const params = useParams();
@@ -47,17 +49,13 @@ export default function VideoPage() {
 
     if (!currentVideo && !loading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-red-500">Video not found</p>
-            </div>
+            <ErrorMsg error="Video not found" />
         );
     }
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-white">Loading...</p>
-            </div>
+            <Loader />
         );
     }
 

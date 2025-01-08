@@ -2,6 +2,9 @@
 import { useEffect, useState } from "react";
 import { useStoreVideo, useStoreJSON } from "@/context/store";
 import { VideoList } from "./VideoList";
+import { fetchFiles } from "@/utils/fetchFiles";
+import Loader from "../Loader";
+import ErrorMsg from "../ErrorMsg";
 
 export default function Home() {
   const { videos, setVideos } = useStoreVideo();
@@ -10,38 +13,18 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchFiles = () => {
-      setLoading(true);
-      fetch("/api/v1/files")
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          const fetchedVideos = data.allVideos;
-          setVideos(fetchedVideos);
-
-          const fetchedJSON = data.allJSON;
-          setJSON(fetchedJSON);
-          setLoading(false);
-        })
-        .catch(err => {
-          console.error("Error:", err);
-          setError("Impossible de charger les fichiers.");
-          setLoading(false);
-        });
-    };
-
-    fetchFiles();
+    fetchFiles({ setLoading, setError, setVideos, setJSON });
   }, [setVideos, setJSON]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <p className="text-white">Loading...</p>
-      </div>
+      <Loader />
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorMsg error={error} />
     );
   }
 
@@ -55,9 +38,7 @@ export default function Home() {
           Please choose a video below :
         </h2>
 
-        {error ? (
-          <p className="text-red-500 text-center">{error}</p>
-        ) : videos.length === 0 ? (
+        {videos.length === 0 ? (
           <p className="text-white text-center">No files found in the videos folder, please add one !</p>
         ) : (
           <VideoList videos={videos}/>
