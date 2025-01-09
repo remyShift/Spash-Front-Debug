@@ -12,6 +12,7 @@ import Loader from "@/components/Loader";
 import { fetchFiles } from "@/utils/fetchFiles";
 import Layers from "@/components/videoPlayer/layers/Layers";
 import { useActiveLayers } from "@/context/layers";
+import ToolBox from "@/components/toolBox/ToolBox";
 
 export default function VideoPage() {
     const params = useParams();
@@ -61,15 +62,22 @@ export default function VideoPage() {
     }
 
     return (
-        <div className="flex flex-col gap-4 p-4">
-            <BackBtn />
-            <div className="flex flex-col gap-0">
-                <Layers />
-                <VideoPlayer 
-                    currentVideo={currentVideo} 
-                    jsonData={jsonData as JSONData}
-                    activeLayers={activeLayers}
-                />
+        <div className="flex flex-col gap-4 p-4 h-screen">
+            <div className="flex gap-2">
+                <BackBtn />
+                <div className="flex gap-10 mt-8 h-full">
+                    <div className="flex flex-col gap-0 w-3/4">
+                        <Layers />
+                        <VideoPlayer
+                            currentVideo={currentVideo} 
+                            jsonData={jsonData as JSONData}
+                            activeLayers={activeLayers}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-0 w-1/4 h-full">
+                        <ToolBox />
+                    </div>
+                </div>
             </div>
         </div>
     );

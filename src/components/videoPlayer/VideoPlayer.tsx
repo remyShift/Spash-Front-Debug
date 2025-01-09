@@ -6,6 +6,7 @@ import { defaultDrawingConfig, initializeAnimation } from '@/utils/drawing/confi
 import { drawFramesNumber } from '@/utils/drawing/drawFrames';
 import { Layers } from '@/types/layers';
 import { drawBall } from '@/utils/drawing/ball/drawBall';
+import { useFrame } from "@/context/frame";
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -16,12 +17,14 @@ interface VideoPlayerProps {
 export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlayerProps) => {
     const { videoRef, canvasRef, handlers, isVideoPlaying } = useVideoPlayer();
     const frameRequestRef = useRef<number | null>(null);
+    const { setCurrentFrame } = useFrame();
 
     const animate = useCallback(() => {
         if (!videoRef.current) return;
         if (!isVideoPlaying) return;
 
         const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef.current, jsonData);
+        setCurrentFrame(currentFrame);
 
         if (canvasRef.current) {
             const ctx = canvasRef.current.getContext('2d');
@@ -58,7 +61,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
         }
 
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [canvasRef, jsonData, videoRef, isVideoPlaying, activeLayers]);
+    }, [canvasRef, jsonData, videoRef, isVideoPlaying, activeLayers, setCurrentFrame]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);
@@ -71,11 +74,10 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
     }, [animate]);
 
     return (
-        <div className="relative w-[65%] h-full">
+        <div className="relative">
             <video
                 ref={videoRef}
                 src={currentVideo.videoPath}
-                className="w-full h-full"
                 controls
                 onPlay={handlers.handlePlay}
                 onPause={handlers.handlePause}
@@ -84,7 +86,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
             />
             <canvas
                 ref={canvasRef}
-                className="absolute top-0 left-0 z-50 pointer-events-none w-full h-full bg-red-500/20"
+                className="absolute top-0 left-0 z-50 pointer-events-none w-full h-full"
             />
         </div>
     );
