@@ -7,6 +7,8 @@ export default function Accordion() {
         <div className="w-full bg-lightBackground">
             <AccordionItem title="Homography" answer="Yes. It adheres to the WAI-ARIA design pattern." />
             <Spacer />
+            <AccordionItem title="Frame Info" answer="Yes. It adheres to the WAI-ARIA design pattern." />
+            <Spacer />
         </div>
     )
 }

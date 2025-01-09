@@ -1,22 +1,75 @@
 import { faBackward, faBackwardStep, faForward, faForwardStep, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import ControlBtn from './ControlBtn';
+import { useActiveLayers } from '@/context/layers';
+import { useVideoPlayer } from '@/hooks/useVideoPlayer';
+import { useFrame } from '@/context/frame';
+import { drawElements } from '@/utils/drawing/drawElements';
+import { JSONData } from '@/types/files';
 
-interface ToolBoxControlsProps {
-    handleFrameChange: (frame: number) => void;
-    currentFrame: number;
-    isVideoPlaying: boolean;
-    togglePlay: () => void;
-}
+export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
+    const { currentFrame, setCurrentFrame } = useFrame();
+    const { isVideoPlaying, togglePlay } = useVideoPlayer();
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const { activeLayers } = useActiveLayers();
 
-export default function ToolBoxControls({ handleFrameChange, currentFrame, isVideoPlaying, togglePlay }: ToolBoxControlsProps) {
+    useEffect(() => {
+        videoRef.current = document.querySelector('video');
+    }, []);
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const target = e.target as HTMLFormElement;
+        const input = target.querySelector('input');
+        const frameId = input?.value;
+        
+        if (frameId) {
+            const frameNumber = parseInt(frameId);
+            handleFrameChange(frameNumber);
+            if (input) {
+                input.value = '';
+            }
+        }
+    }
+    
+    const handleFrameChange = (frameNumber: number) => {
+        if (videoRef.current) {
+            setCurrentFrame(frameNumber);
+            const fps = 25;
+            const timeInSeconds = frameNumber / fps;
+            videoRef.current.currentTime = timeInSeconds;
+    
+            const frameData = videoData?.data[frameNumber];
+            if (!frameData) return;
+            if (!canvasRef.current) return;
+    
+            drawElements(
+                videoData,
+                activeLayers,
+                videoRef.current,
+                canvasRef.current,
+                setCurrentFrame
+            );
+        }
+    }
+
     return (
-        <div className="flex gap-4 items-center justify-center">
-            <ControlBtn icon={faBackward} onClick={() => handleFrameChange(currentFrame - 100)} text="-100" />
-            <ControlBtn icon={faBackwardStep} onClick={() => handleFrameChange(currentFrame - 1)} text="-1" />
-            <ControlBtn icon={isVideoPlaying ? faPause : faPlay} onClick={togglePlay} text={isVideoPlaying ? "Pause" : "Play"} />
-            <ControlBtn icon={faForwardStep} onClick={() => handleFrameChange(currentFrame + 1)} text="+1" />
-            <ControlBtn icon={faForward} onClick={() => handleFrameChange(currentFrame + 100)} text="+100" />
+        <div className="flex flex-col gap-6 p-6">
+            <div className="flex gap-4 items-center justify-center">
+                <p className="text-white font-semibold text-base">Frame ID : {currentFrame}</p>
+                <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
+                    <input type="number" className="w-24 h-6 bg-lighterBackground rounded-md p-2 text-center text-white font-semibold text-base" />
+                    <button className="bg-primary text-white font-semibold text-base rounded-md px-2 active:bg-primary/80 transition-all duration-200" type="submit">Go</button>
+                </form>
+            </div>
+            <div className="flex gap-4 items-center justify-center">
+                <ControlBtn icon={faBackward} onClick={() => handleFrameChange(currentFrame - 100)} text="-100" />
+                <ControlBtn icon={faBackwardStep} onClick={() => handleFrameChange(currentFrame - 1)} text="-1" />
+                <ControlBtn icon={isVideoPlaying ? faPause : faPlay} onClick={togglePlay} text={isVideoPlaying ? "Pause" : "Play"} />
+                <ControlBtn icon={faForwardStep} onClick={() => handleFrameChange(currentFrame + 1)} text="+1" />
+                <ControlBtn icon={faForward} onClick={() => handleFrameChange(currentFrame + 100)} text="+100" />
+            </div>
         </div>
-)
+    )
 }
