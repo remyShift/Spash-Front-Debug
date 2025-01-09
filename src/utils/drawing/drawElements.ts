@@ -27,10 +27,9 @@ export const drawElements = (
             canvasRef.height = videoHeight;
 
             activeLayers.forEach(layer => {
-                drawFramesNumber(currentFrame, ctx, Object.keys(videoData.data).length, defaultDrawingConfig);
                 switch (layer) {
                     case 'homography':
-                        console.log(frameData);
+                        drawFramesNumber(currentFrame, ctx, Object.keys(videoData.data).length, defaultDrawingConfig);
                         break;
                     case 'players':
                         if (!frameData.persontracking) return;
