@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useStore } from "@/context/store";
 import { VideoList } from "./VideoList";
 import { fetchFiles } from "@/utils/fetchFiles";
-import Loader from "../Loader";
-import ErrorMsg from "../ErrorMsg";
+import Loader from "../ui/Loader";
+import ErrorMsg from "../ui/ErrorMsg";
 
 export default function Home() {
   const { videos, setVideos } = useStore();
