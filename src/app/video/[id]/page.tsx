@@ -75,7 +75,7 @@ export default function VideoPage() {
                         />
                     </div>
                     <div className="flex flex-col gap-0 w-1/4 h-full">
-                        <ToolBox />
+                        <ToolBox videoData={jsonData as JSONData}/>
                     </div>
                 </div>
             </div>

@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+config.autoAddCss = false
+
 export const metadata: Metadata = {
   title: "Debug Spash Devtool",
   description: "Tool to help Spash developers debug AI results !",

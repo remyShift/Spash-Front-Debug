@@ -1,12 +1,9 @@
 import { JSONData, VideoInfo } from '@/types/files';
 import { useVideoPlayer } from '@/hooks/useVideoPlayer';
 import { useCallback, useEffect, useRef } from 'react';
-import { drawPlayerBBox } from '@/utils/drawing/players/drawBboxPlayer';
-import { defaultDrawingConfig, initializeAnimation } from '@/utils/drawing/config';
-import { drawFramesNumber } from '@/utils/drawing/drawFrames';
-import { Layers } from '@/types/layers';
-import { drawBall } from '@/utils/drawing/ball/drawBall';
 import { useFrame } from "@/context/frame";
+import { drawElements } from '@/utils/drawing/drawElements';
+import { Layers } from '@/types/layers';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -15,53 +12,15 @@ interface VideoPlayerProps {
 }
 
 export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlayerProps) => {
-    const { videoRef, canvasRef, handlers, isVideoPlaying } = useVideoPlayer();
+    const { videoRef, canvasRef, handlers } = useVideoPlayer();
     const frameRequestRef = useRef<number | null>(null);
     const { setCurrentFrame } = useFrame();
 
     const animate = useCallback(() => {
-        if (!videoRef.current) return;
-        if (!isVideoPlaying) return;
-
-        const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef.current, jsonData);
-        setCurrentFrame(currentFrame);
-
-        if (canvasRef.current) {
-            const ctx = canvasRef.current.getContext('2d');
-            if (!ctx) return;
-
-            if (!frameData || !videoWidth || !videoHeight || activeLayers.length === 0) {
-                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-            } else {
-                canvasRef.current.width = videoWidth;
-                canvasRef.current.height = videoHeight;
-
-                activeLayers.forEach(layer => {
-                    drawFramesNumber(currentFrame, ctx, Object.keys(jsonData.data).length, defaultDrawingConfig);
-                    switch (layer) {
-                        case 'homography':
-                            console.log(frameData);
-                            break;
-                        case 'players':
-                            if (!frameData.persontracking) return;
-                            Object.values(frameData.persontracking).forEach(player => {
-                                drawPlayerBBox(player, videoWidth, videoHeight, ctx);
-                            });
-                            break;
-                        case 'ball':
-                            if (!frameData["ball.center.video"]) return;
-                            drawBall(frameData["ball.center.video"], videoWidth, videoHeight, ctx);
-                            break;
-                        // case 'zones':
-                        //     drawZones(frameData.zones, videoWidth, videoHeight, ctx);
-                        //     break;
-                    }
-                });
-            }
-        }
-
+        if (!videoRef.current || !canvasRef.current) return;
+        drawElements(jsonData, activeLayers, videoRef.current, canvasRef.current, setCurrentFrame);
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [canvasRef, jsonData, videoRef, isVideoPlaying, activeLayers, setCurrentFrame]);
+    }, [jsonData, activeLayers, videoRef, canvasRef, setCurrentFrame]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);
