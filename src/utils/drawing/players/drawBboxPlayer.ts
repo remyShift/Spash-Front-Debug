@@ -1,8 +1,8 @@
 import { PersonTracking } from "@/types/files";
-import { configureContext } from './canvas';
+import { configureContext } from '../canvas';
 import { calculateBoundedDimensions, isValidBBox } from './boundingBox';
 import { BoundingBoxDimensions } from '@/types/draw';
-import { getPlayerColor } from "./colors";
+import { getPlayerColor } from "../colors";
 
 export const drawSquare = (
     dimensions: BoundingBoxDimensions,

@@ -1,10 +1,11 @@
 import { JSONData, VideoInfo } from '@/types/files';
 import { useVideoPlayer } from '@/hooks/useVideoPlayer';
 import { useCallback, useEffect, useRef } from 'react';
-import { drawPlayerBBox } from '@/utils/drawing/drawBboxPlayer';
+import { drawPlayerBBox } from '@/utils/drawing/players/drawBboxPlayer';
 import { defaultDrawingConfig, initializeAnimation } from '@/utils/drawing/config';
 import { drawFramesNumber } from '@/utils/drawing/drawFrames';
 import { Layers } from '@/types/layers';
+import { drawBall } from '@/utils/drawing/ball/drawBall';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -33,9 +34,10 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
                 canvasRef.current.height = videoHeight;
 
                 activeLayers.forEach(layer => {
+                    drawFramesNumber(currentFrame, ctx, Object.keys(jsonData.data).length, defaultDrawingConfig);
                     switch (layer) {
                         case 'homography':
-                            drawFramesNumber(currentFrame, ctx, Object.keys(jsonData.data).length, defaultDrawingConfig);
+                            console.log(frameData);
                             break;
                         case 'players':
                             if (!frameData.persontracking) return;
@@ -43,9 +45,10 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
                                 drawPlayerBBox(player, videoWidth, videoHeight, ctx);
                             });
                             break;
-                        // case 'ball':
-                        //     drawBall(frameData.ball, videoWidth, videoHeight, ctx);
-                        //     break;
+                        case 'ball':
+                            if (!frameData["ball.center.video"]) return;
+                            drawBall(frameData["ball.center.video"], videoWidth, videoHeight, ctx);
+                            break;
                         // case 'zones':
                         //     drawZones(frameData.zones, videoWidth, videoHeight, ctx);
                         //     break;

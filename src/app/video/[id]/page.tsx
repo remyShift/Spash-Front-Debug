@@ -10,12 +10,12 @@ import ErrorMsg from "@/components/ErrorMsg";
 import { VideoPlayer } from "@/components/videoPlayer/VideoPlayer";
 import Loader from "@/components/Loader";
 import { fetchFiles } from "@/utils/fetchFiles";
-import ButtonLayer from "@/components/videoPlayer/layers/ButtonLayer";
+import Layers from "@/components/videoPlayer/layers/Layers";
 import { useActiveLayers } from "@/context/layers";
 
 export default function VideoPage() {
     const params = useParams();
-    const { activeLayers, toggleActiveLayers } = useActiveLayers();
+    const { activeLayers } = useActiveLayers();
     const { videos, setVideos } = useStore();
     const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
@@ -64,13 +64,7 @@ export default function VideoPage() {
         <div className="flex flex-col gap-4 p-4">
             <BackBtn />
             <div className="flex flex-col gap-0">
-                <div className="flex flex-row gap-1">
-                    <ButtonLayer content="layer" handleClick={() => {}} />
-                    <ButtonLayer content="homography" handleClick={() => toggleActiveLayers('homography')} />
-                    <ButtonLayer content="players" handleClick={() => toggleActiveLayers('players')} />
-                    <ButtonLayer content="ball" handleClick={() => toggleActiveLayers('ball')} />
-                    <ButtonLayer content="zones" handleClick={() => toggleActiveLayers('zones')} />
-                </div>
+                <Layers />
                 <VideoPlayer 
                     currentVideo={currentVideo} 
                     jsonData={jsonData as JSONData}
