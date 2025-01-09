@@ -2,10 +2,8 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-export async function GET(
-    request: Request,
-    { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const { id } = params;
     const videoPath = decodeURIComponent(id);
     const directoryPath = path.join(process.cwd(), "public", path.dirname(videoPath));
