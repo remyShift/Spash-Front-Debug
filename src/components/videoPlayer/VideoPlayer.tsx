@@ -11,11 +11,12 @@ interface VideoPlayerProps {
 }
 
 export const VideoPlayer = ({ currentVideo, jsonData }: VideoPlayerProps) => {
-    const { videoRef, canvasRef, handlers, isPlaying } = useVideoPlayer();
+    const { videoRef, canvasRef, handlers, isVideoPlaying } = useVideoPlayer();
     const frameRequestRef = useRef<number | null>(null);
 
     const animate = useCallback(() => {
         if (!videoRef.current) return;
+        if (!isVideoPlaying) return;
 
         const video = videoRef.current;
         const fps = 25;
@@ -24,7 +25,7 @@ export const VideoPlayer = ({ currentVideo, jsonData }: VideoPlayerProps) => {
         const videoHeight = video.videoHeight;
         const frameData = jsonData?.data[currentFrame];
 
-        if (isPlaying) {
+        if (isVideoPlaying) {
             console.log('Frame:', frameData);
         }
 
@@ -49,7 +50,7 @@ export const VideoPlayer = ({ currentVideo, jsonData }: VideoPlayerProps) => {
         }
 
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [canvasRef, jsonData.data, videoRef, isPlaying]);
+    }, [canvasRef, jsonData.data, videoRef, isVideoPlaying]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);
