@@ -50,15 +50,27 @@ export default function VideoPage() {
     }, [paramsId, videos]);
 
     if (loading) {
-        return <Loader />;
+        return (
+            <div className="py-24">
+                <Loader />
+            </div>
+        );
     }
 
     if (error) {
-        return <ErrorMsg error={error} />;
+        return (
+            <div className="flex-1 justify-center items-center">
+                <ErrorMsg error={error} />
+            </div>
+        );
     }
 
     if (!currentVideo) {
-        return <ErrorMsg error="Vidéo non trouvée" />;
+        return (
+            <div className="flex-1 justify-center items-center">
+                <ErrorMsg error="Vidéo non trouvée" />
+            </div>
+        );
     }
 
     return (

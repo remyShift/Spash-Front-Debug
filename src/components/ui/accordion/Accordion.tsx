@@ -1,6 +1,6 @@
 import React from 'react'
 import AccordionItem from './AccordionItem'
-import Spacer from './Spacer'
+import Spacer from '../Spacer'
 
 export default function Accordion() {
     return (

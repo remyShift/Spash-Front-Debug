@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import Spacer from "./Spacer";
+import Spacer from "../Spacer";
 
-export default function Accordion({ title, answer }: { title: string, answer: string }) {
+export default function AccordionItem({ title, answer }: { title: string, answer: string }) {
     const [accordionOpen, setAccordionOpen] = useState(false);
 
     return (

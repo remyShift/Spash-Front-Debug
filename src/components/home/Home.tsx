@@ -17,13 +17,17 @@ export default function Home() {
 
   if (loading) {
     return (
-      <Loader />
+      <div className="flex-1 justify-center items-center">
+        <Loader />
+      </div>
     );
   }
 
   if (error) {
     return (
-      <ErrorMsg error={error} />
+      <div className="flex-1 justify-center items-center">
+        <ErrorMsg error={error} />
+      </div>
     );
   }
 

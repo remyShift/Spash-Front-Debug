@@ -1,6 +1,6 @@
 import { JSONData } from "@/types/files";
 import ToolBoxControls from "./ToolBoxControls";
-import Accordion from "@/components/ui/Accordion";
+import Accordion from "@/components/ui/accordion/Accordion";
 import Spacer from "../ui/Spacer";
 
 export default function ToolBox({ videoData }: { videoData: JSONData }) {
@@ -17,7 +17,6 @@ export default function ToolBox({ videoData }: { videoData: JSONData }) {
                     <Accordion />
                 </div>
             </div>
-
         </div>
     )
 }
