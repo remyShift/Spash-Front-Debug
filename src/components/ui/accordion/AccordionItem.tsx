@@ -1,10 +1,14 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import Spacer from "../Spacer";
 
-export default function AccordionItem({ title, answer }: { title: string, answer: string }) {
+export default function AccordionItem({ title, content }: { title: string, content: React.ReactElement<{ accordionOpen: boolean }> }) {
     const [accordionOpen, setAccordionOpen] = useState(false);
+
+    const contentWithProps = React.cloneElement(content as React.ReactElement<{ accordionOpen: boolean }>, {
+        accordionOpen
+    });
 
     return (
         <div className="w-full">
@@ -25,7 +29,9 @@ export default function AccordionItem({ title, answer }: { title: string, answer
                     : "grid-rows-[0fr] opacity-0"
                 }`}
             >
-                <div className="overflow-hidden">{answer}</div>
+                <div className="overflow-hidden">
+                    {contentWithProps}
+                </div>
             </div>
         </div>
     );
