@@ -1,6 +1,6 @@
 import { defaultDrawingConfig } from "./config";
 import { JSONData } from "@/types/files";
-import { Layers } from "@/types/layers";
+import { BallLayer, Layers } from "@/types/layers";
 import { initializeAnimation } from "./config";
 import { drawFramesNumber } from "./drawFrames";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
@@ -37,7 +37,11 @@ export const drawElements = (
                         break;
                     case 'ball':
                         if (!frameData["ball.center.video"]) return;
-                        drawBall(frameData["ball.center.video"], videoWidth, videoHeight, ctx);
+                        const ball: BallLayer = {
+                            coordinates: frameData["ball.center.video"],
+                            score: frameData["ball.score"] || 0
+                        };
+                        drawBall(ball, videoWidth, videoHeight, ctx);
                         break;
                     // case 'zones':
                     //     drawZones(frameData.zones, videoWidth, videoHeight, ctx);

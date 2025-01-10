@@ -74,22 +74,22 @@ export default function FrameInfos({ framesData }: { framesData: JSONData['data'
             <div className='flex flex-col gap-2'>
                 <p className='text-white font-semibold text-center text-lg'>- - - - - Players - - - - -</p>
                 <div className='flex flex-col gap-6'>
-                    {Object.keys(frameData?.persontracking || {}).map((playerId) => {
+                    {Object.keys(frameData?.persontracking || {}).map((player) => {
                         return (
-                            <div key={playerId} className='flex flex-col gap-1'>
+                            <div key={player} className='flex flex-col gap-1'>
                                 <p className='text-white flex gap-1 font-semibold'>ID : 
-                                    <span className='text-white font-normal'>{playerId}</span>
+                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.id}</span>
                                 </p>
                                 <div className='flex gap-1'>
                                     <p className='text-white flex gap-2 font-semibold'>Legs :</p>
                                     <div className='flex gap-2'>
-                                        {frameData?.persontracking?.[playerId]?.player_legs.map((coord, index) => {
+                                        {frameData?.persontracking?.[player]?.player_legs.map((coord, index) => {
                                             return <span key={index} className='text-white font-normal'>{coord}</span>
                                         })}
                                     </div>
                                 </div>
                                 <p className='text-white font-semibold flex gap-1'>Confidence : 
-                                    <span className='text-white font-normal'>{frameData?.persontracking?.[playerId]?.confidence}</span>
+                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.confidence}</span>
                                 </p>
                             </div>
                         )
