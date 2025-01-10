@@ -28,10 +28,14 @@ export interface JSONData {
             "ball.rect"?: [number, number, number, number];
             "ball.center"?: [number, number];
             "ball.center.video"?: [number, number];
+            "ball.score"?: number;
             zone?: string;
             persontracking?: {
                 [playerId: string]: PersonTracking;
             };
+            frame_idx?: number;
+            detection?: string;
+            speed?: string;
         };
     };
 }

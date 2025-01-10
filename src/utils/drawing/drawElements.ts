@@ -11,10 +11,8 @@ export const drawElements = (
     activeLayers: Layers[], 
     videoRef: HTMLVideoElement,
     canvasRef: HTMLCanvasElement,
-    setCurrentFrame: (frame: number) => void
 ) => {
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
-    setCurrentFrame(currentFrame);
 
     if (canvasRef) {
         const ctx = canvasRef.getContext('2d');

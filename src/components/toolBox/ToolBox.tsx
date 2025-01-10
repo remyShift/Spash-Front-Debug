@@ -14,7 +14,7 @@ export default function ToolBox({ videoData }: { videoData: JSONData }) {
                 <div className="flex flex-col gap-0 w-full">
                     <ToolBoxControls videoData={videoData} />
                     <Spacer />
-                    <Accordion />
+                    <Accordion videoData={videoData} />
                 </div>
             </div>
         </div>

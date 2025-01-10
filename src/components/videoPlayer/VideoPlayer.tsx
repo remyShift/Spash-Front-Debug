@@ -14,13 +14,21 @@ interface VideoPlayerProps {
 export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlayerProps) => {
     const { videoRef, canvasRef, handlers } = useVideoPlayer();
     const frameRequestRef = useRef<number | null>(null);
-    const { setCurrentFrame } = useFrame();
+    const { currentFrame, setCurrentFrame } = useFrame();
 
     const animate = useCallback(() => {
         if (!videoRef.current || !canvasRef.current) return;
-        drawElements(jsonData, activeLayers, videoRef.current, canvasRef.current, setCurrentFrame);
+        
+        const fps = 25;
+        const newFrame = Math.round(videoRef.current.currentTime * fps);
+        
+        if (newFrame !== currentFrame) {
+            setCurrentFrame(newFrame);
+        }
+        
+        drawElements(jsonData, activeLayers, videoRef.current, canvasRef.current);
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, videoRef, canvasRef, setCurrentFrame]);
+    }, [jsonData, activeLayers, videoRef, canvasRef, setCurrentFrame, currentFrame]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);
