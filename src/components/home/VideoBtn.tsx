@@ -3,7 +3,7 @@ import { VideoInfo } from "@/types/files";
 export default function VideoBtn({ video }: { video: VideoInfo }) {
     return (
         <a
-            href={`/video/${encodeURIComponent(video.videoPath)}`}
+            href={`/debug/${encodeURIComponent(video.videoPath)}`}
             key={video.videoPath}
             className="w-full flex gap-4 items-center justify-center p-4 bg-tertiary rounded-full hover:bg-primary transition-colors cursor-pointer group border-2 border-black"
         >

@@ -7,6 +7,7 @@ import { useFrame } from '@/context/frame';
 import { drawElements } from '@/utils/drawing/drawElements';
 import { JSONData } from '@/types/files';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 
 export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
     const { currentFrame, setCurrentFrame } = useFrame();
@@ -54,6 +55,8 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
             );
         }
     }
+
+    useKeyboardShortcuts(handleFrameChange);
 
     return (
         <div className="flex flex-col gap-6 p-6">
