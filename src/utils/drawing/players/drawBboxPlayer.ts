@@ -27,21 +27,21 @@ export const drawSquare = (
 };
 
 export const drawPlayerBBox = (
-    personCoordinates: PersonTracking,
+    person: PersonTracking,
     videoWidth: number,
     videoHeight: number,
     context: CanvasRenderingContext2D
 ): void => {
-    if (!personCoordinates?.bbox) return;
+    if (!person?.bbox) return;
 
     const canvas = context.canvas;
     const scaleX = canvas.width / videoWidth;
     const scaleY = canvas.height / videoHeight;
 
-    const [x1, y1, x2, y2] = personCoordinates.bbox;
+    const [x1, y1, x2, y2] = person.bbox;
     if (!isValidBBox(x1, y1, x2, y2, videoWidth, videoHeight)) return;
 
-    const [, legsY] = personCoordinates.legs;
+    const [, legsY] = person.legs;
 
     const scaledX1 = x1 * scaleX;
     const scaledY1 = y1 * scaleY;
@@ -51,12 +51,35 @@ export const drawPlayerBBox = (
     const boxWidth = Math.abs(scaledX2 - scaledX1);
     const boxHeight = Math.abs(scaledLegsY - scaledY1);
 
-    const playerColor = getPlayerColor(personCoordinates.id);
+    const playerColor = getPlayerColor(person.id);
     configureContext(context, { strokeStyle: playerColor });
     
+    context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
+    
+    const text = `${person.id} -|- ${person.confidence.toFixed(2)}`;
+    const textMetrics = context.measureText(text);
+    const padding = 4;
+    const textHeight = 25;
+    
+    // Rectangle de fond
     context.fillStyle = playerColor;
-    context.fillText(`Player ${personCoordinates.id}`, scaledX1, scaledY1 - 5);
+    context.fillRect(
+        scaledX1 - 1,
+        scaledY1 - textHeight,
+        textMetrics.width + (padding * 2),
+        textHeight
+    );
+    
+    // Texte centré
+    context.fillStyle = '#FFFFFF';
+    context.textBaseline = 'middle';
+    context.textAlign = 'left';
+    context.fillText(
+        text, 
+        scaledX1 + padding - 1,
+        scaledY1 - (textHeight / 2)
+    );
 
     const centerX = scaledX1 + (boxWidth / 2);
     const bottomY = scaledLegsY;
