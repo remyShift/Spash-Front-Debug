@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useFrame } from '@/context/frame';
 import { useVideoPlayer } from './useVideoPlayer';
+import { useActiveLayers } from '@/context/layers';
 
 export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void) => {
     const { currentFrame } = useFrame();
     const { togglePlay } = useVideoPlayer();
+    const { toggleActiveLayers } = useActiveLayers();
 
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
@@ -24,20 +26,32 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                 return;
             }
 
-            switch (key) {
+            switch (key.toLowerCase()) {
                 case ' ':
                     togglePlay();
                     break;
-                case 'ArrowLeft':
+                case 'arrowleft':
                     handleFrameChange(currentFrame - 1);
                     break;
-                case 'ArrowRight':
+                case 'arrowright':
                     handleFrameChange(currentFrame + 1);
+                    break;
+                case 'h':
+                    toggleActiveLayers('homography');
+                    break;
+                case 'p':
+                    toggleActiveLayers('players');
+                    break;
+                case 'b':
+                    toggleActiveLayers('ball');
+                    break;
+                case 'z':
+                    toggleActiveLayers('zones');
                     break;
             }
         };
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [currentFrame, handleFrameChange, togglePlay]);
+    }, [currentFrame, handleFrameChange, togglePlay, toggleActiveLayers]);
 };

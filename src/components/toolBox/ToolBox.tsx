@@ -10,7 +10,7 @@ export default function ToolBox({ videoData }: { videoData: JSONData }) {
                 <p className="text-white font-semibold text-base">Tools</p>
             </div>
 
-            <div className="w-full h-36 bg-lightBackground rounded-tr-lg">
+            <div className="w-full h-36 bg-lightBackground rounded-tr-lg rounded-b-lg">
                 <div className="flex flex-col gap-0 w-full">
                     <ToolBoxControls videoData={videoData} />
                     <Spacer />
