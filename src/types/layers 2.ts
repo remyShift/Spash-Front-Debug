@@ -1,0 +1,1 @@
+export type Layers = "homography" | "players" | "ball" | "zones";
