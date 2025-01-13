@@ -2,7 +2,7 @@ import { useFrame } from '@/context/frame';
 import { JSONData } from '@/types/files'
 import { useEffect, useState } from 'react';
 
-export default function FrameInfos({ framesData }: { framesData: JSONData['data'] }) {
+export default function FrameInfos({ framesData, events }: { framesData: JSONData['data'], events: JSONData['timeline'] }) {
     const { currentFrame } = useFrame();
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
 
@@ -25,6 +25,21 @@ export default function FrameInfos({ framesData }: { framesData: JSONData['data'
                         {frameData?.frame_idx}
                     </span>
                 </p>
+            </div>
+
+
+            <div className='flex flex-col gap-4'>
+                <p className='text-white font-semibold text-center text-lg'>- - - - - Events - - - - -</p>
+                <div className='flex gap-4 flex-wrap justify-center'>
+                        {Object.keys(events).map((event) => (
+                            <span 
+                                key={event} 
+                                className={`font-normal ${events[event].includes(currentFrame) ? 'text-primary font-bold' : 'text-white'}`}
+                            >
+                                {event.charAt(0).toUpperCase() + event.slice(1)}
+                            </span>
+                        ))}
+                </div>
             </div>
 
             <div className='flex flex-col gap-2'>

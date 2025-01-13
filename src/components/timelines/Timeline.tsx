@@ -1,11 +1,11 @@
 import EventMarker from "../ui/EventMarker";
 import TimelineControl from "./TimelineControl";
 
-export default function Timeline() {
+export default function Timeline({ event, frames }: { event: string, frames: number[] }) {
     return (
         <div className="w-full h-11 bg-lightBackground rounded-lg">
             <div className="flex items-center w-full h-full gap-0">
-                <TimelineControl event="Hits" />
+                <TimelineControl event={event.charAt(0).toUpperCase() + event.slice(1)} />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 
                 <div className="flex flex-col gap-0 w-full relative">

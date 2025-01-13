@@ -38,5 +38,8 @@ export interface JSONData {
             speed?: string;
         };
     };
+    timeline: {
+        [event: string]: number[];
+    };
 }
 
