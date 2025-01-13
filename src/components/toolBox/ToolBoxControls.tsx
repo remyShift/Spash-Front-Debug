@@ -51,7 +51,6 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
                 activeLayers,
                 videoRef.current,
                 canvasRef.current,
-                setCurrentFrame
             );
         }
     }
