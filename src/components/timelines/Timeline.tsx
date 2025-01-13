@@ -2,11 +2,12 @@ import EventMarker from "../ui/EventMarker";
 import TimelineControl from "./TimelineControl";
 import { useFrame } from "@/context/frame";
 import { useEffect, useRef } from "react";
+import { Event } from "@/types/events";
 
 const TIMELINE_DURATION = 300;
 const FPS = 25;
 
-export default function Timeline({ event, frames }: { event: string; frames: number[] }) {
+export default function Timeline({ event, frames }: { event: Event; frames: number[] }) {
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +49,7 @@ export default function Timeline({ event, frames }: { event: string; frames: num
                                     className="absolute"
                                     style={{ left: calculateMarkerPosition(frame) }}
                                 >
-                                    <EventMarker />
+                                    <EventMarker event={event}/>
                                 </div>
                             ))}
                         </div>
