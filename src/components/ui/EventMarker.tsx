@@ -13,6 +13,6 @@ export default function EventMarker({ event }: { event: Event }) {
     }
 
     return (
-        <FontAwesomeIcon icon={faMapPin} className={colorMarker[event]}/>
+        <FontAwesomeIcon icon={faMapPin} className={`${colorMarker[event]} text-lg`}/>
     )
 }
