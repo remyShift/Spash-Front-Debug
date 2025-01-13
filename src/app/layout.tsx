@@ -43,8 +43,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-background">
-      <body className={`${gilRoy.variable} font-gilroy`}>
+    <html lang="en">
+      <body className={`${gilRoy.variable} font-gilroy mesh-bg h-screen`}>
         {children}
       </body>
     </html>
