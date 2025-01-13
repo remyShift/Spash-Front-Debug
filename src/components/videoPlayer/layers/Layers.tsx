@@ -11,7 +11,8 @@ export default function Layers() {
             <ButtonLayer content="homography" handleClick={() => toggleActiveLayers('homography')} />
             <ButtonLayer content="players" handleClick={() => toggleActiveLayers('players')} />
             <ButtonLayer content="ball" handleClick={() => toggleActiveLayers('ball')} />
-            <ButtonLayer content="zones" handleClick={() => toggleActiveLayers('zones')} />
+            <ButtonLayer content="areas" handleClick={() => toggleActiveLayers('areas')} />
+            <ButtonLayer content="trajectories" handleClick={() => toggleActiveLayers('trajectories')} />
         </div>
     )
 }

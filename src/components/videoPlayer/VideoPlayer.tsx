@@ -41,7 +41,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
     }, [animate]);
 
     return (
-        <div className="relative w-[1050px]">
+        <div className="relative w-[1000px]">
             <video
                 ref={videoRef}
                 src={currentVideo.videoPath}

@@ -45,8 +45,11 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                 case 'b':
                     toggleActiveLayers('ball');
                     break;
-                case 'z':
-                    toggleActiveLayers('zones');
+                case 'a':
+                    toggleActiveLayers('areas');
+                    break;
+                case 't':
+                    toggleActiveLayers('trajectories');
                     break;
             }
         };

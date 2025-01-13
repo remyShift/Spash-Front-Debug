@@ -1,9 +1,9 @@
 import React from 'react'
 import AccordionItem from './AccordionItem'
 import Spacer from '../Spacer'
-import KeyboardShortcuts from './KeyboardShortcuts'
+import KeyboardShortcuts from '../../toolBox/KeyboardShortcuts'
 import { JSONData } from '@/types/files'
-import FrameInfos from './FrameInfos'
+import FrameInfos from '../../toolBox/FrameInfos'
 
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     return (

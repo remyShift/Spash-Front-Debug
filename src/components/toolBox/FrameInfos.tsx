@@ -13,7 +13,7 @@ export default function FrameInfos({ framesData }: { framesData: JSONData['data'
     console.log(frameData);
 
     return (
-        <div className='p-4 flex flex-col gap-8'>
+        <div className='p-4 flex flex-col gap-8 max-h-[550px] overflow-y-auto'>
             <div className='flex justify-center gap-8'>
                 <p className='text-white font-semibold flex gap-1'>Frame : 
                     <span className='text-white font-normal'>
