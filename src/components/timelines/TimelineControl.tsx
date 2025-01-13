@@ -1,18 +1,40 @@
 import { faBackwardStep, faForwardStep } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFrame } from "@/context/frame";
+import { useRef, useEffect } from "react";
 
-export default function TimelineControl({ event, frames }: { event: string, frames: number[] }) {
+export default function TimelineControl({ event, framesEvent }: { event: string, framesEvent: number[] }) {
     const { currentFrame, setCurrentFrame } = useFrame();
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const FPS = 25;
+
+    useEffect(() => {
+        videoRef.current = document.querySelector('video');
+    }, []);
+
+    const updateVideoTime = (frame: number) => {
+        if (videoRef.current) {
+            const timeInSeconds = frame / FPS;
+            videoRef.current.currentTime = timeInSeconds;
+        }
+    };
 
     const goToPreviousEvent = () => {
-        const previousFrame = frames.reverse().find(frame => frame < currentFrame);
-        if (previousFrame) setCurrentFrame(previousFrame);
+        const previousFrame = [...framesEvent].reverse().find(frame => frame < currentFrame);
+        if (previousFrame) {
+            setCurrentFrame(previousFrame).then(() => {
+                updateVideoTime(previousFrame);
+            });
+        }
     };
 
     const goToNextEvent = () => {
-        const nextFrame = frames.find(frame => frame > currentFrame);
-        if (nextFrame) setCurrentFrame(nextFrame);
+        const nextFrame = [...framesEvent].find(frame => frame > currentFrame);
+        if (nextFrame) {
+            setCurrentFrame(nextFrame).then(() => {
+                updateVideoTime(nextFrame);
+            });
+        }
     };
 
     return (

@@ -10,8 +10,6 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
         setFrameData(framesData[currentFrame]);
     }, [framesData, currentFrame]);
 
-    console.log(frameData);
-
     return (
         <div className='p-4 flex flex-col gap-8 max-h-[550px] overflow-y-auto'>
             <div className='flex justify-center gap-8'>

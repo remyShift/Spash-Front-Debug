@@ -6,7 +6,7 @@ export default function AllTimelines({ events }: { events: EventTimeline }) {
     return (
         <div className="flex flex-col gap-4">
             {Object.keys(events).map((event) => (
-                <Timeline key={event} event={event as Event} frames={events[event]} />
+                <Timeline key={event} event={event as Event} framesEvent={events[event]} />
             ))}
         </div>
     )

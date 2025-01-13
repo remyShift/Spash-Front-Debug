@@ -7,7 +7,7 @@ import { Event } from "@/types/events";
 const TIMELINE_DURATION = 300;
 const FPS = 25;
 
-export default function Timeline({ event, frames }: { event: Event; frames: number[] }) {
+export default function Timeline({ event, framesEvent }: { event: Event; framesEvent: number[] }) {
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
 
@@ -27,23 +27,23 @@ export default function Timeline({ event, frames }: { event: Event; frames: numb
         const markerWidth = 11;
         const containerWidth = timelineRef.current.clientWidth;
         const percentageOffset = (markerWidth / 2 / containerWidth) * 100;
-        return `calc(${(frameTime / TIMELINE_DURATION) * 100}% - ${percentageOffset}%)`;
+        const position = (frameTime / TIMELINE_DURATION) * 100;
+
+        return `calc(${position}% - ${percentageOffset}%)`;
     };
 
     return (
         <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
-                <TimelineControl event={event.charAt(0).toUpperCase() + event.slice(1)} frames={frames} />
+                <TimelineControl event={event.charAt(0).toUpperCase() + event.slice(1)} framesEvent={framesEvent} />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 
-
-
-                <div className="flex items-end w-full h-full pb-3">
+                <div className="flex items-end w-full h-full pb-3 overflow-hidden">
                     <div className="flex flex-col gap-0 w-full relative">
-                        <div className="absolute z-10 -top-4 w-[300%]" 
+                        <div className="absolute -top-4 w-[300%]"
                                 ref={timelineRef}
                                 style={{ left: '50%' }}>
-                            {frames.map((frame) => (
+                            {framesEvent.map((frame) => (
                                 <div 
                                     key={frame}
                                     className="absolute"
