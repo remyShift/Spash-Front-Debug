@@ -16,7 +16,7 @@ export default function TimelineControl({ event, frames }: { event: string, fram
     };
 
     return (
-        <div className="flex justify-between items-center h-full w-[18%] gap-2 px-4">
+        <div className="flex justify-between items-center h-full w-[20%] gap-2 px-4">
             <button onClick={goToPreviousEvent}>
                 <FontAwesomeIcon icon={faBackwardStep} className="text-secondary text-xl" />
             </button>

@@ -30,30 +30,30 @@ export default function Timeline({ event, frames }: { event: string; frames: num
     };
 
     return (
-        <div className="w-full h-11 bg-lightBackground rounded-lg overflow-hidden">
+        <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
                 <TimelineControl event={event.charAt(0).toUpperCase() + event.slice(1)} frames={frames} />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 
-                <div className="flex flex-col gap-0 w-full relative">
-                    <div className="absolute z-10 -top-4 w-[300%]" 
-                            ref={timelineRef} 
-                            style={{ left: '50%' }}>
-                        {frames.map((frame) => (
-                            <div 
-                                key={frame}
-                                className="absolute"
-                                style={{ left: calculateMarkerPosition(frame) }}
-                            >
-                                <EventMarker />
-                            </div>
-                        ))}
-                    </div>
-                    <div className="w-full h-[3px] bg-lighterBackground"></div>
-                    <div className="w-[2px] h-[25px] bg-secondary absolute left-1/2 -top-[10px] -translate-x-1/2"></div>
-                    
-                    <div className="absolute z-10 -bottom-6 left-1/2 text-white text-sm translate-x-[-50%] text-center">
-                        {Math.floor((currentFrame / FPS) / 60)}:{Math.floor((currentFrame / FPS) % 60).toString().padStart(2, '0')}
+
+
+                <div className="flex items-end w-full h-full pb-3">
+                    <div className="flex flex-col gap-0 w-full relative">
+                        <div className="absolute z-10 -top-4 w-[300%]" 
+                                ref={timelineRef}
+                                style={{ left: '50%' }}>
+                            {frames.map((frame) => (
+                                <div 
+                                    key={frame}
+                                    className="absolute"
+                                    style={{ left: calculateMarkerPosition(frame) }}
+                                >
+                                    <EventMarker />
+                                </div>
+                            ))}
+                        </div>
+                        <div className="w-full h-[3px] bg-lighterBackground"></div>
+                        <div className="w-[2px] h-[25px] bg-secondary absolute left-1/2 -top-[10px] -translate-x-1/2"></div>
                     </div>
                 </div>
             </div>
