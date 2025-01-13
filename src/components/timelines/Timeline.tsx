@@ -40,7 +40,7 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
 
                 <div className="flex items-end w-full h-full pb-3 overflow-hidden">
                     <div className="flex flex-col gap-0 w-full relative">
-                        <div className="absolute -top-4 w-[300%]"
+                        <div className="absolute -top-4 w-[300%] z-50"
                                 ref={timelineRef}
                                 style={{ left: '50%' }}>
                             {framesEvent.map((frame) => (
@@ -54,7 +54,7 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
                             ))}
                         </div>
                         <div className="w-full h-[3px] bg-lighterBackground"></div>
-                        <div className="w-[2px] h-[25px] bg-secondary absolute left-1/2 -top-[10px] -translate-x-1/2"></div>
+                        <div className="w-[2px] h-[15px] bg-secondary absolute z-0 left-1/2 -top-[5px] -translate-x-1/2"></div>
                     </div>
                 </div>
             </div>

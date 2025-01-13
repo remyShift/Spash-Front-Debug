@@ -4,7 +4,7 @@ import { Event } from "@/types/events";
 
 export default function AllTimelines({ events }: { events: EventTimeline }) {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col justify-evenly h-full">
             {Object.keys(events).map((event) => (
                 <Timeline key={event} event={event as Event} framesEvent={events[event]} />
             ))}
