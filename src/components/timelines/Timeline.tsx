@@ -1,7 +1,7 @@
 import EventMarker from "../ui/EventMarker";
 import TimelineControl from "./TimelineControl";
 import { useFrame } from "@/context/frame";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Event } from "@/types/events";
 
 const TIMELINE_DURATION = 300;
@@ -10,6 +10,22 @@ const FPS = 25;
 export default function Timeline({ event, framesEvent }: { event: Event; framesEvent: number[] }) {
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
+    const [containerWidth, setContainerWidth] = useState<number>(0);
+
+    useEffect(() => {
+        const updateContainerWidth = () => {
+            if (timelineRef.current) {
+                setContainerWidth(timelineRef.current.clientWidth);
+            }
+        };
+
+        updateContainerWidth();
+        window.addEventListener('resize', updateContainerWidth);
+
+        return () => {
+            window.removeEventListener('resize', updateContainerWidth);
+        };
+    }, []);
 
     useEffect(() => {
         const currentTimeInSeconds = currentFrame / FPS;
@@ -21,11 +37,10 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
     }, [currentFrame]);
 
     const calculateMarkerPosition = (frame: number): string => {
-        if (!timelineRef.current) return '';
+        if (!containerWidth) return '';
 
         const frameTime = frame / FPS;
         const markerWidth = 11;
-        const containerWidth = timelineRef.current.clientWidth;
         const percentageOffset = (markerWidth / 2 / containerWidth) * 100;
         const position = (frameTime / TIMELINE_DURATION) * 100;
 
@@ -43,7 +58,7 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
                         <div className="absolute -top-4 w-[300%] z-50"
                                 ref={timelineRef}
                                 style={{ left: '50%' }}>
-                            {framesEvent.map((frame) => (
+                            {containerWidth > 0 && framesEvent.map((frame) => (
                                 <div 
                                     key={frame}
                                     className="absolute"
