@@ -41,11 +41,12 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
     }, [animate]);
 
     return (
-        <div className="relative">
+        <div className="relative w-[1050px]">
             <video
                 ref={videoRef}
                 src={currentVideo.videoPath}
                 controls
+                className="w-full"
                 onPlay={handlers.handlePlay}
                 onPause={handlers.handlePause}
                 onEnded={handlers.handleEnded}

@@ -13,7 +13,7 @@ import { fetchFiles } from "@/utils/fetchFiles";
 import Layers from "@/components/videoPlayer/layers/Layers";
 import { useActiveLayers } from "@/context/layers";
 import ToolBox from "@/components/toolBox/ToolBox";
-import AllTimelines from "@/components/ui/timelines/AllTimelines";
+import AllTimelines from "@/components/timelines/AllTimelines";
 
 export default function VideoPage() {
     const params = useParams();
@@ -76,10 +76,10 @@ export default function VideoPage() {
 
     return (
         <div className="flex flex-col gap-4 p-4 h-screen">
-            <div className="flex gap-2">
+            <div className="flex gap-6">
                 <BackBtn />
-                <div className="flex gap-10 mt-2 h-full">
-                    <div className="flex flex-col gap-0 w-3/4">
+                <div className="flex gap-6 mt-2 h-full">
+                    <div className="flex flex-col gap-0 w-fit">
                         <Layers />
                         <div className="flex flex-col gap-4 w-full">
                             <VideoPlayer

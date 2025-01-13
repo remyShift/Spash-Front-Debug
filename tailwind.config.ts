@@ -15,7 +15,6 @@ export default {
 				lighterBackground: '#72728B',
 				primary: '#FF5F49',
 				secondary: '#E41145',
-				tertiary: '#DBDBDB',
 			},
 			fontFamily: {
 				gilroy: [
