@@ -34,7 +34,7 @@ export const drawPlayerDistance = (
     const centerY = (scaledY1 + scaledY2) / 2;
 
     context.font = 'bold 22px Arial';
-    context.fillStyle = '#E41145';
+    context.fillStyle = '#000000';
     context.textAlign = 'center';
     context.fillText(`${realDistance.toFixed(2)}m`, centerX, centerY - 10);
 };
