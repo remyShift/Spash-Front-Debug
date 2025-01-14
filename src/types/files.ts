@@ -9,18 +9,25 @@ export interface VideoInfo {
     createdAt: string;
 }
 
+export interface PlayerPair {
+    player1: string;
+    player2: string;
+}
+
 export interface VideoJSONPair {
     video: VideoInfo;
     json: JSONData;
 }
 
 export interface PersonTracking {
+    name: string;
     bbox: [number, number, number, number];
     class: number;
     confidence: number;
     id: number;
     legs: [number, number];
     player_legs: [number, number];
+    court_legs: [number, number];
 };
 
 export interface JSONData {
@@ -31,13 +38,12 @@ export interface JSONData {
             "ball.center"?: [number, number];
             "ball.center.video"?: [number, number];
             "ball.score"?: number;
-            zone?: string;
             persontracking?: {
                 [playerId: string]: PersonTracking;
             };
-            frame_idx?: number;
+            zone?: string;
+            frame_idx: number;
             detection?: string;
-            speed?: string;
         };
     };
     events: {

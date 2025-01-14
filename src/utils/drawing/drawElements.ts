@@ -5,6 +5,8 @@ import { initializeAnimation } from "./config";
 import { drawFramesNumber } from "./drawFrames";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
 import { drawBall } from "./ball/drawBall";
+import { drawPlayerDistance } from "./players/drawPlayerDistance";
+import { PersonTracking } from "@/types/files";
 
 export const drawElements = (
     videoData: JSONData, 
@@ -31,9 +33,38 @@ export const drawElements = (
                         break;
                     case 'players':
                         if (!frameData.persontracking) return;
-                        Object.values(frameData.persontracking).forEach(player => {
+                        const players = Object.entries(frameData.persontracking);
+                        
+                        players.forEach(([, player]) => {
                             drawPlayerBBox(player, videoWidth, videoHeight, ctx);
                         });
+                        
+                        const playersByName = players.reduce((acc, [, player]) => {
+                            if (player.name) {
+                                acc[player.name] = player;
+                            }
+                            return acc;
+                        }, {} as Record<string, PersonTracking>);
+
+                        if (playersByName['A'] && playersByName['B']) {
+                            drawPlayerDistance(
+                                playersByName['A'],
+                                playersByName['B'],
+                                videoWidth,
+                                videoHeight,
+                                ctx
+                            );
+                        }
+
+                        if (playersByName['C'] && playersByName['D']) {
+                            drawPlayerDistance(
+                                playersByName['C'],
+                                playersByName['D'],
+                                videoWidth,
+                                videoHeight,
+                                ctx
+                            );
+                        }
                         break;
                     case 'ball':
                         if (!frameData["ball.center.video"]) return;
