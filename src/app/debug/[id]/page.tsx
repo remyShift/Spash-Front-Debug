@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStore } from "@/context/store";
-import { VideoInfo, JSONData } from "@/types/files";
+import { VideoInfo, JSONData, StatsData } from "@/types/files";
 import { fetchVideoData } from "@/utils/fetchVideoData";
 import BackBtn from "@/components/ui/BackBtn";
 import ErrorMsg from "@/components/ui/ErrorMsg";
@@ -14,6 +14,7 @@ import Layers from "@/components/videoPlayer/layers/Layers";
 import { useActiveLayers } from "@/context/layers";
 import ToolBox from "@/components/toolBox/ToolBox";
 import AllTimelines from "@/components/timelines/AllTimelines";
+import StatsArray from "@/components/StatsArray/StatsArray";
 
 export default function VideoPage() {
     const params = useParams();
@@ -21,6 +22,7 @@ export default function VideoPage() {
     const { videos, setVideos } = useStore();
     const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
+    const [statsData, setStatsData] = useState<StatsData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
 
@@ -40,7 +42,10 @@ export default function VideoPage() {
             setLoading(true);
             fetchVideoData(video.videoPath)
                 .then(data => {
-                    setJsonData(data);
+                    if (data) {
+                        setJsonData(data.jsonData);
+                        setStatsData(data.statsData);
+                    }
                     setLoading(false);
                 })
                 .catch(err => {
@@ -75,24 +80,27 @@ export default function VideoPage() {
     }
 
     return (
-        <div className="flex flex-col gap-4 p-4 h-screen">
-            <div className="flex gap-6 h-full">
-                <BackBtn />
-                <div className="flex justify-center gap-24 mt-2 h-full w-full">
-                    <div className="flex flex-col gap-0 w-fit">
-                        <Layers />
-                        <div className="flex flex-col gap-2 w-full h-full">
-                            <VideoPlayer
-                                currentVideo={currentVideo} 
-                                jsonData={jsonData as JSONData}
-                                activeLayers={activeLayers} 
-                            />
-                            {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} />}
+        <div className="flex flex-col gap-12 h-full w-full">
+            <div className="flex flex-col gap-4 p-4 h-screen">
+                <div className="flex gap-6 h-full">
+                    <BackBtn />
+                    <div className="flex justify-center gap-24 mt-2 h-full w-full">
+                        <div className="flex flex-col gap-0 w-fit h-full">
+                            <Layers />
+                            <div className="flex flex-col gap-2 w-full h-full">
+                                <VideoPlayer
+                                    currentVideo={currentVideo} 
+                                    jsonData={jsonData as JSONData}
+                                    activeLayers={activeLayers} 
+                                />
+                                {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} />}
+                            </div>
                         </div>
+                        <ToolBox videoData={jsonData as JSONData}/>
                     </div>
-                    <ToolBox videoData={jsonData as JSONData}/>
                 </div>
             </div>
+            <StatsArray statsData={statsData as StatsData} />
         </div>
     );
 }   

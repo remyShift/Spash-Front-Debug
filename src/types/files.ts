@@ -53,4 +53,47 @@ export interface JSONData {
     timeline: TimelineInterval[];
 }
 
-
+export interface StatsData {
+    players: {
+        name: string;
+        score: number;
+        video_path: string;
+        sentence: string;
+        positioning: {
+            score: number;
+            nomansland: {
+                score: number;
+                value: number;
+                total: number;
+                percentage: number;
+            };
+            attack: {
+                score: number;
+                value: number;
+                total: number;
+                percentage: number;
+            };
+            defense: {
+                score: number;
+                value: number;
+                total: number;
+                percentage: number;
+            };
+        };
+        movement: {
+            score: number;
+            lob_and_go: {
+                score: number;
+                value: number;
+                total: number;
+                percentage: number;
+            };
+        };
+        defense: {
+            score: number;
+            value: number;
+            total: number;
+            percentage: number;
+        };
+    }[];
+}

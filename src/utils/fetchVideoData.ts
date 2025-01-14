@@ -1,6 +1,6 @@
-import { JSONData } from "@/types/files";
+import { JSONData, StatsData } from "@/types/files";
 
-export const fetchVideoData = (videoPath: string): Promise<JSONData | null> => {
+export const fetchVideoData = (videoPath: string): Promise<{ jsonData: JSONData | null, statsData: StatsData | null }> => {
     return fetch(`/api/v1/files/${encodeURIComponent(videoPath)}`)
         .then(response => {
             if (!response.ok) {
@@ -9,10 +9,10 @@ export const fetchVideoData = (videoPath: string): Promise<JSONData | null> => {
             return response.json();
         })
         .then(data => {
-            return data.jsonData;
+            return data;
         })
         .catch(err => {
-            console.error("Erreur lors du chargement des données JSON:", err);
-            return null;
+            console.error("Error loading JSON data:", err);
+            return { jsonData: null, statsData: null };
         });
 };

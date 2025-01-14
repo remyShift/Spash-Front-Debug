@@ -44,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${gilRoy.variable} font-gilroy mesh-bg h-screen`}>
+      <body className={`${gilRoy.variable} font-gilroy mesh-bg`}>
         {children}
       </body>
     </html>
