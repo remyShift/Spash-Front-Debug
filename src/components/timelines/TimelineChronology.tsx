@@ -51,6 +51,14 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
         return `${widthPercentage}%`;
     };
 
+    const isIntervalActive = (start: number, end: number): boolean => {
+        const startTimeInSeconds = start / FPS;
+        const endTimeInSeconds = end / FPS;
+        const currentTimeInSeconds = currentFrame / FPS;
+        
+        return currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds <= endTimeInSeconds;
+    };
+
     return (
         <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
@@ -65,10 +73,11 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
                             {containerWidth > 0 && timeline.map((interval) => (
                                 <div 
                                     key={`${interval.start}-${interval.end}`}
-                                    className={`absolute h-10 ${interval.type === 'Point' ? 'bg-point-gradient' : 'bg-inter-point-gradient'}`}
+                                    className={`absolute h-10 transition-opacity duration-200 ${interval.type === 'Point' ? 'bg-point-gradient' : 'bg-inter-point-gradient'}`}
                                     style={{ 
                                         left: calculateIntervalPosition(interval.start),
-                                        width: calculateIntervalWidth(interval.start, interval.end)
+                                        width: calculateIntervalWidth(interval.start, interval.end),
+                                        opacity: isIntervalActive(interval.start, interval.end) ? '1' : '0.5'
                                     }}
                                 />
                             ))}

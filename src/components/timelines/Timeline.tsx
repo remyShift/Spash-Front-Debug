@@ -47,6 +47,14 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
         return `calc(${position}% - ${percentageOffset}%)`;
     };
 
+    const isMarkerActive = (frame: number): boolean => {
+        const markerTimeInSeconds = frame / FPS;
+        const currentTimeInSeconds = currentFrame / FPS;
+        const threshold = 0.1;
+        
+        return Math.abs(markerTimeInSeconds - currentTimeInSeconds) < threshold;
+    };
+
     return (
         <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
@@ -64,7 +72,11 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
                                     className="absolute"
                                     style={{ left: calculateMarkerPosition(frame) }}
                                 >
-                                    <EventMarker event={event} frame={frame}/>
+                                    <EventMarker 
+                                        event={event} 
+                                        frame={frame} 
+                                        isActive={isMarkerActive(frame)}
+                                    />
                                 </div>
                             ))}
                         </div>
