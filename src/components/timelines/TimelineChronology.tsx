@@ -2,6 +2,7 @@ import { useFrame } from "@/context/frame";
 import { useEffect, useRef, useState } from "react";
 import { TimelineInterval } from "@/types/events";
 import TimelineControl from "./TimelineControl";
+import TimelineUI from "./TimelineUI";
 
 const TIMELINE_DURATION = 300;
 const FPS = 25;
@@ -64,7 +65,7 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
                             {containerWidth > 0 && timeline.map((interval) => (
                                 <div 
                                     key={`${interval.start}-${interval.end}`}
-                                    className={`absolute h-10 ${interval.type === 'Point' ? 'bg-customGradient' : 'bg-transparent'}`}
+                                    className={`absolute h-10 ${interval.type === 'Point' ? 'bg-point-gradient' : 'bg-inter-point-gradient'}`}
                                     style={{ 
                                         left: calculateIntervalPosition(interval.start),
                                         width: calculateIntervalWidth(interval.start, interval.end)
@@ -72,8 +73,7 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
                                 />
                             ))}
                         </div>
-                        <div className="w-full h-[3px] bg-lighterBackground"></div>
-                        <div className="w-[2px] h-[15px] bg-yellow-500 absolute z-50 left-1/2 -top-[5px] -translate-x-1/2"></div>
+                        <TimelineUI />
                     </div>
                 </div>
             </div>

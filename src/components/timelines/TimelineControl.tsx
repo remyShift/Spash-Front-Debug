@@ -1,10 +1,11 @@
 import { faBackwardStep, faForwardStep } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFrame } from "@/context/frame";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 export default function TimelineControl({ event, framesEvent }: { event: string, framesEvent: number[] }) {
     const { currentFrame, setCurrentFrame } = useFrame();
+    const [isActive, setIsActive] = useState(false);
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const FPS = 25;
 
@@ -20,20 +21,26 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
     };
 
     const goToPreviousEvent = () => {
-        const previousFrame = [...framesEvent].reverse().find(frame => frame < currentFrame);
-        if (previousFrame) {
-            setCurrentFrame(previousFrame).then(() => {
-                updateVideoTime(previousFrame);
-            });
+        if (videoRef.current) {
+            videoRef.current.pause();
+            const previousFrame = [...framesEvent].reverse().find(frame => frame < currentFrame);
+            if (previousFrame) {
+                setCurrentFrame(previousFrame).then(() => {
+                    updateVideoTime(previousFrame);
+                });
+            }
         }
     };
 
     const goToNextEvent = () => {
-        const nextFrame = [...framesEvent].find(frame => frame > currentFrame);
-        if (nextFrame) {
-            setCurrentFrame(nextFrame).then(() => {
-                updateVideoTime(nextFrame);
-            });
+        if (videoRef.current) {
+            videoRef.current.pause();
+            const nextFrame = [...framesEvent].find(frame => frame > currentFrame);
+            if (nextFrame) {
+                setCurrentFrame(nextFrame).then(() => {
+                    updateVideoTime(nextFrame);
+                });
+            }
         }
     };
 
@@ -42,7 +49,15 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
             <button onClick={goToPreviousEvent}>
                 <FontAwesomeIcon icon={faBackwardStep} className="text-secondary text-xl" />
             </button>
-            <h2 className="text-white font-semibold text-xl">{event}</h2>
+
+            <button className={`font-semibold text-xl hover:text-primary hover:scale-105 transition-all duration-300 ${isActive ? 'text-primary underline' : 'text-white'}`}
+                onClick={() => {
+                    setIsActive(!isActive);
+                }}
+            >
+                {event}
+            </button>
+
             <button onClick={goToNextEvent}>
                 <FontAwesomeIcon icon={faForwardStep} className="text-secondary text-xl" />
             </button>

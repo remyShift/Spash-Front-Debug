@@ -49,7 +49,8 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
 			backgroundImage: {
-				'customGradient': 'linear-gradient(to bottom, #FF324B, #C92237)'
+				'point-gradient': 'linear-gradient(to bottom, #FF324B 50%, #181826)',
+				'inter-point-gradient': 'linear-gradient(to bottom, #3448FA 50%, #181826)'
 			}
 		}
 	},

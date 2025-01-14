@@ -24,8 +24,10 @@ export const useVideoPlayer = () => {
                 video.pause();
                 setIsVideoPlaying(false);
             } else {
-                video.play();
                 setIsVideoPlaying(true);
+                video.play().then(() => {
+                    setIsVideoPlaying(true);
+                });
             }
         }
     };
