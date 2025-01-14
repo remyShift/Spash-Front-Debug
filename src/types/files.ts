@@ -88,12 +88,85 @@ export interface StatsData {
                 total: number;
                 percentage: number;
             };
+            net_taking: {
+                score: number;
+                value: number;
+                total: number;
+                percentage: number;
+            };
+            attack_position: {
+                score: number;
+                value: number;
+            };
+            hit_and_move: {
+                score: number;
+                value: number;
+            };
         };
-        defense: {
+        tactical: {
             score: number;
-            value: number;
-            total: number;
-            percentage: number;
+            first_serve: {
+                score: number;
+                value: number;
+            };
+            volley_service: {
+                score: number;
+                value: number;
+            };
+            services: {
+                score: number;
+                value: number;
+            };
+            diagonal: {
+                score: number;
+                value: number;
+            };
+            top_lob: {
+                score: number;
+                value: number;
+            };
+            divorce_zone: {
+                score: number;
+                value: number;
+            };
+            safe_ball: {
+                score: number;
+                value: number;
+            };
         };
+        teams: {
+            chain_breaks: {
+                score: number;
+                value: number;
+            };
+            checks: {
+                score: number;
+                value: number;
+            };
+            score: number;
+        };
+        physical: {
+            score: number;
+            distance: {
+                score: number;
+                total: number;
+                details: {
+                    [key: string]: number;
+                };
+            };
+            calories: {
+                score: number;
+                value: number;
+            };
+            intensities: {
+                score: number;
+                max_speed: number;
+            };
+        };
+        badges: {
+            badge_type: string;
+            value: number;
+            top_badge: boolean;
+        }[];
     }[];
 }

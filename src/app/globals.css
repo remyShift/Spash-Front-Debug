@@ -13,3 +13,12 @@
   background-image: radial-gradient(circle at 47% 50%, hsla(240, 9%, 22%, 1) 81.57180487428948%, transparent 128.40267573445306%);
   background-blend-mode: normal;
 }
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

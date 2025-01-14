@@ -1,5 +1,5 @@
 export default function StatsNameColumn() {
-    const stats = ["Base placement", "Action placement", "Team spirit", "Hits", "Physical", "Badges", "Sentence", "Video"];
+    const stats = ["Placement", "Movement", "Tactical", "Team spirit", "Physical", "Badges", "Sentence", "Video"];
     return (
         <div className="flex flex-col gap-3">
             {stats.map((stat, index) => (
