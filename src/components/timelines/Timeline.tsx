@@ -64,7 +64,7 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
                                     className="absolute"
                                     style={{ left: calculateMarkerPosition(frame) }}
                                 >
-                                    <EventMarker event={event}/>
+                                    <EventMarker event={event} frame={frame}/>
                                 </div>
                             ))}
                         </div>
