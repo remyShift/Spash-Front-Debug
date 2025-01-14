@@ -42,6 +42,7 @@ export interface JSONData {
                 [playerId: string]: PersonTracking;
             };
             zone?: string;
+            speed?: number;
             frame_idx: number;
             detection?: string;
         };

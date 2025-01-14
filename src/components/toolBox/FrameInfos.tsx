@@ -93,6 +93,9 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                 <p className='text-white flex gap-1 font-semibold'>ID : 
                                     <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.id}</span>
                                 </p>
+                                <p className='text-white font-semibold flex gap-1'>Name : 
+                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.name}</span>
+                                </p>
                                 <div className='flex gap-1'>
                                     <p className='text-white flex gap-2 font-semibold'>Legs :</p>
                                     <div className='flex gap-2'>
