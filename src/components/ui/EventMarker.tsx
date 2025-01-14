@@ -7,7 +7,7 @@ export default function EventMarker({ event }: { event: Event }) {
         hits: 'text-primary',
         lobs: 'text-green-500',
         services: 'text-blue-500',
-        checks: 'text-yellow-500',
+        checks: 'text-red-500',
         points: 'text-red-500',
         rebonds: 'text-purple-500',
     }

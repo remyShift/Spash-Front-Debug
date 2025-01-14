@@ -2,11 +2,13 @@ import { useEffect } from 'react';
 import { useFrame } from '@/context/frame';
 import { useVideoPlayer } from './useVideoPlayer';
 import { useActiveLayers } from '@/context/layers';
+import { useActiveTimeline } from '@/context/timeline';
 
 export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void) => {
     const { currentFrame } = useFrame();
     const { togglePlay } = useVideoPlayer();
     const { toggleActiveLayers } = useActiveLayers();
+    const { activeTimeline } = useActiveTimeline();
 
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
@@ -14,6 +16,16 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
 
             if (['ArrowLeft', 'ArrowRight', ' '].includes(key)) {
                 event.preventDefault();
+            }
+
+            if (activeTimeline) {
+                if (key === 'ArrowLeft' || key === 'ArrowRight') {
+                    const customEvent = new CustomEvent('timelineNavigation', {
+                        detail: { direction: key === 'ArrowLeft' ? 'previous' : 'next' }
+                    });
+                    window.dispatchEvent(customEvent);
+                    return;
+                }
             }
 
             if (shiftKey && key === 'ArrowLeft') {
@@ -31,10 +43,10 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                     togglePlay();
                     break;
                 case 'arrowleft':
-                    handleFrameChange(currentFrame - 1);
+                    if (!activeTimeline) handleFrameChange(currentFrame - 1);
                     break;
                 case 'arrowright':
-                    handleFrameChange(currentFrame + 1);
+                    if (!activeTimeline) handleFrameChange(currentFrame + 1);
                     break;
                 case 'h':
                     toggleActiveLayers('homography');
@@ -56,5 +68,5 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [currentFrame, handleFrameChange, togglePlay, toggleActiveLayers]);
+    }, [currentFrame, handleFrameChange, togglePlay, toggleActiveLayers, activeTimeline]);
 };

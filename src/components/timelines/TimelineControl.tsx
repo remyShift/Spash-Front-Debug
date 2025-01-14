@@ -1,11 +1,12 @@
 import { faBackwardStep, faForwardStep } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFrame } from "@/context/frame";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useCallback } from "react";
+import { useActiveTimeline } from "@/context/timeline";
 
 export default function TimelineControl({ event, framesEvent }: { event: string, framesEvent: number[] }) {
     const { currentFrame, setCurrentFrame } = useFrame();
-    const [isActive, setIsActive] = useState(false);
+    const { activeTimeline, setActiveTimeline } = useActiveTimeline();
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const FPS = 25;
 
@@ -13,14 +14,14 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
         videoRef.current = document.querySelector('video');
     }, []);
 
-    const updateVideoTime = (frame: number) => {
+    const updateVideoTime = useCallback((frame: number) => {
         if (videoRef.current) {
             const timeInSeconds = frame / FPS;
             videoRef.current.currentTime = timeInSeconds;
         }
-    };
+    }, [videoRef]);
 
-    const goToPreviousEvent = () => {
+    const goToPreviousEvent = useCallback(() => {
         if (videoRef.current) {
             videoRef.current.pause();
             const previousFrame = [...framesEvent].reverse().find(frame => frame < currentFrame);
@@ -30,9 +31,9 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
                 });
             }
         }
-    };
+    }, [currentFrame, framesEvent, updateVideoTime, setCurrentFrame]);
 
-    const goToNextEvent = () => {
+    const goToNextEvent = useCallback(() => {
         if (videoRef.current) {
             videoRef.current.pause();
             const nextFrame = [...framesEvent].find(frame => frame > currentFrame);
@@ -42,7 +43,32 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
                 });
             }
         }
+    }, [currentFrame, framesEvent, updateVideoTime, setCurrentFrame]);
+
+    useEffect(() => {
+        const handleTimelineNavigation = (e: CustomEvent<{ direction: string }>) => {
+            if (activeTimeline === event) {
+                if (e.detail.direction === 'previous') {
+                    goToPreviousEvent();
+                } else {
+                    goToNextEvent();
+                }
+            }
+        };
+
+        window.addEventListener('timelineNavigation', handleTimelineNavigation as EventListener);
+        return () => window.removeEventListener('timelineNavigation', handleTimelineNavigation as EventListener);
+    }, [activeTimeline, event, currentFrame, goToPreviousEvent, goToNextEvent]);
+
+    const handleClick = () => {
+        if (activeTimeline === event) {
+            setActiveTimeline(null);
+        } else {
+            setActiveTimeline(event);
+        }
     };
+
+    const isActive = activeTimeline === event;
 
     return (
         <div className="flex justify-between items-center h-full w-[20%] gap-2 px-4">
@@ -50,10 +76,9 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
                 <FontAwesomeIcon icon={faBackwardStep} className="text-secondary text-xl" />
             </button>
 
-            <button className={`font-semibold text-xl hover:text-primary hover:scale-105 transition-all duration-300 ${isActive ? 'text-primary underline' : 'text-white'}`}
-                onClick={() => {
-                    setIsActive(!isActive);
-                }}
+            <button 
+                className={`font-semibold text-xl hover:text-primary hover:scale-105 transition-all duration-300 ${isActive ? 'text-primary underline' : 'text-white'}`}
+                onClick={handleClick}
             >
                 {event}
             </button>
