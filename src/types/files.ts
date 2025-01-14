@@ -12,7 +12,7 @@ export interface VideoJSONPair {
     json: JSONData;
 }
 
-export type PersonTracking = {
+export interface PersonTracking {
     bbox: [number, number, number, number];
     class: number;
     confidence: number;
