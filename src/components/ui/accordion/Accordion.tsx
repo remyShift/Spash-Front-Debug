@@ -10,7 +10,7 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
         <div className="w-full bg-lightBackground rounded-b-lg">
             <AccordionItem title="Homography" content={<KeyboardShortcuts accordionOpen={false} />} />
             <Spacer />
-            <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.timeline} />} />
+            <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
             <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
         </div>

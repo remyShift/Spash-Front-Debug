@@ -2,7 +2,7 @@ import { useFrame } from '@/context/frame';
 import { JSONData } from '@/types/files'
 import { useEffect, useState } from 'react';
 
-export default function FrameInfos({ framesData, events }: { framesData: JSONData['data'], events: JSONData['timeline'] }) {
+export default function FrameInfos({ framesData, events }: { framesData: JSONData['data'], events: JSONData['events'] }) {
     const { currentFrame } = useFrame();
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
 
