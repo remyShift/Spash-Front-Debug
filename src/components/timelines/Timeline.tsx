@@ -69,7 +69,7 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
                             ))}
                         </div>
                         <div className="w-full h-[3px] bg-lighterBackground"></div>
-                        <div className="w-[2px] h-[15px] bg-secondary absolute z-0 left-1/2 -top-[5px] -translate-x-1/2"></div>
+                        <div className="w-[2px] h-[15px] bg-yellow-500 absolute z-0 left-1/2 -top-[5px] -translate-x-1/2"></div>
                     </div>
                 </div>
             </div>

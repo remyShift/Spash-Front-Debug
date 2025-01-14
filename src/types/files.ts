@@ -1,3 +1,5 @@
+import { TimelineInterval } from "./events";
+
 export interface VideoInfo {
     folderName: string;
     videoName: string;
@@ -41,12 +43,7 @@ export interface JSONData {
     events: {
         [event: string]: number[];
     };
-    timeline: {
-        [event: string]: {
-            start: number;
-            end: number;
-            type: string;
-        };
-    };
+    timeline: TimelineInterval[];
 }
+
 

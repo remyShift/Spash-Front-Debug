@@ -5,9 +5,7 @@ export interface EventTimeline {
 };
 
 export interface TimelineInterval {
-    [event: string]: {
-        start: number;
-        end: number;
-        type: string;
-    };
-};
+    start: number;
+    end: number;
+    type: string;
+}
