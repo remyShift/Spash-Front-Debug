@@ -39,12 +39,15 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     
     const handleFrameChange = (frameNumber: number) => {
         if (videoRef.current) {
-            setCurrentFrame(frameNumber);
+            const maxFrame = Object.keys(videoData.data).length - 1;
+            const safeFrame = Math.max(0, Math.min(frameNumber, maxFrame));
+            
+            setCurrentFrame(safeFrame);
             const fps = 25;
-            const timeInSeconds = frameNumber / fps;
+            const timeInSeconds = safeFrame / fps;
             videoRef.current.currentTime = timeInSeconds;
     
-            const frameData = videoData?.data[frameNumber];
+            const frameData = videoData?.data[safeFrame];
             if (!frameData) return;
             if (!canvasRef.current) return;
     
