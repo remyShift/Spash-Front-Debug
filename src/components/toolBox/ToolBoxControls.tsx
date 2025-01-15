@@ -16,6 +16,8 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const { activeLayers } = useActiveLayers();
 
+    console.log(isVideoPlaying);
+
     useEffect(() => {
         videoRef.current = document.querySelector('video');
     }, []);

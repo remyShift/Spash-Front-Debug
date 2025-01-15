@@ -16,5 +16,5 @@ export default function ControlBtn({ icon, onClick, text }: ControlBtnProps) {
                 <FontAwesomeIcon icon={icon} />
             </button>
         </div>
-    )
+    );
 }

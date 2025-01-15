@@ -1,5 +1,4 @@
 import { JSONData, VideoInfo } from '@/types/files';
-import { useVideoPlayer } from '@/hooks/useVideoPlayer';
 import { useCallback, useEffect, useRef } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
@@ -12,9 +11,10 @@ interface VideoPlayerProps {
 }
 
 export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlayerProps) => {
-    const { videoRef, canvasRef, handlers } = useVideoPlayer();
     const frameRequestRef = useRef<number | null>(null);
     const { currentFrame, setCurrentFrame } = useFrame();
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
     const animate = useCallback(() => {
         if (!videoRef.current || !canvasRef.current) return;
@@ -47,10 +47,6 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
                 src={currentVideo.videoPath}
                 controls
                 className="w-full"
-                onPlay={handlers.handlePlay}
-                onPause={handlers.handlePause}
-                onEnded={handlers.handleEnded}
-                onLoadedMetadata={handlers.handleLoadedMetadata}
             />
             <canvas
                 ref={canvasRef}
