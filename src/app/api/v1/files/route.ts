@@ -19,7 +19,9 @@ export async function GET() {
                     const files = await fs.promises.readdir(fullPath);
                     const videoFile = files.find(file => {
                         const ext = path.extname(file).toLowerCase();
-                        return ['.mkv', '.mp4', '.avi', '.mov'].includes(ext);
+                        const isVideo = ['.mkv', '.mp4', '.avi', '.mov'].includes(ext);
+                        const isPlayerVideo = file.includes("body");
+                        return isVideo && !isPlayerVideo;
                     });
 
                     const jsonFile = files.find(file => {

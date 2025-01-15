@@ -1,48 +1,33 @@
 import { StatsData } from "@/types/files";
-
-interface StatBlockProps {
-    index: number
-    isEven: boolean 
-    children: React.ReactNode
-    className?: string
-}
-
-const StatBlock = ({ isEven, children, className = "" }: StatBlockProps) => (
-    <div className={`w-52 h-28 rounded-lg ${isEven ? "bg-lightBackground" : "bg-lighterBackground"} flex flex-col justify-center items-center hide-scrollbar ${className}`}>
-        {children}
-    </div>
-)
-
-interface StatTextProps {
-    value: number | string
-    label?: string
-    playerColor?: string
-}
-
-const StatText = ({ value, label, playerColor }: StatTextProps) => (
-    <p className={`text-center font-semibold ${playerColor || "text-white"}`}>
-        {label && `${label}: `}{value}
-    </p>
-)
+import StatBlock from "./StatBlock";
+import StatText from "./StatText";
 
 export default function PlayerStatsColumn({ index, player }: { index: number, player: StatsData["players"][0] }) {
     const playerNameColor = player.name === "A" || player.name === "B" ? "text-primary" : "text-green-500";
     const isEven = (blockIndex: number) => (index + blockIndex) % 2 === 0;
 
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col justify-end gap-3">
             <StatBlock index={index} isEven={isEven(0)}>
                 <StatText value={`Player ${player.name}`} playerColor={playerNameColor} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(1)} className="gap-1">
+            <StatBlock 
+                index={index} 
+                isEven={isEven(1)} 
+                className="gap-2 pt-2"
+            >
                 <StatText value={player.positioning.nomansland.score} label="NoMansLand" />
                 <StatText value={player.positioning.attack.score} label="Attack" />
                 <StatText value={player.positioning.defense.score} label="Defense" />
                 <StatText value={player.positioning.score} label="Total" playerColor={playerNameColor} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(2)} className="gap-2 overflow-y-auto">
+            <StatBlock 
+                index={index} 
+                isEven={isEven(2)} 
+                className="gap-2 overflow-y-auto"
+            >
                 <StatText value={player.movement.lob_and_go.score} label="Lob and Go" />
                 <StatText value={player.movement.net_taking.score} label="Net Taking" />
                 <StatText value={player.movement.attack_position.score} label="Attack Position" />
@@ -50,7 +35,11 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
                 <StatText value={player.movement.score} label="Total" playerColor={playerNameColor} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(3)} className="pt-6 gap-2 overflow-y-auto">
+            <StatBlock 
+                index={index} 
+                isEven={isEven(3)} 
+                className="gap-2 overflow-y-auto"
+            >
                 <StatText value={player.tactical.first_serve.score} label="First Serve" />
                 <StatText value={player.tactical.volley_service.score} label="Volley Service" />
                 <StatText value={player.tactical.services.score} label="Services" />
@@ -61,20 +50,20 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
                 <StatText value={player.tactical.score} label="Total" playerColor={playerNameColor} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(4)} className="gap-2">
+            <StatBlock index={index} isEven={isEven(4)} className="gap-2 overflow-y-auto">
                 <StatText value={player.teams.chain_breaks.score} label="Chain Breaks" />
                 <StatText value={player.teams.checks.score} label="Checks" />
                 <StatText value={player.teams.score} label="Total" playerColor={playerNameColor} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(5)} className="pt-6 gap-2 overflow-y-auto">
+            <StatBlock index={index} isEven={isEven(5)} className="gap-2 overflow-y-auto">
                 <StatText value={player.physical.distance.score} label="Distance" />
                 <StatText value={player.physical.calories.score} label="Calories" />
                 <StatText value={player.physical.intensities.score} label="Intensities" />
                 <StatText value={player.physical.score} label="Total" playerColor={playerNameColor} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(6)} className="py-12 gap-2 overflow-y-auto">
+            <StatBlock index={index} isEven={isEven(6)} className="gap-1 overflow-y-auto">
                 {player.badges.map((badge, i) => (
                     <StatText key={i} value={badge.value} label={badge.badge_type} />
                 ))}
@@ -88,5 +77,5 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
                 <StatText value={player.score} />
             </StatBlock>
         </div>
-    )
+    );
 }
