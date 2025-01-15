@@ -35,10 +35,15 @@ npm run dev
 You should have something like this :
 ```
 public/
-    videos/
-        match1/
-            pipeline.json
-            video.mp4
+------videos/
+------------match1/
+----------------pipeline.json
+----------------stats.json
+----------------video.mp4
+----------------player1-video.mp4
+----------------player2-video.mp4
+----------------player3-video.mp4
+----------------player4-video.mp4
 ```
 
 5. Select the video from the list and happy debugging.
