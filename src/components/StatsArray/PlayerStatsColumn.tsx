@@ -1,13 +1,21 @@
 import { StatsData } from "@/types/files";
 import StatBlock from "./StatBlock";
 import StatText from "./StatText";
+import { useStore } from "@/context/store";
+import { useParams } from "next/navigation";
 
 export default function PlayerStatsColumn({ index, player }: { index: number, player: StatsData["players"][0] }) {
     const playerNameColor = player.name === "A" || player.name === "B" ? "text-primary" : "text-green-500";
+    const params = useParams();
+    const paramsId = params.id;
+    const videos = useStore((state) => state.videos);
+    const currentFolder = videos.find(v => v.videoPath === decodeURIComponent(paramsId as string));
+    const playerVideoPaths = Object.values(currentFolder?.playerVideoPath || {});
+    const playerVideo = playerVideoPaths.find(p => p.split("/")[p.split("/").length - 1] === player.video_path);
     const isEven = (blockIndex: number) => (index + blockIndex) % 2 === 0;
 
     return (
-        <div className="flex flex-col justify-end gap-3">
+        <div className="flex flex-col justify-start gap-3">
             <StatBlock index={index} isEven={isEven(0)}>
                 <StatText value={`Player ${player.name}`} playerColor={playerNameColor} />
             </StatBlock>
@@ -73,8 +81,10 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
                 <StatText value={player.sentence || "N/A"} />
             </StatBlock>
 
-            <StatBlock index={index} isEven={isEven(8)}>
-                <StatText value={player.score} />
+            <StatBlock index={index} isEven={isEven(7)}>
+                {playerVideo && (
+                    <video src={playerVideo} className="w-full h-full object-contain" controls />
+                )}
             </StatBlock>
         </div>
     );

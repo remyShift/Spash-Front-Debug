@@ -4,6 +4,12 @@ export interface VideoInfo {
     folderName: string;
     videoName: string;
     videoPath: string;
+    playerVideoPath: {
+        player1: string;
+        player2: string;
+        player3: string;
+        player4: string;
+    };
     path: string;
     size: number;
     createdAt: string;
