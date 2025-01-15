@@ -1,4 +1,4 @@
-import { faBackward, faBackwardStep, faForward, faForwardStep, faMagnifyingGlass, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faBackward, faBackwardFast, faBackwardStep, faForward, faForwardFast, faForwardStep, faMagnifyingGlass, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useRef } from 'react'
 import ControlBtn from './ControlBtn';
 import { useActiveLayers } from '@/context/layers';
@@ -69,11 +69,13 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
                 </form>
             </div>
             <div className="flex gap-4 items-center justify-center">
+                <ControlBtn icon={faBackwardFast} onClick={() => handleFrameChange(0)} text="Start" />
                 <ControlBtn icon={faBackward} onClick={() => handleFrameChange(currentFrame - 100)} text="-100" />
                 <ControlBtn icon={faBackwardStep} onClick={() => handleFrameChange(currentFrame - 1)} text="-1" />
                 <ControlBtn icon={isVideoPlaying ? faPause : faPlay} onClick={togglePlay} text={isVideoPlaying ? "Pause" : "Play"} />
                 <ControlBtn icon={faForwardStep} onClick={() => handleFrameChange(currentFrame + 1)} text="+1" />
                 <ControlBtn icon={faForward} onClick={() => handleFrameChange(currentFrame + 100)} text="+100" />
+                <ControlBtn icon={faForwardFast} onClick={() => handleFrameChange(Object.keys(videoData.data).length - 1)} text="End" />
             </div>
         </div>
     )
