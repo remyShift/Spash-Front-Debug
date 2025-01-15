@@ -1,18 +1,20 @@
 import { defaultDrawingConfig } from "./config";
 import { JSONData } from "@/types/files";
-import { BallLayer, Layers } from "@/types/layers";
+import { BallLayer, HitsLayer, Layers } from "@/types/layers";
 import { initializeAnimation } from "./config";
 import { drawFramesNumber } from "./drawFrames";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
 import { drawBall } from "./ball/drawBall";
 import { drawPlayerDistance } from "./players/drawPlayerDistance";
 import { PersonTracking } from "@/types/files";
+import { drawHits } from "./players/drawHits";
 
 export const drawElements = (
     videoData: JSONData, 
     activeLayers: Layers[], 
     videoRef: HTMLVideoElement,
     canvasRef: HTMLCanvasElement,
+    playersHits: HitsLayer
 ) => {
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
 
@@ -73,6 +75,21 @@ export const drawElements = (
                             score: frameData["ball.score"] || 0
                         };
                         drawBall(ball, videoWidth, videoHeight, ctx);
+                        break;
+                    case 'hits':
+                        if (!frameData.detection) return;
+                        if (!frameData.persontracking) return;
+                        
+                        if (frameData.detection.toLowerCase() === 'hit') {
+                            const players = Object.entries(frameData.persontracking);
+
+                            players.forEach(([, player]) => {
+                                const currentPlayerHit = playersHits[player.id];
+                                if (currentPlayerHit.hits.includes(currentFrame)) {
+                                    drawHits(player, currentFrame, videoWidth, videoHeight, ctx);
+                                }
+                            });
+                        }
                         break;
                     // case 'zones':
                     //     drawZones(frameData.zones, videoWidth, videoHeight, ctx);

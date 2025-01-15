@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useStore } from "@/context/store";
 import { VideoInfo, JSONData, StatsData } from "@/types/files";
 import { fetchVideoData } from "@/utils/fetchVideoData";
+import { HitsLayer } from "@/types/layers";
 import BackBtn from "@/components/ui/BackBtn";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 import { VideoPlayer } from "@/components/videoPlayer/VideoPlayer";
@@ -22,6 +23,7 @@ export default function VideoPage() {
     const { videos, setVideos } = useStore();
     const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
+    const [playersHits, setPlayersHits] = useState<HitsLayer | null>(null);
     const [statsData, setStatsData] = useState<StatsData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
@@ -43,7 +45,9 @@ export default function VideoPage() {
             fetchVideoData(video.videoPath)
                 .then(data => {
                     if (data) {
+                        if (!data.jsonData) return;
                         setJsonData(data.jsonData);
+                        setPlayersHits(data.jsonData.stats.players);
                         setStatsData(data.statsData);
                     }
                     setLoading(false);
@@ -91,12 +95,13 @@ export default function VideoPage() {
                                 <VideoPlayer
                                     currentVideo={currentVideo} 
                                     jsonData={jsonData as JSONData}
+                                    playersHits={playersHits as HitsLayer}
                                     activeLayers={activeLayers} 
                                 />
                                 {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} />}
                             </div>
                         </div>
-                        <ToolBox videoData={jsonData as JSONData}/>
+                        <ToolBox videoData={jsonData as JSONData} playersHits={playersHits as HitsLayer} />
                     </div>
                 </div>
             </div>

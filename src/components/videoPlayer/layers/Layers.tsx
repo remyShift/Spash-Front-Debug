@@ -13,6 +13,7 @@ export default function Layers() {
             <ButtonLayer content="ball" handleClick={() => toggleActiveLayers('ball')} />
             <ButtonLayer content="areas" handleClick={() => toggleActiveLayers('areas')} />
             <ButtonLayer content="trajectories" handleClick={() => toggleActiveLayers('trajectories')} />
+            <ButtonLayer content="hits" handleClick={() => toggleActiveLayers('hits')} />
         </div>
     )
 }

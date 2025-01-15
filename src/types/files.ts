@@ -57,6 +57,11 @@ export interface JSONData {
         [event: string]: number[];
     };
     timeline: TimelineInterval[];
+    stats: {
+        players: {
+            [playerId: string]: PlayerHits;
+        };
+    };
 }
 
 export interface StatsData {
@@ -175,4 +180,10 @@ export interface StatsData {
             top_badge: boolean;
         }[];
     }[];
+}
+
+export interface PlayerHits {
+    [playerId: string]: {
+        hits: number[];
+    }
 }

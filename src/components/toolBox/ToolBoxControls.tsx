@@ -8,15 +8,14 @@ import { drawElements } from '@/utils/drawing/drawElements';
 import { JSONData } from '@/types/files';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { HitsLayer } from '@/types/layers';
 
-export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
+export default function ToolBoxControls({ videoData, playersHits }: { videoData: JSONData, playersHits: HitsLayer }) {
     const { currentFrame, setCurrentFrame } = useFrame();
     const { isVideoPlaying, togglePlay } = useVideoPlayer();
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const { activeLayers } = useActiveLayers();
-
-    console.log(isVideoPlaying);
 
     useEffect(() => {
         videoRef.current = document.querySelector('video');
@@ -56,6 +55,7 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
                 activeLayers,
                 videoRef.current,
                 canvasRef.current,
+                playersHits
             );
         }
     }
