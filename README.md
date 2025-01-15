@@ -30,20 +30,20 @@ npm install
 npm run dev
 ```
 
-4. Create a `videos` file in the `public` folder and create 1 subfolder per video to be analyzed with the associated json inside as follows :
+4. Create a `videos` folder in the `public` folder and create 1 subfolder per video to be analyzed with the associated json inside as follows :
 
 You should have something like this :
 ```
 public/
-------videos/
-------------match1/
-----------------pipeline.json
-----------------stats.json
-----------------video.mp4
-----------------player1-video.mp4
-----------------player2-video.mp4
-----------------player3-video.mp4
-----------------player4-video.mp4
+    videos/
+        match1/
+            pipeline.json
+            stats.json
+            video.mp4
+            player1-video.mp4
+            player2-video.mp4
+            player3-video.mp4
+            player4-video.mp4
 ```
 
 5. Select the video from the list and happy debugging.
