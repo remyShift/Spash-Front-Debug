@@ -34,6 +34,7 @@ export interface PersonTracking {
     legs: [number, number];
     player_legs: [number, number];
     court_legs: [number, number];
+    do_hit: boolean;
 };
 
 export interface JSONData {
@@ -59,7 +60,7 @@ export interface JSONData {
     timeline: TimelineInterval[];
     stats: {
         players: {
-            [playerId: string]: PlayerHits;
+            [key: string]: PlayerStats;
         };
     };
 }
@@ -182,8 +183,37 @@ export interface StatsData {
     }[];
 }
 
+export interface PlayerStats {
+    side: string;
+    hits: number[];
+    fridge: {
+        ratio: number;
+        n_hits_by_player: number;
+        n_hits_team: number;
+    };
+    lobs: number[];
+    net_taking: {
+        value: number;
+        total: number;
+        score?: number;
+    };
+    net_taking_after_service: {
+        value: number;
+        total: number;
+        score?: number;
+    };
+    net_taking_after_lob: {
+        value: number;
+        total: number;
+    };
+    zone_counts: {
+        [zone: string]: number;
+    };
+    distances_to_net: number[];
+    video_path: string;
+    sentence: string;
+}
+
 export interface PlayerHits {
-    [playerId: string]: {
-        hits: number[];
-    }
+    [playerId: string]: PlayerStats;
 }

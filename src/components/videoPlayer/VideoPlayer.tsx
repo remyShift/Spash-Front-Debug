@@ -2,16 +2,15 @@ import { JSONData, VideoInfo } from '@/types/files';
 import { useCallback, useEffect, useRef } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
-import { HitsLayer, Layers } from '@/types/layers';
+import { Layers } from '@/types/layers';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
     jsonData: JSONData;
     activeLayers: Layers[];
-    playersHits: HitsLayer;
 }
 
-export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, playersHits }: VideoPlayerProps) => {
+export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlayerProps) => {
     const frameRequestRef = useRef<number | null>(null);
     const { currentFrame, setCurrentFrame } = useFrame();
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -27,9 +26,9 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, playersHits 
             setCurrentFrame(newFrame);
         }
         
-        drawElements(jsonData, activeLayers, videoRef.current, canvasRef.current, playersHits);
+        drawElements(jsonData, activeLayers, videoRef.current, canvasRef.current);
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, videoRef, canvasRef, setCurrentFrame, currentFrame, playersHits]);
+    }, [jsonData, activeLayers, videoRef, canvasRef, setCurrentFrame, currentFrame]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);

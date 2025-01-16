@@ -1,6 +1,6 @@
 import { defaultDrawingConfig } from "./config";
 import { JSONData } from "@/types/files";
-import { BallLayer, HitsLayer, Layers } from "@/types/layers";
+import { BallLayer, Layers } from "@/types/layers";
 import { initializeAnimation } from "./config";
 import { drawFramesNumber } from "./drawFrames";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
@@ -14,7 +14,6 @@ export const drawElements = (
     activeLayers: Layers[], 
     videoRef: HTMLVideoElement,
     canvasRef: HTMLCanvasElement,
-    playersHits: HitsLayer
 ) => {
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
 
@@ -80,12 +79,11 @@ export const drawElements = (
                         if (!frameData.detection) return;
                         if (!frameData.persontracking) return;
                         
-                        if (frameData.detection.toLowerCase() === 'hit') {
+                        if (frameData.detection === 'Hit') {
                             const players = Object.entries(frameData.persontracking);
 
                             players.forEach(([, player]) => {
-                                const currentPlayerHit = playersHits[player.id];
-                                if (currentPlayerHit.hits.includes(currentFrame)) {
+                                if (player.do_hit) {
                                     drawHits(player, currentFrame, videoWidth, videoHeight, ctx);
                                 }
                             });

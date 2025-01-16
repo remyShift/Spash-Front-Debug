@@ -8,9 +8,8 @@ import { drawElements } from '@/utils/drawing/drawElements';
 import { JSONData } from '@/types/files';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
-import { HitsLayer } from '@/types/layers';
 
-export default function ToolBoxControls({ videoData, playersHits }: { videoData: JSONData, playersHits: HitsLayer }) {
+export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
     const { currentFrame, setCurrentFrame } = useFrame();
     const { isVideoPlaying, togglePlay } = useVideoPlayer();
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -55,7 +54,6 @@ export default function ToolBoxControls({ videoData, playersHits }: { videoData:
                 activeLayers,
                 videoRef.current,
                 canvasRef.current,
-                playersHits
             );
         }
     }

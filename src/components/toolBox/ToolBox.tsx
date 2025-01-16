@@ -2,9 +2,8 @@ import { JSONData } from "@/types/files";
 import ToolBoxControls from "./ToolBoxControls";
 import Accordion from "@/components/ui/accordion/Accordion";
 import Spacer from "../ui/Spacer";
-import { HitsLayer } from "@/types/layers";
 
-export default function ToolBox({ videoData, playersHits }: { videoData: JSONData, playersHits: HitsLayer }) {
+export default function ToolBox({ videoData }: { videoData: JSONData }) {
     return (
         <div className="flex flex-col w-1/4">
             <div className="w-fit px-3 h-8 bg-primary rounded-t-md flex items-center justify-center">
@@ -13,7 +12,7 @@ export default function ToolBox({ videoData, playersHits }: { videoData: JSONDat
 
             <div className="w-full h-36 bg-lightBackground rounded-tr-lg rounded-b-lg">
                 <div className="flex flex-col gap-0 w-full">
-                    <ToolBoxControls videoData={videoData} playersHits={playersHits} />
+                    <ToolBoxControls videoData={videoData} />
                     <Spacer />
                     <Accordion videoData={videoData} />
                 </div>

@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStore } from "@/context/store";
-import { VideoInfo, JSONData, StatsData } from "@/types/files";
+import { VideoInfo, JSONData, StatsData, PlayerHits } from "@/types/files";
 import { fetchVideoData } from "@/utils/fetchVideoData";
 import { HitsLayer } from "@/types/layers";
 import BackBtn from "@/components/ui/BackBtn";
@@ -23,7 +23,6 @@ export default function VideoPage() {
     const { videos, setVideos } = useStore();
     const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
-    const [playersHits, setPlayersHits] = useState<HitsLayer | null>(null);
     const [statsData, setStatsData] = useState<StatsData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
@@ -46,8 +45,22 @@ export default function VideoPage() {
                 .then(data => {
                     if (data) {
                         if (!data.jsonData) return;
+                        const playersHits = data.jsonData.stats.players;
+
+                        Object.values(data.jsonData.data).forEach(frame => {
+                            if (frame.persontracking) {
+                                Object.values(frame.persontracking).forEach(player => {
+                                    player.do_hit = false;
+                                    const playerStats = playersHits[player.id];
+                                    if (playerStats && playerStats.hits) {
+                                        if (playerStats.hits.includes(frame.frame_idx)) {
+                                            player.do_hit = true;
+                                        }
+                                    }
+                                });
+                            }
+                        });
                         setJsonData(data.jsonData);
-                        setPlayersHits(data.jsonData.stats.players);
                         setStatsData(data.statsData);
                     }
                     setLoading(false);
@@ -95,13 +108,12 @@ export default function VideoPage() {
                                 <VideoPlayer
                                     currentVideo={currentVideo} 
                                     jsonData={jsonData as JSONData}
-                                    playersHits={playersHits as HitsLayer}
                                     activeLayers={activeLayers} 
                                 />
                                 {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} />}
                             </div>
                         </div>
-                        <ToolBox videoData={jsonData as JSONData} playersHits={playersHits as HitsLayer} />
+                        <ToolBox videoData={jsonData as JSONData} />
                     </div>
                 </div>
             </div>
