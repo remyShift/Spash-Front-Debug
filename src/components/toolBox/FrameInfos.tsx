@@ -54,7 +54,7 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                 </p>
                 <p className='text-white font-semibold flex gap-1'>Speed : 
                     <span className='text-white font-normal'>
-                        {frameData?.speed}
+                        {frameData?.speed?.toFixed(2)}
                     </span>
                 </p>
             </div>
@@ -63,14 +63,14 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                 <p className='text-white font-semibold text-center text-lg'>- - - - - Ball - - - - -</p>
                 <p className='text-white font-semibold flex gap-1'>Ball Confidence : 
                     <span className='text-white font-normal'>
-                        {frameData?.["ball.score"]}
+                        {frameData?.["ball.score"]?.toFixed(2)}
                     </span>
                 </p>
                 <div className='flex flex-col gap-1'>
                     <p className='text-white font-semibold'>Ball Rect : </p>
                     <div className='flex gap-2'>
                         {frameData?.["ball.rect"]?.map((coord, index) => {
-                            return <span key={index} className='text-white font-normal'>{coord}</span>
+                            return <span key={index} className='text-white font-normal'>{coord.toFixed(2)}</span>
                         })}
                     </div>
                 </div>
@@ -78,7 +78,7 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                     <p className='text-white font-semibold'>Ball Center : </p>
                     <div className='flex gap-2'>
                         {frameData?.["ball.center"]?.map((coord, index) => {
-                            return <span key={index} className='text-white font-normal'>{coord}</span>
+                            return <span key={index} className='text-white font-normal'>{coord.toFixed(2)}</span>
                         })}
                     </div>
                 </div>
@@ -100,12 +100,15 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                     <p className='text-white flex gap-2 font-semibold'>Legs :</p>
                                     <div className='flex gap-2'>
                                         {frameData?.persontracking?.[player]?.player_legs.map((coord, index) => {
-                                            return <span key={index} className='text-white font-normal'>{coord}</span>
+                                            return <span key={index} className='text-white font-normal'>{coord.toFixed(2)}</span>
                                         })}
                                     </div>
                                 </div>
                                 <p className='text-white font-semibold flex gap-1'>Confidence : 
-                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.confidence}</span>
+                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.confidence.toFixed(2)}</span>
+                                </p>
+                                <p className='text-white font-semibold flex gap-1'>Do Hit : 
+                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.do_hit === true ? "Yes" : "No"}</span>
                                 </p>
                             </div>
                         )

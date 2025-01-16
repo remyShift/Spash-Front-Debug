@@ -2,9 +2,9 @@ import { PersonTracking } from "@/types/files";
 import { isValidBBox } from "./boundingBox";
 import { configureContext } from "../canvas";
 
-const GLOW_DURATION = 20;
+const GLOW_DURATION = 10;
 const GLOW_INTENSITY = 15;
-const MAX_ACTIVE_HITS = 4;
+const MAX_ACTIVE_HITS = 1;
 
 interface ActiveHit {
     startFrame: number;
