@@ -13,7 +13,8 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     const { currentFrame, setCurrentFrame } = useFrame();
     const { isVideoPlaying, togglePlay } = useVideoPlayer();
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const mainCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const persistentCanvasRef = useRef<HTMLCanvasElement | null>(null);
     const { activeLayers } = useActiveLayers();
 
     useEffect(() => {
@@ -44,16 +45,16 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
             const fps = 25;
             const timeInSeconds = safeFrame / fps;
             videoRef.current.currentTime = timeInSeconds;
-    
+
             const frameData = videoData?.data[safeFrame];
             if (!frameData) return;
-            if (!canvasRef.current) return;
-    
+            if (!mainCanvasRef.current || !persistentCanvasRef.current) return;
+
             drawElements(
                 videoData,
                 activeLayers,
                 videoRef.current,
-                canvasRef.current,
+                { mainCanvas: mainCanvasRef.current, persistentCanvas: persistentCanvasRef.current },
             );
         }
     }

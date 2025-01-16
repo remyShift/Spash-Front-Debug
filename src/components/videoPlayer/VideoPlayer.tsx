@@ -14,10 +14,11 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
     const frameRequestRef = useRef<number | null>(null);
     const { currentFrame, setCurrentFrame } = useFrame();
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const mainCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const persistentCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
     const animate = useCallback(() => {
-        if (!videoRef.current || !canvasRef.current) return;
+        if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
         
         const fps = 25;
         const newFrame = Math.round(videoRef.current.currentTime * fps);
@@ -26,9 +27,9 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
             setCurrentFrame(newFrame);
         }
         
-        drawElements(jsonData, activeLayers, videoRef.current, canvasRef.current);
+        drawElements(jsonData, activeLayers, videoRef.current, { mainCanvas: mainCanvasRef.current, persistentCanvas: persistentCanvasRef.current });
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, videoRef, canvasRef, setCurrentFrame, currentFrame]);
+    }, [jsonData, activeLayers, videoRef, mainCanvasRef, persistentCanvasRef, setCurrentFrame, currentFrame]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);
@@ -49,8 +50,12 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
                 className="w-full"
             />
             <canvas
-                ref={canvasRef}
+                ref={mainCanvasRef}
                 className="absolute top-0 left-0 z-50 pointer-events-none w-full h-full"
+            />
+            <canvas
+                ref={persistentCanvasRef}
+                className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
             />
         </div>
     );

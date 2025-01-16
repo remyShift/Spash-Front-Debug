@@ -9,91 +9,89 @@ import { drawPlayerDistance } from "./players/drawPlayerDistance";
 import { PersonTracking } from "@/types/files";
 import { drawHits } from "./players/drawHits";
 
+interface CanvasRefs {
+    mainCanvas: HTMLCanvasElement;
+    persistentCanvas: HTMLCanvasElement;
+}
+
 export const drawElements = (
     videoData: JSONData, 
     activeLayers: Layers[], 
     videoRef: HTMLVideoElement,
-    canvasRef: HTMLCanvasElement,
+    canvasRefs: CanvasRefs,
 ) => {
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
+    const mainCtx = canvasRefs.mainCanvas.getContext('2d');
+    const persistentCtx = canvasRefs.persistentCanvas.getContext('2d');
 
-    if (canvasRef) {
-        const ctx = canvasRef.getContext('2d');
-        if (!ctx) return;
+    if (!mainCtx || !persistentCtx) return;
 
-        if (!frameData || !videoWidth || !videoHeight || activeLayers.length === 0) {
-            ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
-        } else {
-            canvasRef.width = videoWidth;
-            canvasRef.height = videoHeight;
+    mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
+    persistentCtx.clearRect(0, 0, canvasRefs.persistentCanvas.width, canvasRefs.persistentCanvas.height);
 
-            activeLayers.forEach(layer => {
-                switch (layer) {
-                    case 'homography':
-                        drawFramesNumber(currentFrame, ctx, Object.keys(videoData.data).length, defaultDrawingConfig);
-                        break;
-                    case 'players':
-                        if (!frameData.persontracking) return;
-                        const players = Object.entries(frameData.persontracking);
-                        
-                        players.forEach(([, player]) => {
-                            drawPlayerBBox(player, videoWidth, videoHeight, ctx);
-                        });
-                        
-                        const playersByName = players.reduce((acc, [, player]) => {
-                            if (player.name) {
-                                acc[player.name] = player;
-                            }
-                            return acc;
-                        }, {} as Record<string, PersonTracking>);
-
-                        if (playersByName['A'] && playersByName['B']) {
-                            drawPlayerDistance(
-                                playersByName['A'],
-                                playersByName['B'],
-                                videoWidth,
-                                videoHeight,
-                                ctx
-                            );
-                        }
-
-                        if (playersByName['C'] && playersByName['D']) {
-                            drawPlayerDistance(
-                                playersByName['C'],
-                                playersByName['D'],
-                                videoWidth,
-                                videoHeight,
-                                ctx
-                            );
-                        }
-                        break;
-                    case 'ball':
-                        if (!frameData["ball.center.video"]) return;
-                        const ball: BallLayer = {
-                            coordinates: frameData["ball.center.video"],
-                            score: frameData["ball.score"] || 0
-                        };
-                        drawBall(ball, videoWidth, videoHeight, ctx);
-                        break;
-                    case 'hits':
-                        if (!frameData.detection) return;
-                        if (!frameData.persontracking) return;
-                        
-                        if (frameData.detection === 'Hit') {
-                            const players = Object.entries(frameData.persontracking);
-
-                            players.forEach(([, player]) => {
-                                if (player.do_hit) {
-                                    drawHits(player, currentFrame, videoWidth, videoHeight, ctx);
-                                }
-                            });
-                        }
-                        break;
-                    // case 'zones':
-                    //     drawZones(frameData.zones, videoWidth, videoHeight, ctx);
-                    //     break;
-                }
-            });
-        }
+    if (!frameData || !videoWidth || !videoHeight || activeLayers.length === 0) {
+        return;
     }
+
+    canvasRefs.mainCanvas.width = videoWidth;
+    canvasRefs.mainCanvas.height = videoHeight;
+    canvasRefs.persistentCanvas.width = videoWidth;
+    canvasRefs.persistentCanvas.height = videoHeight;
+
+    activeLayers.forEach(layer => {
+        if (layer === 'hits' && frameData.persontracking) {
+            Object.values(frameData.persontracking).forEach(player => {
+                drawHits(player, currentFrame, videoWidth, videoHeight, persistentCtx);
+            });
+        } else {
+            switch (layer) {
+                case 'homography':
+                    drawFramesNumber(currentFrame, mainCtx, Object.keys(videoData.data).length, defaultDrawingConfig);
+                    break;
+                case 'players':
+                    if (!frameData.persontracking) return;
+                    const players = Object.entries(frameData.persontracking);
+                    
+                    players.forEach(([, player]) => {
+                        drawPlayerBBox(player, videoWidth, videoHeight, mainCtx);
+                    });
+                    
+                    const playersByName = players.reduce((acc, [, player]) => {
+                        if (player.name) {
+                            acc[player.name] = player;
+                        }
+                        return acc;
+                    }, {} as Record<string, PersonTracking>);
+
+                    if (playersByName['A'] && playersByName['B']) {
+                        drawPlayerDistance(
+                            playersByName['A'],
+                            playersByName['B'],
+                            videoWidth,
+                            videoHeight,
+                            mainCtx
+                        );
+                    }
+
+                    if (playersByName['C'] && playersByName['D']) {
+                        drawPlayerDistance(
+                            playersByName['C'],
+                            playersByName['D'],
+                            videoWidth,
+                            videoHeight,
+                            mainCtx
+                        );
+                    }
+                    break;
+                case 'ball':
+                    if (!frameData["ball.center.video"]) return;
+                    const ball: BallLayer = {
+                        coordinates: frameData["ball.center.video"],
+                        score: frameData["ball.score"] || 0
+                    };
+                    drawBall(ball, videoWidth, videoHeight, mainCtx);
+                    break;
+            }
+        }
+    });
 }
