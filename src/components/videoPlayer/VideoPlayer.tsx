@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
 import { Layers } from '@/types/layers';
+import { useCanvas } from '@/context/canvas';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -14,8 +15,18 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
     const frameRequestRef = useRef<number | null>(null);
     const { currentFrame, setCurrentFrame } = useFrame();
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const mainCanvasRef = useRef<HTMLCanvasElement | null>(null);
-    const persistentCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const mainCanvasRef = useRef<HTMLCanvasElement>(null);
+    const persistentCanvasRef = useRef<HTMLCanvasElement>(null);
+    const { setMainCanvasRef, setPersistentCanvasRef } = useCanvas();
+
+    useEffect(() => {
+        if (mainCanvasRef.current) {
+            setMainCanvasRef(mainCanvasRef);
+        }
+        if (persistentCanvasRef.current) {
+            setPersistentCanvasRef(persistentCanvasRef);
+        }
+    }, [setMainCanvasRef, setPersistentCanvasRef]);
 
     const animate = useCallback(() => {
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
@@ -25,11 +36,19 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
         
         if (newFrame !== currentFrame) {
             setCurrentFrame(newFrame);
+            drawElements(
+                jsonData, 
+                activeLayers, 
+                videoRef.current, 
+                { 
+                    mainCanvas: mainCanvasRef.current, 
+                    persistentCanvas: persistentCanvasRef.current 
+                }
+            );
         }
         
-        drawElements(jsonData, activeLayers, videoRef.current, { mainCanvas: mainCanvasRef.current, persistentCanvas: persistentCanvasRef.current });
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, videoRef, mainCanvasRef, persistentCanvasRef, setCurrentFrame, currentFrame]);
+    }, [jsonData, activeLayers, videoRef, setCurrentFrame, currentFrame]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);

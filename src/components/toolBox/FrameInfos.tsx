@@ -118,7 +118,7 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                 <p className='text-white font-semibold flex gap-1'>Confidence : 
                                     <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.confidence.toFixed(2)}</span>
                                 </p>
-                                <p className='text-white font-semibold flex gap-1'>Hits cumulés : 
+                                <p className='text-white font-semibold flex gap-1'>Hits count : 
                                     <span className='text-white font-normal'>
                                         {playerHits[player] || 0}
                                     </span>

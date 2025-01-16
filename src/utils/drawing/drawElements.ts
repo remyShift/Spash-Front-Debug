@@ -8,6 +8,7 @@ import { drawBall } from "./ball/drawBall";
 import { drawPlayerDistance } from "./players/drawPlayerDistance";
 import { PersonTracking } from "@/types/files";
 import { drawHits } from "./players/drawHits";
+import { drawTeamDistances } from "./players/drawTeamDistances";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -90,6 +91,10 @@ export const drawElements = (
                         score: frameData["ball.score"] || 0
                     };
                     drawBall(ball, videoWidth, videoHeight, mainCtx);
+                    break;
+                case 'distance':
+                    if (!frameData.persontracking) return;
+                    drawTeamDistances(Object.entries(frameData.persontracking), videoWidth, videoHeight, mainCtx);
                     break;
             }
         }

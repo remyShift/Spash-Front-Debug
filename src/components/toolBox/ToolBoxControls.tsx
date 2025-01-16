@@ -1,5 +1,5 @@
 import { faBackward, faBackwardFast, faBackwardStep, faForward, faForwardFast, faForwardStep, faMagnifyingGlass, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import ControlBtn from './ControlBtn';
 import { useActiveLayers } from '@/context/layers';
 import { useVideoPlayer } from '@/hooks/useVideoPlayer';
@@ -8,18 +8,46 @@ import { drawElements } from '@/utils/drawing/drawElements';
 import { JSONData } from '@/types/files';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
+import { useCanvas } from '@/context/canvas';
 
 export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
     const { currentFrame, setCurrentFrame } = useFrame();
     const { isVideoPlaying, togglePlay } = useVideoPlayer();
     const videoRef = useRef<HTMLVideoElement | null>(null);
-    const mainCanvasRef = useRef<HTMLCanvasElement | null>(null);
-    const persistentCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const { mainCanvasRef, persistentCanvasRef } = useCanvas();
     const { activeLayers } = useActiveLayers();
 
     useEffect(() => {
         videoRef.current = document.querySelector('video');
     }, []);
+
+    const handleFrameChange = async (frameNumber: number) => {
+        if (!mainCanvasRef?.current || !persistentCanvasRef?.current || !videoRef.current) return;
+
+        const maxFrame = Object.keys(videoData.data).length - 1;
+        const safeFrame = Math.max(0, Math.min(Math.round(frameNumber), maxFrame));
+        
+        const fps = 25;
+        const timeInSeconds = safeFrame / fps;
+        
+        videoRef.current.currentTime = timeInSeconds;
+        await setCurrentFrame(safeFrame);
+        
+        const frameData = videoData?.data[safeFrame];
+        if (!frameData) return;
+        
+        drawElements(
+            videoData,
+            activeLayers,
+            videoRef.current,
+            { 
+                mainCanvas: mainCanvasRef.current!, 
+                persistentCanvas: persistentCanvasRef.current! 
+            },
+        );
+    }
+
+    useKeyboardShortcuts(handleFrameChange);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -35,31 +63,6 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
             }
         }
     }
-    
-    const handleFrameChange = (frameNumber: number) => {
-        if (videoRef.current) {
-            const maxFrame = Object.keys(videoData.data).length - 1;
-            const safeFrame = Math.max(0, Math.min(frameNumber, maxFrame));
-            
-            setCurrentFrame(safeFrame);
-            const fps = 25;
-            const timeInSeconds = safeFrame / fps;
-            videoRef.current.currentTime = timeInSeconds;
-
-            const frameData = videoData?.data[safeFrame];
-            if (!frameData) return;
-            if (!mainCanvasRef.current || !persistentCanvasRef.current) return;
-
-            drawElements(
-                videoData,
-                activeLayers,
-                videoRef.current,
-                { mainCanvas: mainCanvasRef.current, persistentCanvas: persistentCanvasRef.current },
-            );
-        }
-    }
-
-    useKeyboardShortcuts(handleFrameChange);
 
     return (
         <div className="flex flex-col gap-6 p-6">

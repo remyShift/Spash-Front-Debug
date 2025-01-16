@@ -8,14 +8,26 @@ export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: numbe
     const [x, y] = ball.coordinates;
     const score = ball.score;
     
+    const offsetX = 0.5;
+    const offsetY = 0.5;
+    
+    const adjustedX = (x + offsetX) * scaleX;
+    const adjustedY = (y + offsetY) * scaleY;
+    
+    context.save();
     context.beginPath();
-    context.arc(x * scaleX, y * scaleY, 10, 0, 2 * Math.PI);
+    context.arc(adjustedX, adjustedY, 10, 0, 2 * Math.PI);
     context.lineWidth = 4;
-    context.strokeStyle = 'red';
+    context.strokeStyle = 'yellow';
     context.stroke();
+
+    context.shadowColor = 'yellow';
+    context.shadowBlur = 5;
+    context.stroke();
+    context.restore();
 
     context.font = 'bold 18px Arial';
     context.fillStyle = '#FFFFFF';
     const scoreText = `${score.toFixed(2)}`;
-    context.fillText(scoreText, (x * scaleX) + 15, (y * scaleY) + 5);
+    context.fillText(scoreText, adjustedX + 15, adjustedY + 5);
 }
