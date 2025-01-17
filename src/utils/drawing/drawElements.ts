@@ -9,7 +9,9 @@ import { drawHits } from "./players/drawHits";
 import { drawTeamDistances } from "./players/drawTeamDistances";
 import { drawPlayerTrajectories } from "./players/drawPlayerTrajectories";
 import { drawBallTrajectory } from "./ball/drawBallTrajectory";
-
+import { drawBounceGlow } from "./ball/drawBounces";
+import { getNextReboundFrame } from "@/utils/getNextReboundFrame";
+import { drawNextReboundPrediction } from "./ball/drawBounces";
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
     persistentCanvas: HTMLCanvasElement;
@@ -42,47 +44,67 @@ export const drawElements = (
     const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
 
     activeLayers.forEach(layer => {
-        if (layer === 'hits' && players.length) {
-            players.forEach(([, player]) => {
-                drawHits(player, currentFrame, videoWidth, videoHeight, persistentCtx);
-            });
-        } else if (layer === 'trajectories' && players.length) {
-            if (frameData["ball.center.video"]) {
+        switch (layer) {
+            case 'hits':
+                if (players) {
+                    players.forEach(([, player]) => {
+                        drawHits(player, currentFrame, videoWidth, videoHeight, persistentCtx);
+                    });
+                }
+                break;
+            case 'trajectories':
+                if (players) {
+                    if (frameData["ball.center.video"]) {
+                        const ball: BallLayer = {
+                            coordinates: frameData["ball.center.video"],
+                    score: frameData["ball.score"] || 0
+                };
+                        drawBallTrajectory(ball, currentFrame, videoWidth, videoHeight, persistentCtx);
+                    }
+                    players.forEach(([, player]) => {
+                        drawPlayerTrajectories(player, currentFrame, videoWidth, videoHeight, persistentCtx);
+                    });
+                }
+                break;
+            case 'homography':
+                drawFramesNumber(currentFrame, mainCtx, Object.keys(videoData.data).length, defaultDrawingConfig);
+                break;
+            case 'players':
+                if (players) {
+                    players.forEach(([, player]) => {
+                        drawPlayerBBox(player, videoWidth, videoHeight, mainCtx);
+                    });
+                }
+                break;
+            case 'ball':
+                if (!frameData["ball.center.video"]) return;
                 const ball: BallLayer = {
                     coordinates: frameData["ball.center.video"],
                     score: frameData["ball.score"] || 0
                 };
-                drawBallTrajectory(ball, currentFrame, videoWidth, videoHeight, persistentCtx);
-            }
-            players.forEach(([, player]) => {
-                drawPlayerTrajectories(player, currentFrame, videoWidth, videoHeight, persistentCtx);
-            });
-        } else {
-            switch (layer) {
-                case 'homography':
-                    drawFramesNumber(currentFrame, mainCtx, Object.keys(videoData.data).length, defaultDrawingConfig);
-                    break;
-                case 'players':
-                    if (players.length) {
-                        players.forEach(([, player]) => {
-                            drawPlayerBBox(player, videoWidth, videoHeight, mainCtx);
-                        });
-                    }
-                    break;
-                case 'ball':
-                    if (!frameData["ball.center.video"]) return;
+                drawBall(ball, videoWidth, videoHeight, mainCtx);
+                break;
+            case 'distance':
+                if (players) {
+                    drawTeamDistances(players, videoWidth, videoHeight, mainCtx);
+                }
+                break;
+            case 'rebounds':
+                if (frameData["ball.center.video"]) {
+                    const nextReboundFrame = getNextReboundFrame(videoData.data, currentFrame);
                     const ball: BallLayer = {
                         coordinates: frameData["ball.center.video"],
-                        score: frameData["ball.score"] || 0
+                        score: frameData["ball.score"] || 0,
+                        rebound: frameData.detection === "Rebound",
+                        nextReboundFrame: nextReboundFrame || undefined
                     };
-                    drawBall(ball, videoWidth, videoHeight, mainCtx);
-                    break;
-                case 'distance':
-                    if (players.length) {
-                        drawTeamDistances(players, videoWidth, videoHeight, mainCtx);
+                    drawBounceGlow(ball, currentFrame, videoWidth, videoHeight, mainCtx);
+                    if (ball.nextReboundFrame) {
+                        const nextReboundFrameCoordinates = videoData.data[ball.nextReboundFrame]["ball.center.video"] || [0, 0];
+                        drawNextReboundPrediction(nextReboundFrameCoordinates, videoWidth, videoHeight, mainCtx);
                     }
-                    break;
-            }
+                }
+                break;
         }
     });
 }
