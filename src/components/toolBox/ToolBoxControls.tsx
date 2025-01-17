@@ -1,4 +1,4 @@
-import { faBackward, faBackwardFast, faBackwardStep, faForward, faForwardFast, faForwardStep, faMagnifyingGlass, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faBackward, faBackwardFast, faBackwardStep, faForward, faForwardFast, faForwardStep, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 import React, { useRef, useEffect } from 'react'
 import ControlBtn from './ControlBtn';
 import { useActiveLayers } from '@/context/layers';
@@ -6,9 +6,10 @@ import { useVideoPlayer } from '@/hooks/useVideoPlayer';
 import { useFrame } from '@/context/frame';
 import { drawElements } from '@/utils/drawing/drawElements';
 import { JSONData } from '@/types/files';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useCanvas } from '@/context/canvas';
+import GotoFrame from './GotoFrame';
+import GotoPlayer from './GotoPlayer';
 
 export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
     const { currentFrame, setCurrentFrame } = useFrame();
@@ -49,32 +50,10 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
 
     useKeyboardShortcuts(handleFrameChange);
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const target = e.target as HTMLFormElement;
-        const input = target.querySelector('input');
-        const frameId = input?.value;
-        
-        if (frameId) {
-            const frameNumber = parseInt(frameId);
-            handleFrameChange(frameNumber);
-            if (input) {
-                input.value = '';
-            }
-        }
-    }
-
     return (
         <div className="flex flex-col gap-6 p-6">
-            <div className="flex gap-4 items-center justify-center">
-                <p className="text-white font-semibold text-base">Frame ID : {currentFrame}</p>
-                <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
-                    <input type="number" min={0} step={10} className="w-24 h-6 bg-lighterBackground rounded-md p-2 text-center text-white font-semibold text-base outline-none border-none focus:ring-primary focus:ring-1" />
-                    <button className="bg-primary text-white font-semibold text-base rounded-md flex items-center justify-center px-2 py-1 active:bg-primary/80 transition-all duration-200" type="submit">
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </button>
-                </form>
-            </div>
+            <GotoFrame handleFrameChange={handleFrameChange}/>
+            <GotoPlayer handleFrameChange={handleFrameChange} videoData={videoData}/>
             <div className="flex gap-4 items-center justify-center">
                 <ControlBtn icon={faBackwardFast} onClick={() => handleFrameChange(0)} text="Start" />
                 <ControlBtn icon={faBackward} onClick={() => handleFrameChange(currentFrame - 100)} text="-100" />
