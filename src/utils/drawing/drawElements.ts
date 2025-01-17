@@ -11,7 +11,8 @@ import { drawPlayerTrajectories } from "./players/drawPlayerTrajectories";
 import { drawBallTrajectory } from "./ball/drawBallTrajectory";
 import { drawBounceGlow } from "./ball/drawBounces";
 import { getNextReboundFrame } from "@/utils/getNextReboundFrame";
-import { drawNextReboundPrediction } from "./ball/drawBounces";
+import { drawNextReboundPrediction } from "@/utils/drawing/ball/drawNextReboundPrediction";
+
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
     persistentCanvas: HTMLCanvasElement;

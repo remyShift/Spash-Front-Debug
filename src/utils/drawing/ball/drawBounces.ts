@@ -78,37 +78,3 @@ export const drawBounceGlow = (
 
     context.restore();
 };
-
-export const drawNextReboundPrediction = (
-    nextReboundCoordinates: [number, number],
-    videoWidth: number,
-    videoHeight: number,
-    context: CanvasRenderingContext2D
-) => {
-    const canvas = context.canvas;
-    const scaleX = canvas.width / videoWidth;
-    const scaleY = canvas.height / videoHeight;
-
-    const [x, y] = nextReboundCoordinates;
-    const scaledX = x * scaleX;
-    const scaledY = y * scaleY;
-
-    const crossSize = 20;
-    
-    context.save();
-    
-    context.strokeStyle = '#FFD700';
-    context.lineWidth = 2;
-    
-    configureContext(context, { strokeStyle: context.strokeStyle, lineWidth: context.lineWidth });
-    
-    // Dessiner la croix
-    context.beginPath();
-    context.moveTo(scaledX - crossSize/2, scaledY);
-    context.lineTo(scaledX + crossSize/2, scaledY);
-    context.moveTo(scaledX, scaledY - crossSize/2);
-    context.lineTo(scaledX, scaledY + crossSize/2);
-    context.stroke();
-
-    context.restore();
-}; 
