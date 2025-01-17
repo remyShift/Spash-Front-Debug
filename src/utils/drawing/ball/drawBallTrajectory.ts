@@ -4,7 +4,7 @@ import { calculateDistance } from "../../calculateDistance";
 
 const TRAIL_LENGTH = 25;
 const MIN_OPACITY = 0.1;
-const MAX_DISTANCE = 100;
+const MAX_DISTANCE = 150;
 
 interface TrailPoint {
     x: number;
