@@ -61,8 +61,7 @@ export const drawPlayerBBox = (
     const textMetrics = context.measureText(text);
     const padding = 4;
     const textHeight = 25;
-    
-    // Rectangle de fond
+
     context.fillStyle = playerColor;
     context.fillRect(
         scaledX1 - 1,
@@ -70,8 +69,7 @@ export const drawPlayerBBox = (
         textMetrics.width + (padding * 2),
         textHeight
     );
-    
-    // Texte centré
+
     context.fillStyle = '#FFFFFF';
     context.textBaseline = 'middle';
     context.textAlign = 'left';

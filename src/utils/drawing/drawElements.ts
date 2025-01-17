@@ -9,6 +9,8 @@ import { drawPlayerDistance } from "./players/drawPlayerDistance";
 import { PersonTracking } from "@/types/files";
 import { drawHits } from "./players/drawHits";
 import { drawTeamDistances } from "./players/drawTeamDistances";
+import { drawPlayerTrajectories } from "./players/drawPlayerTrajectories";
+import { drawBallTrajectory } from "./ball/drawBallTrajectory";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -39,10 +41,23 @@ export const drawElements = (
     canvasRefs.persistentCanvas.width = videoWidth;
     canvasRefs.persistentCanvas.height = videoHeight;
 
+    const players = Object.entries(frameData.persontracking);
+
     activeLayers.forEach(layer => {
         if (layer === 'hits' && frameData.persontracking) {
             Object.values(frameData.persontracking).forEach(player => {
                 drawHits(player, currentFrame, videoWidth, videoHeight, persistentCtx);
+            });
+        } else if (layer === 'trajectories' && frameData.persontracking) {
+            if (frameData["ball.center.video"]) {
+                const ball: BallLayer = {
+                    coordinates: frameData["ball.center.video"],
+                    score: frameData["ball.score"] || 0
+                };
+                drawBallTrajectory(ball, currentFrame, videoWidth, videoHeight, persistentCtx);
+            }
+            Object.values(frameData.persontracking).forEach(player => {
+                drawPlayerTrajectories(player, currentFrame, videoWidth, videoHeight, persistentCtx);
             });
         } else {
             switch (layer) {
@@ -51,38 +66,10 @@ export const drawElements = (
                     break;
                 case 'players':
                     if (!frameData.persontracking) return;
-                    const players = Object.entries(frameData.persontracking);
                     
                     players.forEach(([, player]) => {
                         drawPlayerBBox(player, videoWidth, videoHeight, mainCtx);
                     });
-                    
-                    const playersByName = players.reduce((acc, [, player]) => {
-                        if (player.name) {
-                            acc[player.name] = player;
-                        }
-                        return acc;
-                    }, {} as Record<string, PersonTracking>);
-
-                    if (playersByName['A'] && playersByName['B']) {
-                        drawPlayerDistance(
-                            playersByName['A'],
-                            playersByName['B'],
-                            videoWidth,
-                            videoHeight,
-                            mainCtx
-                        );
-                    }
-
-                    if (playersByName['C'] && playersByName['D']) {
-                        drawPlayerDistance(
-                            playersByName['C'],
-                            playersByName['D'],
-                            videoWidth,
-                            videoHeight,
-                            mainCtx
-                        );
-                    }
                     break;
                 case 'ball':
                     if (!frameData["ball.center.video"]) return;
@@ -94,7 +81,8 @@ export const drawElements = (
                     break;
                 case 'distance':
                     if (!frameData.persontracking) return;
-                    drawTeamDistances(Object.entries(frameData.persontracking), videoWidth, videoHeight, mainCtx);
+                    const players = Object.entries(frameData.persontracking);
+                    drawTeamDistances(players, videoWidth, videoHeight, mainCtx);
                     break;
             }
         }
