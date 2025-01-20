@@ -35,7 +35,7 @@ export interface PersonTracking {
     player_legs: [number, number];
     court_legs: [number, number];
     do_hit: boolean;
-    hit_type?: 'normal' | 'lob' | 'service';
+    hit_type?: 'hit' | 'lob' | 'service';
 };
 
 export interface JSONData {

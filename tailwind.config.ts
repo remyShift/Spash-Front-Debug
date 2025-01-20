@@ -42,11 +42,30 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				fadeOut: {
+					'0%': { opacity: '1' },
+					'100%': { 
+						opacity: '0',
+						transform: 'translateY(-10px)' 
+					},
+				},
+				slideIn: {
+					'0%': { 
+						opacity: '0', 
+						transform: 'translateY(-20px)' 
+					},
+					'100%': { 
+						opacity: '1', 
+						transform: 'translateY(0)' 
+					},
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				fadeOut: 'fadeOut 3s ease-in-out',
+				slideIn: 'slideIn 0.3s ease-out forwards, fadeOut 0.3s ease-in 2.7s forwards',
 			},
 			backgroundImage: {
 				'point-gradient': 'linear-gradient(to bottom, #FF324B 50%, #181826)',

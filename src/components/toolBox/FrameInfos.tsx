@@ -130,7 +130,7 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                             "Yes (Lob)" : 
                                             frameData?.persontracking?.[player]?.hit_type === 'service' ?
                                             "Yes (Service)" :
-                                            "Yes (Normal)"
+                                            "Yes (Classic hit)"
                                         ) : "No"}
                                     </span>
                                 </p>

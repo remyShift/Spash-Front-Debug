@@ -61,7 +61,7 @@ export default function VideoPage() {
                                     } else if (playerStats) {
                                         if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
                                             player.do_hit = true;
-                                            player.hit_type = playerStats.lobs?.includes(frame.frame_idx) ? 'lob' : 'normal';
+                                            player.hit_type = playerStats.lobs?.includes(frame.frame_idx) ? 'lob' : 'hit';
                                         }
                                     }
                                 });

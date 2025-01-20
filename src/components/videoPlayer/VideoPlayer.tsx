@@ -4,6 +4,7 @@ import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
 import { Layers } from '@/types/layers';
 import { useCanvas } from '@/context/canvas';
+import KillFeed from './KillFeed';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -67,6 +68,10 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
                 src={currentVideo.videoPath}
                 controls
                 className="w-full"
+            />
+            <KillFeed 
+                currentFrame={currentFrame} 
+                frameData={jsonData.data[currentFrame] || {}} 
             />
             <canvas
                 ref={mainCanvasRef}
