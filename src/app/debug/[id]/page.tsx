@@ -3,9 +3,8 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStore } from "@/context/store";
-import { VideoInfo, JSONData, StatsData, PlayerHits } from "@/types/files";
+import { VideoInfo, JSONData, StatsData } from "@/types/files";
 import { fetchVideoData } from "@/utils/fetchVideoData";
-import { HitsLayer } from "@/types/layers";
 import BackBtn from "@/components/ui/BackBtn";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 import { VideoPlayer } from "@/components/videoPlayer/VideoPlayer";
@@ -51,10 +50,18 @@ export default function VideoPage() {
                             if (frame.persontracking) {
                                 Object.values(frame.persontracking).forEach(player => {
                                     player.do_hit = false;
+                                    player.hit_type = undefined;
                                     const playerStats = playersHits[player.id];
-                                    if (playerStats && playerStats.hits) {
-                                        if (playerStats.hits.includes(frame.frame_idx)) {
+
+                                    if (frame.detection === 'service') {
+                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
                                             player.do_hit = true;
+                                            player.hit_type = 'service';
+                                        }
+                                    } else if (playerStats) {
+                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
+                                            player.do_hit = true;
+                                            player.hit_type = playerStats.lobs?.includes(frame.frame_idx) ? 'lob' : 'normal';
                                         }
                                     }
                                 });

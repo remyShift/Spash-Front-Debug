@@ -124,7 +124,15 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                     </span>
                                 </p>
                                 <p className='text-white font-semibold flex gap-1'>Do Hit : 
-                                    <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.do_hit === true ? "Yes" : "No"}</span>
+                                    <span className='text-white font-normal'>
+                                        {frameData?.persontracking?.[player]?.do_hit === true ? (
+                                            frameData?.persontracking?.[player]?.hit_type === 'lob' ? 
+                                            "Yes (Lob)" : 
+                                            frameData?.persontracking?.[player]?.hit_type === 'service' ?
+                                            "Yes (Service)" :
+                                            "Yes (Normal)"
+                                        ) : "No"}
+                                    </span>
                                 </p>
                             </div>
                         )
