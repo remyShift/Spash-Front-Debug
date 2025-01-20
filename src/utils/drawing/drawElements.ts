@@ -81,6 +81,7 @@ export const drawElements = (
                 if (!frameData["ball.center.video"]) return;
                 const ball: BallLayer = {
                     coordinates: frameData["ball.center.video"],
+                    speed: frameData.speed || 0,
                     score: frameData["ball.score"] || 0
                 };
                 drawBall(ball, videoWidth, videoHeight, mainCtx);

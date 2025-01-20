@@ -63,11 +63,6 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                         {frameData?.detection || "null"}
                     </span>
                 </p>
-                <p className='text-white font-semibold flex gap-1'>Speed : 
-                    <span className='text-white font-normal'>
-                        {frameData?.speed?.toFixed(2)}
-                    </span>
-                </p>
             </div>
 
             <div className='flex flex-col gap-2'>
@@ -93,6 +88,11 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                         })}
                     </div>
                 </div>
+                <p className='text-white font-semibold flex gap-1'>Speed : 
+                    <span className='text-white font-normal'>
+                        {frameData?.speed?.toFixed(2)}
+                    </span>
+                </p>
             </div>
 
             <div className='flex flex-col gap-2'>

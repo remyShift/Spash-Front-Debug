@@ -30,4 +30,11 @@ export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: numbe
     context.fillStyle = '#FFFFFF';
     const scoreText = `${score.toFixed(2)}`;
     context.fillText(scoreText, adjustedX + 15, adjustedY + 5);
+
+    if (ball.speed) {
+        context.font = 'bold 18px Arial';
+        context.fillStyle = '#FFFFFF';
+        const speedText = `${ball.speed.toFixed(2)} km/h`;
+        context.fillText(speedText, adjustedX + 15, adjustedY + 25);
+    }
 }
