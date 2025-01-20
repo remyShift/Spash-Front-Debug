@@ -40,7 +40,7 @@ export interface PersonTracking {
 export interface JSONData {
     path: string;
     data: {
-        [frame: number]: {
+        [frame: string]: {
             "ball.rect"?: [number, number, number, number];
             "ball.center"?: [number, number];
             "ball.center.video"?: [number, number];
