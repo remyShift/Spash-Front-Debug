@@ -12,6 +12,7 @@ import { drawBallTrajectory } from "./ball/drawBallTrajectory";
 import { drawBounceGlow } from "./ball/drawBounces";
 import { getNextReboundFrame } from "@/utils/getNextReboundFrame";
 import { drawNextReboundPrediction } from "@/utils/drawing/ball/drawNextReboundPrediction";
+import { drawAreas } from "./areas/drawAreas";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -105,6 +106,11 @@ export const drawElements = (
                         const nextReboundFrameCoordinates = videoData.data[ball.nextReboundFrame]["ball.center.video"] || [0, 0];
                         drawNextReboundPrediction(nextReboundFrameCoordinates, videoWidth, videoHeight, mainCtx);
                     }
+                }
+                break;
+            case 'areas':
+                if (players) {
+                    drawAreas(players, currentFrame, videoWidth, videoHeight, mainCtx);
                 }
                 break;
         }
