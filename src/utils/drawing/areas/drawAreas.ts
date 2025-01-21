@@ -16,7 +16,7 @@ const ZONES: TacticalZone[] = [
             [0.65, 1],   // Bas droit
             [0.5, 1]    // Bas gauche
         ],
-        color: "rgba(0, 0, 255, 0.2)"
+        color: "rgba(255, 0, 0, 0.2)"
     },
     {
         name: "NO MANS LAND",
@@ -31,7 +31,7 @@ const ZONES: TacticalZone[] = [
             [0.65, 1],    // Bas gauche
             [0.61, 0.4]      // Point intermédiaire gauche
         ],
-        color: "rgba(255, 0, 0, 0.2)"
+        color: "rgba(255, 255, 0, 0.2)"
     },
     {
         name: "DEFENSE",
@@ -47,7 +47,7 @@ const ZONES: TacticalZone[] = [
             [0.95, 0.82],    // Bas gauche
             [0.85, 0.5]      // Point milieu gauche
         ],
-        color: "rgba(0, 255, 255, 0.2)"
+        color: "rgba(0, 255, 0, 0.2)"
     }
 ];
 

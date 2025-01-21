@@ -110,7 +110,7 @@ export const drawElements = (
                 break;
             case 'areas':
                 if (players) {
-                    drawAreas(players, currentFrame, videoWidth, videoHeight, mainCtx);
+                    drawAreas(players, currentFrame, videoWidth, videoHeight, persistentCtx);
                 }
                 break;
         }
