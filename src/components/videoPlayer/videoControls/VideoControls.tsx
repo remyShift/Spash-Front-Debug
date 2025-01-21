@@ -7,9 +7,15 @@ import { TimeDisplay } from './TimeDisplay';
 
 interface VideoControlsProps {
     videoRef: React.RefObject<HTMLVideoElement>;
+    reels?: {
+        reel_type: string;
+        end_frame: number;
+        duration: number;
+        end_timecode: number;
+    }[];
 }
 
-export const VideoControls = ({ videoRef }: VideoControlsProps) => {
+export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
@@ -20,17 +26,22 @@ export const VideoControls = ({ videoRef }: VideoControlsProps) => {
         if (!videoRef.current) return;
 
         const video = videoRef.current;
-        setDuration(video.duration);
 
+        const handleLoadedMetadata = () => {
+            setDuration(video.duration);
+        };
+        
         const handleTimeUpdate = () => setCurrentTime(video.currentTime);
         const handlePlay = () => setIsPlaying(true);
         const handlePause = () => setIsPlaying(false);
 
+        video.addEventListener('loadedmetadata', handleLoadedMetadata);
         video.addEventListener('timeupdate', handleTimeUpdate);
         video.addEventListener('play', handlePlay);
         video.addEventListener('pause', handlePause);
 
         return () => {
+            video.removeEventListener('loadedmetadata', handleLoadedMetadata);
             video.removeEventListener('timeupdate', handleTimeUpdate);
             video.removeEventListener('play', handlePlay);
             video.removeEventListener('pause', handlePause);
@@ -41,6 +52,7 @@ export const VideoControls = ({ videoRef }: VideoControlsProps) => {
         <div className="flex flex-col gap-2 w-full bg-lighterBackground/80 p-4 rounded-lg">
             <MainTimeline 
                 currentTime={currentTime}
+                reels={reels}
                 duration={duration}
                 onTimeChange={(time) => {
                     if (videoRef.current) {

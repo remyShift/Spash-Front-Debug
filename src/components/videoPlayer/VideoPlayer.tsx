@@ -1,4 +1,4 @@
-import { JSONData, VideoInfo } from '@/types/files';
+import { JSONData, StatsData, VideoInfo } from '@/types/files';
 import { useCallback, useEffect, useRef } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
@@ -11,15 +11,18 @@ interface VideoPlayerProps {
     currentVideo: VideoInfo;
     jsonData: JSONData;
     activeLayers: Layers[];
+    statsData: StatsData;
 }
 
-export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlayerProps) => {
+export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }: VideoPlayerProps) => {
     const frameRequestRef = useRef<number | null>(null);
     const { currentFrame, setCurrentFrame } = useFrame();
     const videoRef = useRef<HTMLVideoElement>(null);
     const mainCanvasRef = useRef<HTMLCanvasElement>(null);
     const persistentCanvasRef = useRef<HTMLCanvasElement>(null);
     const { setMainCanvasRef, setPersistentCanvasRef } = useCanvas();
+
+    console.log(statsData);
 
     useEffect(() => {
         if (mainCanvasRef.current) {
@@ -86,6 +89,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers }: VideoPlaye
                     {videoRef.current && (
                         <VideoControls 
                             videoRef={videoRef as React.RefObject<HTMLVideoElement>}
+                            reels={statsData.reels}
                         />
                     )}
                 </div>

@@ -182,6 +182,13 @@ export interface StatsData {
             top_badge: boolean;
         }[];
     }[];
+    reels: {
+        reel_type: string;
+        team_id: number;
+        end_frame: number;
+        duration: number;
+        end_timecode: number;
+    }[];
 }
 
 export interface PlayerStats {

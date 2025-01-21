@@ -52,7 +52,7 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
 
     return (
         <div className="flex flex-col gap-6 p-6">
-            <GotoFrame handleFrameChange={handleFrameChange}/>
+            <GotoFrame handleFrameChange={handleFrameChange} videoData={videoData}/>
             <GotoPlayer handleFrameChange={handleFrameChange} videoData={videoData}/>
             <div className="flex gap-4 items-center justify-center">
                 <ControlBtn icon={faBackwardFast} onClick={() => handleFrameChange(0)} text="Start" />
