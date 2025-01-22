@@ -136,7 +136,7 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                 </p>
                                 <p className='text-white font-semibold flex gap-1'>Cumulate distance : 
                                     <span className='text-white font-normal'>
-                                        {frameData?.persontracking?.[player]?.cumulate_distance?.toFixed(2) || "0"}
+                                        {frameData?.persontracking?.[player]?.cumulate_distance?.toFixed(2) || "0"}m
                                     </span>
                                 </p>
                             </div>
