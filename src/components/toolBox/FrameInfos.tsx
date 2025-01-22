@@ -134,6 +134,11 @@ export default function FrameInfos({ framesData, events }: { framesData: JSONDat
                                         ) : "No"}
                                     </span>
                                 </p>
+                                <p className='text-white font-semibold flex gap-1'>Cumulate distance : 
+                                    <span className='text-white font-normal'>
+                                        {frameData?.persontracking?.[player]?.cumulate_distance?.toFixed(2) || "0"}
+                                    </span>
+                                </p>
                             </div>
                         )
                     })}

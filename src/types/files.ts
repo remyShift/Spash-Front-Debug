@@ -36,6 +36,7 @@ export interface PersonTracking {
     court_legs: [number, number];
     do_hit: boolean;
     hit_type?: 'hit' | 'lob' | 'service';
+    cumulate_distance?: number;
 };
 
 export interface JSONData {

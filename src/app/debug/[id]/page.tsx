@@ -67,6 +67,35 @@ export default function VideoPage() {
                                 });
                             }
                         });
+
+                        const previousLegs: { [key: string]: [number, number] } = {};
+
+                        const cumulativeDistances: { [key: number]: number } = {};
+
+                        Object.keys(data.jsonData.data).sort((a, b) => Number(a) - Number(b)).forEach(frameIndex => {
+                            if (!data.jsonData) return;
+                            const frame = data.jsonData.data[frameIndex];
+                            if (frame.persontracking) {
+                                Object.values(frame.persontracking).forEach(player => {
+                                    if (!cumulativeDistances[player.id]) {
+                                        cumulativeDistances[player.id] = 0;
+                                    }
+
+                                    if (previousLegs[player.id]) {
+                                        const [prevX, prevY] = previousLegs[player.id];
+                                        const [currentX, currentY] = player.court_legs;
+                                        const distance = Math.sqrt(
+                                            Math.pow(currentX - prevX, 2) + 
+                                            Math.pow(currentY - prevY, 2)
+                                        );
+                                        cumulativeDistances[player.id] += distance;
+                                        player.cumulate_distance = cumulativeDistances[player.id];
+                                    }
+                                    previousLegs[player.id] = player.court_legs;
+                                });
+                            }
+                        });
+
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData);
                     }
