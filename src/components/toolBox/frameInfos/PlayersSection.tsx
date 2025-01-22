@@ -2,10 +2,10 @@ import { JSONData } from '@/types/files';
 
 interface PlayersSectionProps {
     frameData: JSONData['data'][number] | null;
-    playerHits: {[key: string]: number};
 }
 
-export default function PlayersSection({ frameData, playerHits }: PlayersSectionProps) {
+export default function PlayersSection({ frameData }: PlayersSectionProps) {
+    console.log(frameData?.persontracking);
     return (
         <div className='flex flex-col gap-2'>
             <p className='text-white font-semibold text-center text-lg'>- - - - - Players - - - - -</p>
@@ -27,18 +27,13 @@ export default function PlayersSection({ frameData, playerHits }: PlayersSection
                             </div>
                         </div>
                         <p className='text-white font-semibold flex gap-1'>Hits count : 
-                            <span className='text-white font-normal'>{playerHits[player] || 0}</span>
+                            <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.hit_count.hit || 0}</span>
                         </p>
-                        <p className='text-white font-semibold flex gap-1'>Do Hit : 
-                            <span className='text-white font-normal'>
-                                {frameData?.persontracking?.[player]?.do_hit === true ? (
-                                    frameData?.persontracking?.[player]?.hit_type === 'lob' ? 
-                                    "Yes (Lob)" : 
-                                    frameData?.persontracking?.[player]?.hit_type === 'service' ?
-                                    "Yes (Service)" :
-                                    "Yes (Classic hit)"
-                                ) : "No"}
-                            </span>
+                        <p className='text-white font-semibold flex gap-1'>Lob count : 
+                            <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.hit_count.lob || 0}</span>
+                        </p>
+                        <p className='text-white font-semibold flex gap-1'>Service count : 
+                            <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.hit_count.service || 0}</span>
                         </p>
                     </div>
                 ))}

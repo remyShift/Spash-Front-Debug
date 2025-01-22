@@ -35,7 +35,11 @@ export interface PersonTracking {
     player_legs: [number, number];
     court_legs: [number, number];
     do_hit: boolean;
-    hit_type?: 'hit' | 'lob' | 'service';
+    hit_count: {
+        service: number;
+        lob: number;
+        hit: number;
+    };
     cumulate_distance?: number;
 };
 

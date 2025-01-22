@@ -1,7 +1,6 @@
 import { useFrame } from '@/context/frame';
 import { JSONData } from '@/types/files'
 import { useEffect, useState } from 'react';
-import { countPlayerHits } from '@/utils/countPlayerHits';
 import FrameHeader from './FrameHeader';
 import EventsSection from './EventsSection';
 import InfosSection from './InfosSection';
@@ -14,19 +13,9 @@ export default function FrameInfos({ framesData, events }: {
 }) {
     const { currentFrame } = useFrame();
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
-    const [playerHits, setPlayerHits] = useState<{[key: string]: number}>({});
 
     useEffect(() => {
         setFrameData(framesData[currentFrame]);
-
-        const hits: {[key: string]: number} = {};
-        Object.keys(framesData[currentFrame]?.persontracking || {}).forEach((playerId) => {
-            if (framesData[currentFrame]?.persontracking) {
-                const player = framesData[currentFrame].persontracking[playerId];
-                hits[playerId] = countPlayerHits(framesData, player.id, currentFrame);
-            }
-        });
-        setPlayerHits(hits);
     }, [framesData, currentFrame]);
 
     return (
@@ -37,7 +26,6 @@ export default function FrameInfos({ framesData, events }: {
             <BallSection frameData={frameData} />
             <PlayersSection 
                 frameData={frameData} 
-                playerHits={playerHits}
             />
         </div>
     )

@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useStore } from "@/context/store";
 import { VideoInfo, JSONData, StatsData } from "@/types/files";
 import { fetchVideoData } from "@/utils/fetchVideoData";
@@ -29,6 +29,8 @@ export default function VideoPage() {
 
     const paramsId = params.id;
 
+    const cumulativeHitsRef = useRef<{ [playerId: string]: { service: number, lob: number, hit: number } }>({});
+
     useEffect(() => {
         if (videos.length === 0) {
             fetchFiles({ setLoading, setError, setVideos });
@@ -44,22 +46,46 @@ export default function VideoPage() {
             fetchVideoData(video.videoPath)
                 .then(data => {
                     if (data?.jsonData) {
+                        cumulativeHitsRef.current = {};
                         const playersHits = data.jsonData.stats.players;
-                        Object.values(data.jsonData.data).forEach(frame => {
+                        
+                        Object.values(data.jsonData.data).forEach((frame) => {
                             if (frame.persontracking) {
                                 Object.values(frame.persontracking).forEach(player => {
+                                    const playerId = player.id.toString();
+                                    
+                                    if (!cumulativeHitsRef.current[playerId]) {
+                                        cumulativeHitsRef.current[playerId] = {
+                                            service: 0,
+                                            lob: 0,
+                                            hit: 0
+                                        };
+                                    }
+                                    
+                                    player.hit_count = {
+                                        service: cumulativeHitsRef.current[playerId].service,
+                                        lob: cumulativeHitsRef.current[playerId].lob,
+                                        hit: cumulativeHitsRef.current[playerId].hit
+                                    };
+                                    
                                     player.do_hit = false;
-                                    player.hit_type = undefined;
-                                    const playerStats = playersHits[player.id];
-                                    if (frame.detection === 'service') {
-                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
+                                    const playerStats = playersHits[playerId];
+                                    
+                                    if (frame.detection?.toLowerCase() === 'service') {
+                                        if (playerStats?.hits?.includes(frame.frame_idx)) {
                                             player.do_hit = true;
-                                            player.hit_type = 'service';
+                                            cumulativeHitsRef.current[playerId].service++;
+                                            player.hit_count.service = cumulativeHitsRef.current[playerId].service;
                                         }
-                                    } else if (playerStats) {
-                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
+                                    } else if (frame.detection?.toLowerCase() === 'hit') {
+                                        if (playerStats?.lobs?.includes(frame.frame_idx)) {
                                             player.do_hit = true;
-                                            player.hit_type = playerStats.lobs?.includes(frame.frame_idx) ? 'lob' : 'hit';
+                                            cumulativeHitsRef.current[playerId].lob++;
+                                            player.hit_count.lob = cumulativeHitsRef.current[playerId].lob;
+                                        } else if (playerStats?.hits?.includes(frame.frame_idx)) {
+                                            player.do_hit = true;
+                                            cumulativeHitsRef.current[playerId].hit++;
+                                            player.hit_count.hit = cumulativeHitsRef.current[playerId].hit;
                                         }
                                     }
                                 });
