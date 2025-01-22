@@ -15,6 +15,8 @@ import { useActiveLayers } from "@/context/layers";
 import ToolBox from "@/components/toolBox/ToolBox";
 import AllTimelines from "@/components/timelines/AllTimelines";
 import StatsArray from "@/components/StatsArray/StatsArray";
+import { calculateCumulativeDistances } from "@/utils/calculateCumulativeDistances";
+import { calculatePlayerHits } from "@/utils/calculatePlayerHits";
 
 export default function VideoPage() {
     const params = useParams();
@@ -42,60 +44,10 @@ export default function VideoPage() {
             setLoading(true);
             fetchVideoData(video.videoPath)
                 .then(data => {
-                    if (data) {
-                        if (!data.jsonData) return;
-                        const playersHits = data.jsonData.stats.players;
-
-                        Object.values(data.jsonData.data).forEach(frame => {
-                            if (frame.persontracking) {
-                                Object.values(frame.persontracking).forEach(player => {
-                                    player.do_hit = false;
-                                    player.hit_type = undefined;
-                                    const playerStats = playersHits[player.id];
-
-                                    if (frame.detection === 'service') {
-                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
-                                            player.do_hit = true;
-                                            player.hit_type = 'service';
-                                        }
-                                    } else if (playerStats) {
-                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
-                                            player.do_hit = true;
-                                            player.hit_type = playerStats.lobs?.includes(frame.frame_idx) ? 'lob' : 'hit';
-                                        }
-                                    }
-                                });
-                            }
-                        });
-
-                        const previousLegs: { [key: string]: [number, number] } = {};
-
-                        const cumulativeDistances: { [key: number]: number } = {};
-
-                        Object.keys(data.jsonData.data).sort((a, b) => Number(a) - Number(b)).forEach(frameIndex => {
-                            if (!data.jsonData) return;
-                            const frame = data.jsonData.data[frameIndex];
-                            if (frame.persontracking) {
-                                Object.values(frame.persontracking).forEach(player => {
-                                    if (!cumulativeDistances[player.id]) {
-                                        cumulativeDistances[player.id] = 0;
-                                    }
-
-                                    if (previousLegs[player.id]) {
-                                        const [prevX, prevY] = previousLegs[player.id];
-                                        const [currentX, currentY] = player.court_legs;
-                                        const distance = Math.sqrt(
-                                            Math.pow(currentX - prevX, 2) + 
-                                            Math.pow(currentY - prevY, 2)
-                                        );
-                                        cumulativeDistances[player.id] += distance;
-                                        player.cumulate_distance = cumulativeDistances[player.id];
-                                    }
-                                    previousLegs[player.id] = player.court_legs;
-                                });
-                            }
-                        });
-
+                    if (data?.jsonData) {
+                        calculatePlayerHits(data.jsonData);
+                        calculateCumulativeDistances(data.jsonData);
+                        
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData);
                     }
