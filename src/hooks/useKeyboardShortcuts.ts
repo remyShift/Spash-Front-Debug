@@ -48,9 +48,6 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                 case 'arrowright':
                     if (!activeTimeline) handleFrameChange(currentFrame + 1);
                     break;
-                case 'h':
-                    toggleActiveLayers('homography');
-                    break;
                 case 'p':
                     toggleActiveLayers('players');
                     break;
@@ -59,6 +56,15 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                     break;
                 case 'a':
                     toggleActiveLayers('areas');
+                    break;
+                case 'h':
+                    toggleActiveLayers('hits');
+                    break;
+                case 'd':
+                    toggleActiveLayers('distance');
+                    break;
+                case 'r':
+                    toggleActiveLayers('rebounds');
                     break;
                 case 't':
                     toggleActiveLayers('trajectories');

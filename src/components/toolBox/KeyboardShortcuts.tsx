@@ -1,43 +1,49 @@
+interface ShortcutItem {
+    key: string;
+    action: string;
+}
+
+const KEYBOARD_SHORTCUTS: ShortcutItem[] = [
+    { key: "⬅️", action: "- 1 frame" },
+    { key: "➡️", action: "+ 1 frame" },
+    { key: "Shift + ⬅️", action: "- 100 frames" },
+    { key: "Shift + ➡️", action: "+ 100 frames" },
+    { key: "Espace", action: "Play/Pause" },
+    { key: "P", action: "Players" },
+    { key: "B", action: "Ball" },
+    { key: "A", action: "Areas" },
+    { key: "H", action: "Hits" },
+    { key: "D", action: "Distance" },
+    { key: "R", action: "Rebounds" },
+    { key: "T", action: "Trajectories" }
+];
+
 export default function KeyboardShortcuts({ accordionOpen }: { accordionOpen: boolean }) {
+    const baseClasses = "flex justify-center items-center gap-6";
+    const columnClasses = "text-sm space-y-2 w-1/3";
+
     return (
         <div className={`flex p-4 bg-lightBackground ${accordionOpen ? "block" : "hidden"} transition-all duration-300 ease-in-out rounded-b-lg w-full`}>
-            <ul className="text-sm space-y-2 w-1/3">
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">⬅️</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">➡️</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">Shift + ⬅️</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">Shift + ➡️</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">Espace</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">P</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">B</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">A</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">H</li>
-                <li className="flex text-primary justify-center items-center gap-6 font-semibold">T</li>
+            <ul className={columnClasses}>
+                {KEYBOARD_SHORTCUTS.map(shortcut => (
+                    <li key={shortcut.key} className={`${baseClasses} text-primary font-semibold`}>
+                        {shortcut.key}
+                    </li>
+                ))}
             </ul>
 
-            <ul className="text-sm space-y-2 w-1/3">
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
-                <li className="flex text-white justify-center items-center gap-6">|</li>
+            <ul className={columnClasses}>
+                {KEYBOARD_SHORTCUTS.map(shortcut => (
+                    <li key={shortcut.key} className={`${baseClasses} text-white`}>|</li>
+                ))}
             </ul>
 
-            <ul className="text-sm space-y-2 w-1/3">
-                <li className="flex text-white justify-center items-center gap-6">- 1 frame</li>
-                <li className="flex text-white justify-center items-center gap-6">+ 1 frame</li>
-                <li className="flex text-white justify-center items-center gap-6">- 100 frames</li>
-                <li className="flex text-white justify-center items-center gap-6">+ 100 frames</li>
-                <li className="flex text-white justify-center items-center gap-6">Play/Pause</li>
-                <li className="flex text-white justify-center items-center gap-6">Players</li>
-                <li className="flex text-white justify-center items-center gap-6">Ball</li>
-                <li className="flex text-white justify-center items-center gap-6">Areas</li>
-                <li className="flex text-white justify-center items-center gap-6">Homography</li>
-                <li className="flex text-white justify-center items-center gap-6">Trajectories</li>
+            <ul className={columnClasses}>
+                {KEYBOARD_SHORTCUTS.map(shortcut => (
+                    <li key={shortcut.key} className={`${baseClasses} text-white`}>
+                        {shortcut.action}
+                    </li>
+                ))}
             </ul>
         </div>
     );

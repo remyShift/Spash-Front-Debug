@@ -85,20 +85,22 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
                             }
                         }}
                     />
+                </div>
+                <div className="flex items-center gap-4">
                     <PlaybackSpeed 
                         speed={playbackRate}
                         onSpeedChange={(speed) => {
-                            if (videoRef.current) {
-                                videoRef.current.playbackRate = speed;
-                                setPlaybackRate(speed);
-                            }
+                        if (videoRef.current) {
+                            videoRef.current.playbackRate = speed;
+                            setPlaybackRate(speed);
+                        }
                         }}
                     />
+                    <TimeDisplay 
+                        currentTime={currentTime}
+                        duration={duration}
+                    />
                 </div>
-                <TimeDisplay 
-                    currentTime={currentTime}
-                    duration={duration}
-                />
             </div>
         </div>
     );

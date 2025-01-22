@@ -3,7 +3,7 @@ import AccordionItem from './AccordionItem'
 import Spacer from '../Spacer'
 import KeyboardShortcuts from '../../toolBox/KeyboardShortcuts'
 import { JSONData } from '@/types/files'
-import FrameInfos from '../../toolBox/FrameInfos'
+import FrameInfos from '../../toolBox/frameInfos/FrameInfos'
 
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     return (

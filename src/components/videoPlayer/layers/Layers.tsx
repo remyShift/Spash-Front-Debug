@@ -8,7 +8,6 @@ export default function Layers() {
     return (
         <div className="flex flex-row gap-1">
             <ButtonLayer content="layers" handleClick={() => {}} />
-            <ButtonLayer content="homography" handleClick={() => toggleActiveLayers('homography')} />
             <ButtonLayer content="players" handleClick={() => toggleActiveLayers('players')} />
             <ButtonLayer content="ball" handleClick={() => toggleActiveLayers('ball')} />
             <ButtonLayer content="areas" handleClick={() => toggleActiveLayers('areas')} />

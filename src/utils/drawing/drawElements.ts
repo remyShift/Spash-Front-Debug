@@ -1,8 +1,6 @@
-import { defaultDrawingConfig } from "./config";
 import { JSONData } from "@/types/files";
 import { BallLayer, Layers } from "@/types/layers";
 import { initializeAnimation } from "./config";
-import { drawFramesNumber } from "./drawFrames";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
 import { drawBall } from "./ball/drawBall";
 import { drawHits } from "./players/drawHits";
@@ -67,9 +65,6 @@ export const drawElements = (
                         drawPlayerTrajectories(player, currentFrame, videoWidth, videoHeight, persistentCtx);
                     });
                 }
-                break;
-            case 'homography':
-                drawFramesNumber(currentFrame, mainCtx, Object.keys(videoData.data).length, defaultDrawingConfig);
                 break;
             case 'players':
                 if (players) {
