@@ -22,8 +22,6 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     const persistentCanvasRef = useRef<HTMLCanvasElement>(null);
     const { setMainCanvasRef, setPersistentCanvasRef } = useCanvas();
 
-    console.log(statsData);
-
     useEffect(() => {
         if (mainCanvasRef.current) {
             setMainCanvasRef(mainCanvasRef);

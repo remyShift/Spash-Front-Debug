@@ -11,7 +11,6 @@ interface MainTimelineProps {
 }
 
 export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: MainTimelineProps) => {
-    console.log(duration);
     const maxDuration = isNaN(duration) ? 0 : duration;
     const currentTimeValue = isNaN(currentTime) ? 0 : currentTime;
     const progressWidth = maxDuration > 0 ? (currentTimeValue / maxDuration) * 100 : 0;

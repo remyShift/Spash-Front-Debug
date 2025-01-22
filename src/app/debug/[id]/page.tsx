@@ -16,7 +16,6 @@ import ToolBox from "@/components/toolBox/ToolBox";
 import AllTimelines from "@/components/timelines/AllTimelines";
 import StatsArray from "@/components/StatsArray/StatsArray";
 import { calculateCumulativeDistances } from "@/utils/calculateCumulativeDistances";
-import { calculatePlayerHits } from "@/utils/calculatePlayerHits";
 
 export default function VideoPage() {
     const params = useParams();
@@ -45,7 +44,28 @@ export default function VideoPage() {
             fetchVideoData(video.videoPath)
                 .then(data => {
                     if (data?.jsonData) {
-                        calculatePlayerHits(data.jsonData);
+                        const playersHits = data.jsonData.stats.players;
+                        Object.values(data.jsonData.data).forEach(frame => {
+                            if (frame.persontracking) {
+                                Object.values(frame.persontracking).forEach(player => {
+                                    player.do_hit = false;
+                                    player.hit_type = undefined;
+                                    const playerStats = playersHits[player.id];
+                                    if (frame.detection === 'service') {
+                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
+                                            player.do_hit = true;
+                                            player.hit_type = 'service';
+                                        }
+                                    } else if (playerStats) {
+                                        if (playerStats.hits && playerStats.hits.includes(frame.frame_idx)) {
+                                            player.do_hit = true;
+                                            player.hit_type = playerStats.lobs?.includes(frame.frame_idx) ? 'lob' : 'hit';
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
                         calculateCumulativeDistances(data.jsonData);
                         
                         setJsonData(data.jsonData);
