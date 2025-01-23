@@ -1,4 +1,4 @@
-export type Layers = "players" | "ball" | "areas" | "trajectories" | "hits" | "distance" | "rebounds";
+export type Layers = "players" | "ball" | "areas" | "trajectories" | "hits" | "distance" | "rebounds" | "homography";
 
 export type BallLayer = {
     coordinates: number[];

@@ -12,6 +12,7 @@ import { getNextReboundFrame } from "@/utils/getNextReboundFrame";
 import { drawNextReboundPrediction } from "@/utils/drawing/ball/drawNextReboundPrediction";
 import { drawAreas } from "./areas/drawAreas";
 import { PersonTracking } from "@/types/files";
+import { drawHomography } from "./areas/drawHomography";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -50,7 +51,7 @@ export const drawElements = (
         canvasRefs.persistentCanvas.height = videoHeight;
     }
 
-    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds'];
+    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography'];
     const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas'];
 
     const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
@@ -112,6 +113,11 @@ function processMainLayer(
                     const nextReboundFrameCoordinates = videoData.data[ball.nextReboundFrame]["ball.center.video"] || [0, 0];
                     drawNextReboundPrediction(nextReboundFrameCoordinates, videoWidth, videoHeight, mainCtx);
                 }
+            }
+            break;
+        case 'homography':
+            if (videoData.zones.homography) {
+                drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
             }
             break;
     }
