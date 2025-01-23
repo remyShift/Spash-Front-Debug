@@ -158,7 +158,7 @@ function processPersistentLayer(
         case 'areas':
             if (players) {
                 const zones = videoData.zones;
-                drawAreas(players, currentFrame, videoWidth, videoHeight, persistentCtx, zones);
+                drawAreas(currentFrame, videoWidth, videoHeight, persistentCtx, zones);
             }
             break;
     }
