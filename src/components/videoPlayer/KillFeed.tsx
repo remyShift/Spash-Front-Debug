@@ -44,7 +44,7 @@ export default function KillFeed({ currentFrame, frameData }: KillFeedProps) {
                 if (player.do_hit) {
                     const newEvent: FeedEvent = {
                         id: Date.now(),
-                        message: `Player ${player.id} ${player.hit_type || 'hit'}`,
+                        message: `Player ${player.name} ${frameData.detection?.toLowerCase() || 'hit'}`,
                         timestamp: currentFrame
                     };
                     

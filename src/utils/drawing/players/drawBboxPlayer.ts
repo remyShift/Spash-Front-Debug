@@ -27,21 +27,21 @@ export const drawSquare = (
 };
 
 export const drawPlayerBBox = (
-    person: PersonTracking,
+    player: PersonTracking,
     videoWidth: number,
     videoHeight: number,
     context: CanvasRenderingContext2D
 ): void => {
-    if (!person?.bbox) return;
+    if (!player?.bbox) return;
 
     const canvas = context.canvas;
     const scaleX = canvas.width / videoWidth;
     const scaleY = canvas.height / videoHeight;
 
-    const [x1, y1, x2, y2] = person.bbox;
+    const [x1, y1, x2, y2] = player.bbox;
     if (!isValidBBox(x1, y1, x2, y2, videoWidth, videoHeight)) return;
 
-    const [, legsY] = person.legs;
+    const [, legsY] = player.legs;
 
     const scaledX1 = x1 * scaleX;
     const scaledY1 = y1 * scaleY;
@@ -51,16 +51,16 @@ export const drawPlayerBBox = (
     const boxWidth = Math.abs(scaledX2 - scaledX1);
     const boxHeight = Math.abs(scaledLegsY - scaledY1);
 
-    const playerColor = getPlayerColor(person.id);
+    const playerColor = getPlayerColor(player.id);
     configureContext(context, { strokeStyle: playerColor });
     
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
-    const text = `${person.id} -|- ${person.confidence.toFixed(2)}`;
+    const text = `${player.id} | ${player.name} | ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
     const padding = 4;
-    const textHeight = 25;
+    const textHeight = 30;
 
     context.fillStyle = playerColor;
     context.fillRect(
