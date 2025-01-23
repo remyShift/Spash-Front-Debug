@@ -34,6 +34,11 @@ export interface PersonTracking {
     legs: [number, number];
     player_legs: [number, number];
     court_legs: [number, number];
+    zones: {
+        attack: boolean;
+        defense: boolean;
+        nomansland: boolean;
+    };
     do_hit: boolean;
     hit_count: {
         service: number;

@@ -15,7 +15,8 @@ const KEYBOARD_SHORTCUTS: ShortcutItem[] = [
     { key: "H", action: "Hits" },
     { key: "D", action: "Distance" },
     { key: "R", action: "Rebounds" },
-    { key: "T", action: "Trajectories" }
+    { key: "T", action: "Trajectories" },
+    { key: "O", action: "Homography" }
 ];
 
 export default function KeyboardShortcuts({ accordionOpen }: { accordionOpen: boolean }) {

@@ -1,4 +1,5 @@
 import { configureContext } from "../canvas";
+import { PersonTracking } from "@/types/files";
 
 interface TacticalZone {
     name: string;
@@ -7,6 +8,7 @@ interface TacticalZone {
 }
 
 export const drawAreas = (
+    players: [string, PersonTracking][],
     currentFrame: number,
     videoWidth: number,
     videoHeight: number,
@@ -20,9 +22,6 @@ export const drawAreas = (
 ) => {
     const canvas = context.canvas;
     configureContext(context);
-
-    const HIGHLIGHT_DURATION = 25;
-    const activeZones: { [key: string]: number } = {};
 
     const zonesConfig: TacticalZone[] = [
         {
@@ -58,24 +57,27 @@ export const drawAreas = (
         context.lineTo(scaledPoints[0][0], scaledPoints[0][1]);
         context.closePath();
 
-        const isZoneActive = activeZones[zone.name] && 
-                            currentFrame - activeZones[zone.name] < HIGHLIGHT_DURATION;
+        const isPlayerInZone = players.some(([, player]) => {
+            const zoneName = zone.name.toLowerCase().replace(/\s+/g, '');
+            return player.zones[zoneName as keyof typeof player.zones];
+        });
 
-        context.fillStyle = isZoneActive ? 
-            zone.color.replace("0.2", "0.5") : 
-            zone.color;
+        const baseOpacity = isPlayerInZone ? "0.4" : "0.2";
+
+        context.fillStyle = zone.color.replace("0.2", baseOpacity);
+        context.shadowColor = zone.color.replace("0.2", "1");
         context.fill();
 
+        context.shadowBlur = 0;
         context.strokeStyle = zone.color.replace("0.2", "0.8");
         context.lineWidth = 2;
         context.stroke();
 
-        const centerX = scaledPoints.reduce((sum, [x]) => sum + x, 0) / scaledPoints.length;
-        const centerY = scaledPoints.reduce((sum, [, y]) => sum + y, 0) / scaledPoints.length;
-
         context.fillStyle = "white";
         context.font = "bold 18px Arial";
         context.textAlign = "center";
+        const centerX = scaledPoints.reduce((sum, [x]) => sum + x, 0) / scaledPoints.length;
+        const centerY = scaledPoints.reduce((sum, [, y]) => sum + y, 0) / scaledPoints.length;
         context.fillText(zone.name, centerX, centerY);
     });
 };

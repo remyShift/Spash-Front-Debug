@@ -60,6 +60,9 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                 case 'h':
                     toggleActiveLayers('hits');
                     break;
+                case 'o':
+                    toggleActiveLayers('homography');
+                    break;
                 case 'd':
                     toggleActiveLayers('distance');
                     break;
