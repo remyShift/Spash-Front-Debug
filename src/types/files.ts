@@ -76,9 +76,12 @@ export interface JSONData {
     };
     zones: {
         homography: number[][][];
-        nomansland: [number, number][];
-        attack: [number, number][];
-        defense: [number, number][];
+        nomansland_right: [number, number][];
+        nomansland_left: [number, number][];
+        attack_right: [number, number][];
+        attack_left: [number, number][];
+        defense_right: [number, number][];
+        defense_left: [number, number][];
     };
 }
 

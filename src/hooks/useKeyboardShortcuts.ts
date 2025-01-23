@@ -55,7 +55,10 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
                     toggleActiveLayers('ball');
                     break;
                 case 'a':
-                    toggleActiveLayers('areas');
+                    toggleActiveLayers('areas-ab');
+                    break;
+                case 'c':
+                    toggleActiveLayers('areas-cd');
                     break;
                 case 'h':
                     toggleActiveLayers('hits');

@@ -11,7 +11,8 @@ export default function Layers({ jsonData }: { jsonData: JSONData }) {
             <ButtonLayer content="layers" handleClick={() => {}} jsonData={jsonData} />
             <ButtonLayer content="players" handleClick={() => toggleActiveLayers('players')} jsonData={jsonData} />
             <ButtonLayer content="ball" handleClick={() => toggleActiveLayers('ball')} jsonData={jsonData} />
-            <ButtonLayer content="areas" handleClick={() => toggleActiveLayers('areas')} jsonData={jsonData} />
+            <ButtonLayer content="areas-AB" handleClick={() => toggleActiveLayers('areas-ab')} jsonData={jsonData} />
+            <ButtonLayer content="areas-CD" handleClick={() => toggleActiveLayers('areas-cd')} jsonData={jsonData} />
             <ButtonLayer content="trajectories" handleClick={() => toggleActiveLayers('trajectories')} jsonData={jsonData} />
             <ButtonLayer content="hits" handleClick={() => toggleActiveLayers('hits')} jsonData={jsonData} />
             <ButtonLayer content="distance" handleClick={() => toggleActiveLayers('distance')} jsonData={jsonData} />

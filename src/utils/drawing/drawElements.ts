@@ -10,7 +10,7 @@ import { drawBallTrajectory } from "./ball/drawBallTrajectory";
 import { drawBounceGlow } from "./ball/drawBounces";
 import { getNextReboundFrame } from "@/utils/getNextReboundFrame";
 import { drawNextReboundPrediction } from "@/utils/drawing/ball/drawNextReboundPrediction";
-import { drawAreas } from "./areas/drawAreas";
+import { drawAreasAB, drawAreasCD } from "./areas/drawAreas";
 import { PersonTracking } from "@/types/files";
 import { drawHomography } from "./areas/drawHomography";
 
@@ -31,31 +31,28 @@ export const drawElements = (
 
     if (!frameData || !videoWidth || !videoHeight || activeLayers.length === 0 || !mainCtx || !persistentCtx) return;
     
-    if (mainCtx) {
-        mainCtx.globalCompositeOperation = 'source-over';
-        mainCtx.imageSmoothingEnabled = false;
-    }
-
-    if (persistentCtx) {
-        persistentCtx.globalCompositeOperation = 'source-over';
-        persistentCtx.imageSmoothingEnabled = false;
-    }
-
     mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
     persistentCtx.clearRect(0, 0, canvasRefs.persistentCanvas.width, canvasRefs.persistentCanvas.height);
 
+    [mainCtx, persistentCtx].forEach(ctx => {
+        if (ctx) {
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.imageSmoothingEnabled = false;
+        }
+    });
+
     if (canvasRefs.mainCanvas.width !== videoWidth || canvasRefs.mainCanvas.height !== videoHeight) {
-        canvasRefs.mainCanvas.width = videoWidth;
-        canvasRefs.mainCanvas.height = videoHeight;
-        canvasRefs.persistentCanvas.width = videoWidth;
-        canvasRefs.persistentCanvas.height = videoHeight;
+        [canvasRefs.mainCanvas, canvasRefs.persistentCanvas].forEach(canvas => {
+            canvas.width = videoWidth;
+            canvas.height = videoHeight;
+        });
     }
 
     const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography'];
-    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas'];
+    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd'];
 
     const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
-    
+
     activeLayers.forEach(layer => {
         if (mainLayerOperations.includes(layer)) {
             processMainLayer(layer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
@@ -155,10 +152,24 @@ function processPersistentLayer(
                 });
             }
             break;
-        case 'areas':
-            if (players) {
-                const zones = videoData.zones;
-                drawAreas(players, currentFrame, videoWidth, videoHeight, persistentCtx, zones);
+        case 'areas-ab':
+            if (videoData.zones.homography) {
+                const zonesAB = {
+                    nomansland_left: videoData.zones.nomansland_left,
+                    attack_left: videoData.zones.attack_left,
+                    defense_left: videoData.zones.defense_left
+                };
+                drawAreasAB(players, currentFrame, videoWidth, videoHeight, persistentCtx, zonesAB);
+            }
+            break;
+        case 'areas-cd':
+            if (videoData.zones.homography) {
+                const zonesCD = {
+                    nomansland_right: videoData.zones.nomansland_right,
+                    attack_right: videoData.zones.attack_right,
+                    defense_right: videoData.zones.defense_right
+                };
+                drawAreasCD(players, currentFrame, videoWidth, videoHeight, persistentCtx, zonesCD);
             }
             break;
     }
