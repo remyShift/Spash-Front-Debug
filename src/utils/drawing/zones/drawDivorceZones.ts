@@ -1,5 +1,5 @@
 import { configureContext } from "../canvas";
-import { PersonTracking } from "@/types/files";
+import { JSONData, PersonTracking } from "@/types/files";
 
 interface DivorceZone {
     name: string;
@@ -13,6 +13,7 @@ export const drawDivorceZones = (
     videoWidth: number,
     videoHeight: number,
     context: CanvasRenderingContext2D,
+    videoData: JSONData,
     zones: {
         divorce_right: [number, number][];
     }
@@ -46,7 +47,9 @@ export const drawDivorceZones = (
         context.lineTo(scaledPoints[0][0], scaledPoints[0][1]);
         context.closePath();
 
-        const baseOpacity = 0.2;
+        const isBallInZone = videoData.data[currentFrame]["ball.zones"]?.divorce_zone;
+
+        const baseOpacity = isBallInZone ? 0.6 : 0.2;
 
         context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());
         context.shadowColor = zone.color.replace("0.2", "1");

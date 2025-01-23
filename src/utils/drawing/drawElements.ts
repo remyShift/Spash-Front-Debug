@@ -186,7 +186,7 @@ function processPersistentLayer(
                 const divorceZones = {
                     divorce_right: videoData.zones.divorce_right
                 };
-                drawDivorceZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, divorceZones);
+                drawDivorceZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, divorceZones);
             }
             break;
     }

@@ -56,6 +56,11 @@ export interface JSONData {
             "ball.center"?: [number, number];
             "ball.center.video"?: [number, number];
             "ball.score"?: number;
+            "ball.zones"?: {
+                divorce_zone: boolean;
+                top_lob: boolean;
+                safe_ball: boolean;
+            };
             persontracking?: {
                 [playerId: string]: PersonTracking;
             };
