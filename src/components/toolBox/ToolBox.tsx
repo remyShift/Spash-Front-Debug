@@ -5,7 +5,7 @@ import Spacer from "../ui/Spacer";
 
 export default function ToolBox({ videoData }: { videoData: JSONData }) {
     return (
-        <div className="flex flex-col w-[27%]">
+        <div className="flex flex-col w-1/4">
             <div className="w-fit px-3 h-8 bg-primary rounded-t-md flex items-center justify-center">
                 <p className="text-white font-semibold text-base">Tools</p>
             </div>

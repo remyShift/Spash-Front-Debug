@@ -17,6 +17,7 @@ import AllTimelines from "@/components/timelines/AllTimelines";
 import StatsArray from "@/components/StatsArray/StatsArray";
 import { calculateCumulativeDistances } from "@/utils/calculateCumulativeDistances";
 import { calculateCumulativeHits } from "@/utils/calculateCumulativeHits";
+import Footer from "@/components/ui/Footer";
 
 export default function VideoPage() {
     const params = useParams();
@@ -107,6 +108,7 @@ export default function VideoPage() {
                 </div>
             </div>
             <StatsArray statsData={statsData as StatsData} />
+            <Footer />
         </div>
     );
 }   
