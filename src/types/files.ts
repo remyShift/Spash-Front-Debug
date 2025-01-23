@@ -57,9 +57,12 @@ export interface JSONData {
             "ball.center.video"?: [number, number];
             "ball.score"?: number;
             "ball.zones"?: {
-                divorce_zone: boolean;
-                top_lob: boolean;
-                safe_ball: boolean;
+                divorce_zone_right?: boolean;
+                divorce_zone_left?: boolean;
+                top_lob_right?: boolean;
+                top_lob_left?: boolean;
+                safe_ball_right?: boolean;
+                safe_ball_left?: boolean;
             };
             persontracking?: {
                 [playerId: string]: PersonTracking;
@@ -88,6 +91,11 @@ export interface JSONData {
         defense_right: [number, number][];
         defense_left: [number, number][];
         divorce_right: [number, number][];
+        divorce_left: [number, number][];
+        balle_sure_right: [number, number][];
+        balle_sure_left: [number, number][];
+        toplob_right: [number, number][];
+        toplob_left: [number, number][];
     };
 }
 

@@ -5,6 +5,7 @@ interface DivorceZone {
     name: string;
     points: [number, number][];
     color: string;
+    zoneKey: 'divorce_zone_right' | 'divorce_zone_left';
 }
 
 export const drawDivorceZones = (
@@ -16,6 +17,7 @@ export const drawDivorceZones = (
     videoData: JSONData,
     zones: {
         divorce_right: [number, number][];
+        divorce_left: [number, number][];
     }
 ) => {
     const canvas = context.canvas;
@@ -25,7 +27,14 @@ export const drawDivorceZones = (
         {
             name: "DIVORCE RIGHT",
             points: zones.divorce_right,
-            color: "rgba(255, 0, 255, 0.2)"
+            color: "rgba(255, 0, 255, 0.2)",
+            zoneKey: "divorce_zone_right"
+        },
+        {
+            name: "DIVORCE LEFT",
+            points: zones.divorce_left,
+            color: "rgba(255, 0, 255, 0.2)",
+            zoneKey: "divorce_zone_left"
         }
     ];
 
@@ -47,8 +56,7 @@ export const drawDivorceZones = (
         context.lineTo(scaledPoints[0][0], scaledPoints[0][1]);
         context.closePath();
 
-        const isBallInZone = videoData.data[currentFrame]["ball.zones"]?.divorce_zone;
-
+        const isBallInZone = videoData.data[currentFrame]["ball.zones"]?.[zone.zoneKey];
         const baseOpacity = isBallInZone ? 0.6 : 0.2;
 
         context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());

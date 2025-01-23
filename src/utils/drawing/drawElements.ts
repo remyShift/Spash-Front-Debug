@@ -14,6 +14,8 @@ import { drawAreasAB, drawAreasCD } from "./areas/drawAreas";
 import { PersonTracking } from "@/types/files";
 import { drawHomography } from "./areas/drawHomography";
 import { drawDivorceZones } from "./zones/drawDivorceZones";
+import { drawSafeBallZones } from "./zones/drawSafeBallZones";
+import { drawTopLobZones } from "./zones/drawTopLobZones";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -184,9 +186,28 @@ function processPersistentLayer(
         case 'divorces':
             if (videoData.zones.divorce_right) {
                 const divorceZones = {
-                    divorce_right: videoData.zones.divorce_right
+                    divorce_right: videoData.zones.divorce_right,
+                    divorce_left: videoData.zones.divorce_left
                 };
                 drawDivorceZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, divorceZones);
+            }
+            break;
+        case 'top lob':
+            if (videoData.zones.toplob_right) {
+                const topLobZones = {
+                    top_lob_right: videoData.zones.toplob_right,
+                    top_lob_left: videoData.zones.toplob_left
+                };
+                drawTopLobZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, topLobZones);
+            }
+            break;
+        case 'safe ball':
+            if (videoData.zones.balle_sure_right) {
+                const safeBallZones = {
+                    balle_sure_right: videoData.zones.balle_sure_right,
+                    balle_sure_left: videoData.zones.balle_sure_left
+                };
+                drawSafeBallZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, safeBallZones);
             }
             break;
     }
