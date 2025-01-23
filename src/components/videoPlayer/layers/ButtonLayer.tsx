@@ -35,12 +35,18 @@ export default function ButtonLayer({
                 );
             }
         } else if (isActive && mainCanvasRef?.current && persistentCanvasRef?.current) {
-            const ctx1 = mainCanvasRef.current.getContext('2d');
-            const ctx2 = persistentCanvasRef.current.getContext('2d');
-            
-            if (ctx1 && ctx2) {
-                ctx1.clearRect(0, 0, mainCanvasRef.current.width, mainCanvasRef.current.height);
-                ctx2.clearRect(0, 0, persistentCanvasRef.current.width, persistentCanvasRef.current.height);
+            const video = document.querySelector('video');
+            if (video) {
+                const updatedLayers = activeLayers.filter(layer => layer !== content);
+                drawElements(
+                    jsonData as JSONData,
+                    updatedLayers,
+                    video,
+                    {
+                        mainCanvas: mainCanvasRef.current,
+                        persistentCanvas: persistentCanvasRef.current
+                    }
+                );
             }
         }
     }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, activeLayers, content, isActive]);
