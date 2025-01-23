@@ -91,7 +91,7 @@ export default function VideoPage() {
                     <BackBtn />
                     <div className="flex justify-center gap-24 mt-2 h-full w-full">
                         <div className="flex flex-col gap-0 w-fit h-full">
-                            <Layers />
+                            <Layers jsonData={jsonData as JSONData} />
                             <div className="flex flex-col gap-2 w-full h-full">
                                 <VideoPlayer
                                     currentVideo={currentVideo} 

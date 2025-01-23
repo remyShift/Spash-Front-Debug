@@ -26,6 +26,9 @@ export default function PlayersSection({ frameData }: PlayersSectionProps) {
                                 ))}
                             </div>
                         </div>
+                        <p className='text-white font-semibold flex gap-1'>Do Hits : 
+                            <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.do_hit ? 'Yes' : 'No'}</span>
+                        </p>
                         <p className='text-white font-semibold flex gap-1'>Hits count : 
                             <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.hit_count.hit || 0}</span>
                         </p>

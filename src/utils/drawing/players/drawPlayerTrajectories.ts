@@ -2,7 +2,7 @@ import { PersonTracking } from "@/types/files";
 import { configureContext } from "../canvas";
 import { getPlayerColor } from "../colors";
 
-const TRAIL_LENGTH = 125; // Nombre de frames pour la traînée
+const TRAIL_LENGTH = 125;
 const MIN_OPACITY = 0.1;
 
 interface TrailPoint {
