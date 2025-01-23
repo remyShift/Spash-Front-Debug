@@ -31,8 +31,18 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
         const fps = 25;
         const timeInSeconds = safeFrame / fps;
         
-        videoRef.current.currentTime = timeInSeconds;
-        await setCurrentFrame(safeFrame);
+        if (safeFrame === maxFrame) {
+            videoRef.current.pause();
+        }
+        
+        if (safeFrame === 0) {
+            videoRef.current.pause();
+            videoRef.current.currentTime = 0;
+            await setCurrentFrame(0);
+        } else {
+            videoRef.current.currentTime = timeInSeconds;
+            await setCurrentFrame(safeFrame);
+        }
         
         const frameData = videoData?.data[safeFrame];
         if (!frameData) return;
