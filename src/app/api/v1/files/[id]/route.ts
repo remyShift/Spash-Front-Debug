@@ -22,7 +22,6 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
             return fs.promises.readFile(jsonPath, 'utf8')
                 .then(jsonData => {
                     const parsedJsonData = JSON.parse(jsonData);
-
                     return fs.promises.readFile(statsPath, 'utf8')
                         .then(statsData => {
                             const parsedStatsData = JSON.parse(statsData);

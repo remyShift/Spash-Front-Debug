@@ -69,6 +69,12 @@ export interface JSONData {
             [key: string]: PlayerStats;
         };
     };
+    zones: {
+        homography: number[][][];
+        nomansland: [number, number][];
+        attack: [number, number][];
+        defense: [number, number][];
+    };
 }
 
 export interface StatsData {

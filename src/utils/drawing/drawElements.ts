@@ -59,7 +59,7 @@ export const drawElements = (
         if (mainLayerOperations.includes(layer)) {
             processMainLayer(layer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
         } else if (persistentLayerOperations.includes(layer)) {
-            processPersistentLayer(layer, players, frameData, videoWidth, videoHeight, persistentCtx, currentFrame);
+            processPersistentLayer(layer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
         }
     });
 }
@@ -121,6 +121,7 @@ function processPersistentLayer(
     layer: Layers,
     players: [string, PersonTracking][],
     frameData: JSONData['data'][number],
+    videoData: JSONData,
     videoWidth: number,
     videoHeight: number,
     persistentCtx: CanvasRenderingContext2D,
@@ -150,7 +151,8 @@ function processPersistentLayer(
             break;
         case 'areas':
             if (players) {
-                drawAreas(players, currentFrame, videoWidth, videoHeight, persistentCtx);
+                const zones = videoData.zones;
+                drawAreas(players, currentFrame, videoWidth, videoHeight, persistentCtx, zones);
             }
             break;
     }
