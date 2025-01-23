@@ -63,10 +63,10 @@ export const drawAreasAB = (
             return player.zones[zoneName as keyof typeof player.zones];
         });
 
-        const teamB = isPlayersInZone.filter(([, player]) => ['C', 'D'].includes(player.name));
+        const teamA = isPlayersInZone.filter(([, player]) => ['A', 'B'].includes(player.name));
 
         const baseOpacity = Math.max(
-            teamB.length > 1 ? 0.6 : teamB.length === 1 ? 0.4 : 0.2
+            teamA.length > 1 ? 0.6 : teamA.length === 1 ? 0.4 : 0.2
         );
 
         context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());
@@ -146,10 +146,10 @@ export const drawAreasCD = (
             return player.zones[zoneName as keyof typeof player.zones];
         });
 
-        const teamB = isPlayersInZone.filter(([, player]) => ['C', 'D'].includes(player.name));
+        const teamC = isPlayersInZone.filter(([, player]) => ['C', 'D'].includes(player.name));
 
         const baseOpacity = Math.max(
-            teamB.length > 1 ? 0.6 : teamB.length === 1 ? 0.4 : 0.2
+            teamC.length > 1 ? 0.6 : teamC.length === 1 ? 0.4 : 0.2
         );
 
         context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());

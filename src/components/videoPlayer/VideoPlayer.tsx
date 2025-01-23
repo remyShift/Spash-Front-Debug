@@ -68,7 +68,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     }, [animate]);
 
     return (
-        <div className="relative w-[1000px]">
+        <div className="relative">
             <div className="relative">
                 <video
                     ref={videoRef}

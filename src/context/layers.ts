@@ -13,10 +13,12 @@ export const useActiveLayers = create<ActiveLayers>((set) => ({
         set({ activeLayers: layers });
     },
     toggleActiveLayers: (layer: Layers) => {
-        set((state) => ({
-            activeLayers: state.activeLayers.includes(layer)
+        set((state) => {
+            const isLayerActive = state.activeLayers.includes(layer);
+            const newLayers = isLayerActive 
                 ? state.activeLayers.filter((l) => l !== layer)
-                : [...state.activeLayers, layer]
-        }));
+                : [...state.activeLayers, layer];
+            return { activeLayers: newLayers };
+        });
     },
 }));

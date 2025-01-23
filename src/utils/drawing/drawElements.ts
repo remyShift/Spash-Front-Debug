@@ -13,6 +13,7 @@ import { drawNextReboundPrediction } from "@/utils/drawing/ball/drawNextReboundP
 import { drawAreasAB, drawAreasCD } from "./areas/drawAreas";
 import { PersonTracking } from "@/types/files";
 import { drawHomography } from "./areas/drawHomography";
+import { drawDivorceZones } from "./zones/drawDivorceZones";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -29,9 +30,10 @@ export const drawElements = (
     const mainCtx = canvasRefs.mainCanvas.getContext('2d');
     const persistentCtx = canvasRefs.persistentCanvas.getContext('2d');
 
-    if (!frameData || !videoWidth || !videoHeight || activeLayers.length === 0 || !mainCtx || !persistentCtx) return;
+    if (!frameData || !videoWidth || !videoHeight || !mainCtx || !persistentCtx) return;
     
     mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
+    
     persistentCtx.clearRect(0, 0, canvasRefs.persistentCanvas.width, canvasRefs.persistentCanvas.height);
 
     [mainCtx, persistentCtx].forEach(ctx => {
@@ -49,14 +51,21 @@ export const drawElements = (
     }
 
     const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography'];
-    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd'];
+    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd', 'divorces', 'top lob', 'safe ball'];
 
     const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
+
+    if (activeLayers.includes('areas-ab')) {
+        processPersistentLayer('areas-ab', players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
+    }
+    if (activeLayers.includes('areas-cd')) {
+        processPersistentLayer('areas-cd', players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
+    }
 
     activeLayers.forEach(layer => {
         if (mainLayerOperations.includes(layer)) {
             processMainLayer(layer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
-        } else if (persistentLayerOperations.includes(layer)) {
+        } else if (persistentLayerOperations.includes(layer) && !['areas-ab', 'areas-cd'].includes(layer)) {
             processPersistentLayer(layer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
         }
     });
@@ -170,6 +179,14 @@ function processPersistentLayer(
                     defense_right: videoData.zones.defense_right
                 };
                 drawAreasCD(players, currentFrame, videoWidth, videoHeight, persistentCtx, zonesCD);
+            }
+            break;
+        case 'divorces':
+            if (videoData.zones.divorce_right) {
+                const divorceZones = {
+                    divorce_right: videoData.zones.divorce_right
+                };
+                drawDivorceZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, divorceZones);
             }
             break;
     }

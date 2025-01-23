@@ -21,42 +21,36 @@ export default function ButtonLayer({
     const handleButtonClick = useCallback(() => {
         handleClick();
         
-        if (!isActive && jsonData && mainCanvasRef?.current && persistentCanvasRef?.current) {
-            const video = document.querySelector('video');
-            if (video) {
-                drawElements(
-                    jsonData,
-                    [...activeLayers, content as Layers],
-                    video,
-                    {
-                        mainCanvas: mainCanvasRef.current,
-                        persistentCanvas: persistentCanvasRef.current
-                    }
-                );
+        if (!mainCanvasRef?.current || !persistentCanvasRef?.current || !jsonData) return;
+        
+        const video = document.querySelector('video');
+        if (!video) return;
+
+        const updatedLayers = isActive 
+            ? activeLayers.filter(layer => layer !== content)
+            : [...activeLayers, content as Layers];
+
+        drawElements(
+            jsonData,
+            updatedLayers,
+            video,
+            {
+                mainCanvas: mainCanvasRef.current,
+                persistentCanvas: persistentCanvasRef.current
             }
-        } else if (isActive && mainCanvasRef?.current && persistentCanvasRef?.current) {
-            const video = document.querySelector('video');
-            if (video) {
-                const updatedLayers = activeLayers.filter(layer => layer !== content);
-                drawElements(
-                    jsonData as JSONData,
-                    updatedLayers,
-                    video,
-                    {
-                        mainCanvas: mainCanvasRef.current,
-                        persistentCanvas: persistentCanvasRef.current
-                    }
-                );
-            }
-        }
+        );
     }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, activeLayers, content, isActive]);
 
     return (
         <button 
-            className={`w-fit px-3 h-8 bg-primary rounded-t-md transition-opacity duration-300 text-white font-semibold active:opacity-80 text-base ${isActive ? "opacity-100" : "opacity-50"}`}
+            className={`w-fit px-8 h-8 bg-primary rounded-t-md transition-opacity duration-300 text-white font-semibold active:opacity-80 text-base ${isActive ? "opacity-100" : "opacity-50"}`}
             onClick={handleButtonClick}
         >
-            {content.charAt(0).toUpperCase() + content.slice(1)}
+            <div className="flex items-center whitespace-nowrap overflow-hidden">
+                <p className="text-white font-semibold truncate">
+                    {content.charAt(0).toUpperCase() + content.slice(1)}
+                </p>
+            </div>
         </button>
     );
 }

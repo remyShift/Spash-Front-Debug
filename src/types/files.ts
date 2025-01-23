@@ -82,6 +82,7 @@ export interface JSONData {
         attack_left: [number, number][];
         defense_right: [number, number][];
         defense_left: [number, number][];
+        divorce_right: [number, number][];
     };
 }
 
