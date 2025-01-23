@@ -57,14 +57,18 @@ export const drawAreas = (
         context.lineTo(scaledPoints[0][0], scaledPoints[0][1]);
         context.closePath();
 
-        const isPlayerInZone = players.some(([, player]) => {
+        const isPlayersInZone = players.filter(([, player]) => {
             const zoneName = zone.name.toLowerCase().replace(/\s+/g, '');
             return player.zones[zoneName as keyof typeof player.zones];
         });
 
-        const baseOpacity = isPlayerInZone ? "0.4" : "0.2";
+        const teamB = isPlayersInZone.filter(([, player]) => ['C', 'D'].includes(player.name));
 
-        context.fillStyle = zone.color.replace("0.2", baseOpacity);
+        const baseOpacity = Math.max(
+            teamB.length > 1 ? 0.6 : teamB.length === 1 ? 0.4 : 0.2
+        );
+
+        context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());
         context.shadowColor = zone.color.replace("0.2", "1");
         context.fill();
 
