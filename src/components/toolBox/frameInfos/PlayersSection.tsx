@@ -29,6 +29,9 @@ export default function PlayersSection({ frameData }: PlayersSectionProps) {
                         <p className='text-white font-semibold flex gap-1'>Speed : 
                             <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.speed_legs?.toFixed(2) || 0}km/h</span>
                         </p>
+                        <p className='text-white font-semibold flex gap-1'>Distance : 
+                            <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.cumulate_distance?.toFixed(2) || 0}m</span>
+                        </p>
                         <p className='text-white font-semibold flex gap-1'>Do Hits : 
                             <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.do_hit ? 'Yes' : 'No'}</span>
                         </p>
