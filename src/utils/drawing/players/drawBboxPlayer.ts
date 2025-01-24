@@ -57,7 +57,7 @@ export const drawPlayerBBox = (
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
-    const text = `${player.id} | ${player.name} | ${player.confidence.toFixed(2)}`;
+    const text = `${player.id} | ${player.name} | ${player.speed_legs.toFixed(2)}km/h | ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
     const padding = 4;
     const textHeight = 30;

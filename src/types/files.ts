@@ -33,6 +33,7 @@ export interface PersonTracking {
     id: number;
     legs: [number, number];
     player_legs: [number, number];
+    speed_legs: number;
     court_legs: [number, number];
     zones: {
         attack: boolean;
