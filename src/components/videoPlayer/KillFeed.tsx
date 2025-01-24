@@ -43,7 +43,7 @@ export default function KillFeed({ currentFrame, frameData }: KillFeedProps) {
             Object.values(frameData.persontracking).forEach(player => {
                 if (player.do_hit) {
                     const newEvent: FeedEvent = {
-                        id: Date.now(),
+                        id: Date.now() + Math.random(),
                         message: `Player ${player.name} ${frameData.detection?.toLowerCase() || 'hit'}`,
                         timestamp: currentFrame
                     };

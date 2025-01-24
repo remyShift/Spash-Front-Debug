@@ -41,7 +41,7 @@ export const drawPlayerBBox = (
     const [x1, y1, x2, y2] = player.bbox;
     if (!isValidBBox(x1, y1, x2, y2, videoWidth, videoHeight)) return;
 
-    const [, legsY] = player.legs;
+    const [, legsY] = player.court_legs;
 
     const scaledX1 = x1 * scaleX;
     const scaledY1 = y1 * scaleY;
@@ -49,7 +49,7 @@ export const drawPlayerBBox = (
     const scaledLegsY = legsY * scaleY;
 
     const boxWidth = Math.abs(scaledX2 - scaledX1);
-    const boxHeight = Math.abs(scaledLegsY - scaledY1);
+    const boxHeight = Math.abs(y2 - y1) * scaleY;
 
     const playerColor = getPlayerColor(player.id);
     configureContext(context, { strokeStyle: playerColor });
