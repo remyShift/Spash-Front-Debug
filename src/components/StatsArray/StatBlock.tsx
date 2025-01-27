@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 
 interface StatBlockProps {
     index: number
@@ -10,21 +10,40 @@ interface StatBlockProps {
 
 export default function StatBlock ({ isEven, children, className = "", rowCount = 1 }: StatBlockProps) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
 
-    const baseHeight = 40; // Hauteur de base pour une ligne
+    const baseHeight = 40;
     const height = rowCount * baseHeight;
+
+    useEffect(() => {
+        if (videoRef.current) {
+            if (isExpanded) {
+                videoRef.current.style.height = 'auto';
+            } else {
+                videoRef.current.style.height = `${height}px`;
+            }
+        }
+    }, [isExpanded, height]);
 
     return (
         <div 
-            className={`w-52 rounded-lg ${isExpanded ? 'h-auto' : `h-[${height}px]`} ${isEven ? "bg-lightBackground" : "bg-lighterBackground"} flex flex-col transition-all duration-300 cursor-pointer justify-center items-center hide-scrollbar ${className}`} 
+            className={`w-52 rounded-lg ${isExpanded ? 'h-auto' : `h-[${height}px]`} ${isEven ? "bg-lightBackground" : "bg-lighterBackground"} cursor-pointer transition-all duration-300 flex flex-col justify-center items-center hide-scrollbar ${className}`} 
             onClick={toggleExpand}
             style={{ minHeight: isExpanded ? 'auto' : `${height}px` }}
         >
-            {children}
+            {React.Children.map(children, child => {
+                if (React.isValidElement(child) && child.type === 'video') {
+                    return React.cloneElement(child, {
+                        ref: videoRef,
+                        className: `w-full object-cover transition-all duration-300 ${isExpanded ? 'h-auto' : `h-[${height}px]`}`
+                    } as React.ComponentProps<'video'>);
+                }
+                return child;
+            })}
         </div>
-    )
+    );
 }
