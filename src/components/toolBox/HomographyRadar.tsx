@@ -1,6 +1,6 @@
 import { JSONData } from "@/types/files";
 import { useEffect, useRef } from "react";
-import { useFrame } from "@/context/frame";
+import { useFrame } from "@/context/frame"; 
 
 export default function HomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
     const width = 350;
@@ -13,8 +13,7 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
 
     useEffect(() => {
         if (!canvas.current) return;
-        
-        // Définir les dimensions du canvas
+
         canvas.current.width = width;
         canvas.current.height = height;
         
@@ -26,16 +25,16 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
         
         if (!frameData?.persontracking) return;
         
-        // Dessiner tous les joueurs
         Object.entries(frameData.persontracking).forEach(([, player]) => {
             if (!player?.court_legs) return;
             
             const [x, y] = player.court_legs;
-            const radarX = x / 10 * width;
-            const radarY = y / 20 * height;
+            
+            const radarX = (-y) * (width/10);
+            const radarY = x * (height/20);
 
             ctx.beginPath();
-            ctx.arc(radarX, radarY, 5, 0, 2 * Math.PI);
+            ctx.arc(radarX + width/2, radarY + height/2, 5, 0, 2 * Math.PI);
             ctx.fillStyle = player.name === 'A' || player.name === 'B' ? '#FF0000' : '#0000FF';
             ctx.fill();
             ctx.closePath();
@@ -43,7 +42,7 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
             ctx.fillStyle = '#FFFFFF';
             ctx.font = '12px Arial';
             ctx.textAlign = 'center';
-            ctx.fillText(player.name || '', radarX, radarY - 10);
+            ctx.fillText(player.name || '', radarX + width/2, radarY + height/2 - 10);
         });
     }, [framesData, width, height, currentFrame]);
 
