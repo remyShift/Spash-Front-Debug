@@ -97,9 +97,9 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
             <StatBlock index={index} isEven={isEven(6)} className="gap-1 overflow-y-auto" rowCount={3}>
                 {player.badges.map((badge, i) => (
                     badge.top_badge ? (
-                        <>
-                            <StatText key={i} value={badge.value} label={badge.badge_type} />
-                        </>
+                        <div key={i}>
+                            <StatText value={badge.value} label={badge.badge_type} />
+                        </div>
                     ) : null
                 ))}
             </StatBlock>
