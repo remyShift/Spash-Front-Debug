@@ -14,7 +14,7 @@ export default function Footer() {
             <p className="text-sm text-gray-300">
                 During my internship at 
             </p>
-                <a href="https://www.mad-dev.fr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                <a href="https://spash.com/en/home-page-en/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                     Spash
                 </a>
             </div>
