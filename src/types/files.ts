@@ -31,6 +31,7 @@ export interface PersonTracking {
     class: number;
     confidence: number;
     id: number;
+    old_id: number;
     legs: [number, number];
     player_legs: [number, number];
     speed_legs: number;
