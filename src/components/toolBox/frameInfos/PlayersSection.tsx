@@ -15,6 +15,11 @@ export default function PlayersSection({ frameData }: PlayersSectionProps) {
                         <p className='text-white flex gap-1 font-semibold'>ID : 
                             <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.id}</span>
                         </p>
+                        {frameData?.persontracking?.[player]?.old_id &&
+                            <p className='text-white flex gap-1 font-semibold'>Old ID : 
+                                <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.old_id}</span>
+                            </p>
+                        }
                         <p className='text-white font-semibold flex gap-1'>Name : 
                             <span className='text-white font-normal'>{frameData?.persontracking?.[player]?.name}</span>
                         </p>
