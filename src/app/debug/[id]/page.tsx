@@ -86,14 +86,14 @@ export default function VideoPage() {
     }
 
     return (
-        <div className="flex flex-col gap-12 h-full w-full">
-            <div className="flex flex-col gap-4 p-4 h-screen">
+        <div className="flex flex-col gap-32 md:gap-72 lg:gap-18 h-full w-full">
+            <div className="flex flex-col p-4 h-screen">
                 <div className="flex gap-6 h-full">
                     <BackBtn />
-                    <div className="flex justify-between mt-2 h-full w-full">
-                        <div className="flex flex-col gap-0 w-[1100px] h-full">
+                    <div className="flex flex-col lg:flex-row lg:justify-between gap-12 lg:gap-0 mt-2 h-full w-full">
+                        <div className="flex flex-col gap-0 w-[470px] md:w-[750px] xl:w-[1050px] h-full">
                             <Layers jsonData={jsonData as JSONData} />
-                            <div className="flex flex-col gap-2 w-full h-full">
+                            <div className="flex flex-col gap-4 lg:gap-2 w-full h-full">
                                 <VideoPlayer
                                     currentVideo={currentVideo} 
                                     jsonData={jsonData as JSONData}

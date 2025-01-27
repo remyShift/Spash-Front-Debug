@@ -7,7 +7,7 @@ export default function Layers({ jsonData }: { jsonData: JSONData }) {
     const { toggleActiveLayers } = useActiveLayers();
 
     return (
-        <div className="flex flex-row gap-1 w-[90%] overflow-x-auto overflow-y-hidden hide-scrollbar">
+        <div className="flex flex-row gap-1 w-[80%] xl:w-[90%] overflow-x-auto overflow-y-hidden hide-scrollbar">
             <ButtonLayer content="layers" handleClick={() => {}} jsonData={jsonData} />
             <ButtonLayer content="players" handleClick={() => toggleActiveLayers('players')} jsonData={jsonData} />
             <ButtonLayer content="ball" handleClick={() => toggleActiveLayers('ball')} jsonData={jsonData} />

@@ -1,31 +1,51 @@
 import { JSONData } from "@/types/files";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@/context/frame";
 import { drawRadar } from "@/utils/drawing/radar/drawRadar";
 
 export default function HomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
-    const width = 280;
-    const height = width * 2;
-    const serviceLineHeight = height * (3/20);
-    const middleLineHeight = height * 0.5;
-
+    const containerRef = useRef<HTMLDivElement>(null);
     const canvas = useRef<HTMLCanvasElement>(null);
     const currentFrame = useFrame(state => state.currentFrame);
+    const [dimensions, setDimensions] = useState({ width: 280, height: 560 });
+
+    useEffect(() => {
+        const updateDimensions = () => {
+            if (containerRef.current) {
+                const containerWidth = containerRef.current.clientWidth;
+                const width = Math.min(containerWidth * 0.9, 280);
+                setDimensions({
+                    width: width,
+                    height: width * 2
+                });
+            }
+        };
+
+        updateDimensions();
+        window.addEventListener('resize', updateDimensions);
+        
+        return () => {
+            window.removeEventListener('resize', updateDimensions);
+        };
+    }, []);
+
+    const serviceLineHeight = dimensions.height * (3/20);
+    const middleLineHeight = dimensions.height * 0.5;
 
     useEffect(() => {
         if (!canvas.current) return;
-        drawRadar(framesData, currentFrame, canvas.current, width, height);
-    }, [framesData, width, height, currentFrame]);
+        drawRadar(framesData, currentFrame, canvas.current, dimensions.width, dimensions.height);
+    }, [framesData, dimensions.width, dimensions.height, currentFrame]);
 
     return (
-        <div className='flex flex-col gap-2 items-center justify-center py-4'>
-            <div className='relative' style={{ width: `${width}px`, height: `${height}px` }}>
+        <div ref={containerRef} className='flex flex-col gap-2 items-center justify-center py-4'>
+            <div className='relative' style={{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }}>
                 <div className='absolute inset-0 border-2 border-primary'></div>
                 
                 <div className='absolute left-1/2 w-0.5 bg-primary'
                     style={{ 
                         top: `${serviceLineHeight}px`,
-                        height: `${height - (2 * serviceLineHeight)}px`
+                        height: `${dimensions.height - (2 * serviceLineHeight)}px`
                     }}></div>
 
                 <div className='absolute top-0 left-0 right-0 h-0.5 bg-primary' 
@@ -41,7 +61,7 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
                 <div className='absolute bottom-0 right-0 w-1/2 border-primary'
                     style={{ height: `${serviceLineHeight}px` }}></div>
 
-                <canvas ref={canvas} width={width} height={height} className='absolute inset-0 bg-red-500/10'></canvas>
+                <canvas ref={canvas} width={dimensions.width} height={dimensions.height} className='absolute inset-0 bg-red-500/10'></canvas>
             </div>
         </div>
     );

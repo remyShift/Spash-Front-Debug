@@ -71,20 +71,20 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
     const isActive = activeTimeline === event;
 
     return (
-        <div className="flex justify-between items-center h-full w-[20%] gap-2 px-4">
+        <div className="flex justify-between items-center h-full w-[30%] md:w-[25%] xl:w-[20%] gap-0 md:gap-2 px-4">
             <button onClick={goToPreviousEvent}>
-                <FontAwesomeIcon icon={faBackwardStep} className="text-primary text-xl" />
+                <FontAwesomeIcon icon={faBackwardStep} className="text-primary text-xs md:text-base lg:text-xl" />
             </button>
 
             <button 
-                className={`font-semibold text-xl hover:text-primary hover:scale-105 transition-all duration-300 ${isActive ? 'text-primary underline' : 'text-white'}`}
+                className={`font-semibold text-sm md:text-base lg:text-xl hover:text-primary hover:scale-105 transition-all duration-300 ${isActive ? 'text-primary underline' : 'text-white'}`}
                 onClick={handleClick}
             >
                 {event}
             </button>
 
             <button onClick={goToNextEvent}>
-                <FontAwesomeIcon icon={faForwardStep} className="text-primary text-xl" />
+                <FontAwesomeIcon icon={faForwardStep} className="text-primary text-xs md:text-base lg:text-xl" />
             </button>
         </div>
     );

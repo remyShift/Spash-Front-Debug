@@ -9,8 +9,7 @@ export default function StatsArray({ statsData }: { statsData: StatsData }) {
 
     return (
         <div 
-            className="flex justify-center items-end w-full h-full pb-4 gap-3 transition-all duration-300 ease-in-out"
-            style={{ marginTop: `${accordionHeight / 10}px` }}
+            className={`flex justify-center items-end w-full pb-4 gap-3 transition-all duration-300 ease-in-out ${accordionHeight > 0 ? `mt-[${accordionHeight}px]` : ''}`}
         >
             <StatsCategoryColumn />
             <StatsNameColumn />

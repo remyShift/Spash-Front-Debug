@@ -43,11 +43,11 @@ export default function ButtonLayer({
 
     return (
         <button 
-            className={`w-fit px-8 h-8 bg-primary rounded-t-md transition-opacity duration-300 text-white font-semibold active:opacity-80 text-base ${isActive ? "opacity-100" : "opacity-50"}`}
+            className={`w-fit px-4 h-6 md:h-8 md:px-8 bg-primary rounded-t-md transition-opacity duration-300 text-white font-semibold active:opacity-80 text-base ${isActive ? "opacity-100" : "opacity-50"}`}
             onClick={handleButtonClick}
         >
             <div className="flex items-center whitespace-nowrap overflow-hidden">
-                <p className="text-white font-semibold truncate">
+                <p className="text-white font-semibold truncate text-xs md:text-base">
                     {content.charAt(0).toUpperCase() + content.slice(1)}
                 </p>
             </div>
