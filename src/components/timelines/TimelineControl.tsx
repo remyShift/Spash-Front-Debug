@@ -73,7 +73,7 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
     return (
         <div className="flex justify-between items-center h-full w-[20%] gap-2 px-4">
             <button onClick={goToPreviousEvent}>
-                <FontAwesomeIcon icon={faBackwardStep} className="text-secondary text-xl" />
+                <FontAwesomeIcon icon={faBackwardStep} className="text-primary text-xl" />
             </button>
 
             <button 
@@ -84,7 +84,7 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
             </button>
 
             <button onClick={goToNextEvent}>
-                <FontAwesomeIcon icon={faForwardStep} className="text-secondary text-xl" />
+                <FontAwesomeIcon icon={faForwardStep} className="text-primary text-xl" />
             </button>
         </div>
     );

@@ -6,6 +6,7 @@ export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: numbe
     const scaleY = canvas.height / videoHeight;
 
     const [x, y] = ball.coordinates;
+    if (x === 0 && y === 0) return;
     const score = ball.score;
     
     const offsetX = 0.5;

@@ -25,6 +25,8 @@ export const drawPlayerTrajectories = (
     const scaleY = canvas.height / videoHeight;
 
     const [x, y] = player.legs;
+    if (x === 0 && y === 0 || !player.legs) return;
+
     const scaledX = x * scaleX;
     const scaledY = y * scaleY;
 

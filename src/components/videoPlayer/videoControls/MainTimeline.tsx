@@ -32,11 +32,11 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
             {reels?.map((reel, index) => (
                 <div 
                     key={index}
-                    className="absolute top-1/2 -translate-y-1/2 z-10 group"
+                    className="absolute top-1/2 -translate-y-1/2 z-10"
                     style={{ left: `${(reel.end_timecode / maxDuration) * 100}%` }}
                 >
-                    <div className="w-1 h-4 bg-yellow-500 rounded-full" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    <div className="w-1 h-4 bg-yellow-500 rounded-full group-hover:opacity-100" />
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap">
                         {reel.reel_type}
                     </div>
                 </div>
