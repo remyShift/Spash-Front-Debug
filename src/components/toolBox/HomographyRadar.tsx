@@ -4,7 +4,7 @@ import { useFrame } from "@/context/frame";
 import { drawRadar } from "@/utils/drawing/radar/drawRadar";
 
 export default function HomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
-    const width = 350;
+    const width = 280;
     const height = width * 2;
     const serviceLineHeight = height * (3/20);
     const middleLineHeight = height * 0.5;
@@ -36,9 +36,9 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
                 <div className='absolute top-0 left-0 right-0 h-0.5 bg-white' 
                     style={{ top: `${middleLineHeight}px` }}></div>
 
-                <div className='absolute top-0 left-0 w-1/2 border-b border-primary'
+                <div className='absolute top-0 left-0 w-1/2 border-primary'
                     style={{ height: `${serviceLineHeight}px` }}></div>
-                <div className='absolute bottom-0 right-0 w-1/2 border-t border-primary'
+                <div className='absolute bottom-0 right-0 w-1/2 border-primary'
                     style={{ height: `${serviceLineHeight}px` }}></div>
 
                 <canvas ref={canvas} width={width} height={height} className='absolute inset-0 bg-red-500/10'></canvas>
