@@ -1,28 +1,40 @@
 import { JSONData } from "@/types/files";
 
 export const drawRadar = (
-    frameData: JSONData['data'][number],
+    framesData: JSONData['data'],
+    currentFrame: number,
+    canvas: HTMLCanvasElement,
     width: number,
-    height: number,
-    context: CanvasRenderingContext2D
+    height: number
 ) => {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = width;
+    canvas.height = height;
+    
+    const frameData = framesData[currentFrame];
+    ctx.clearRect(0, 0, width, height);
+    
     if (!frameData?.persontracking) return;
-
-    Object.values(frameData.persontracking).forEach((player) => {
+    
+    Object.entries(frameData.persontracking).forEach(([, player]) => {
         if (!player?.court_legs) return;
-
+        
         const [x, y] = player.court_legs;
-        const radarX = x / 10 * width;
-        const radarY = y / 20 * height;
+        
+        const radarX = (-y) * (width/10);
+        const radarY = x * (height/20);
 
-        context.fillStyle = player.name === 'A' || player.name === 'B' ? '#FF0000' : '#0000FF';
-        context.beginPath();
-        context.arc(radarX, radarY, 5, 0, 2 * Math.PI);
-        context.fill();
+        ctx.beginPath();
+        ctx.arc(radarX + width/2, radarY + height/2, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = player.name === 'A' || player.name === 'B' ? '#FF0000' : '#0000FF';
+        ctx.fill();
+        ctx.closePath();
 
-        context.fillStyle = '#FFFFFF';
-        context.font = '12px Arial';
-        context.textAlign = 'center';
-        context.fillText(player.name, radarX, radarY - 10);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(player.name || '', radarX + width/2, radarY + height/2 - 10);
     });
-}
+}; 

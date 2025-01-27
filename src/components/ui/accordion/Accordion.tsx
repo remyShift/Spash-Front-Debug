@@ -9,7 +9,7 @@ import HomographyRadar from '@/components/toolBox/HomographyRadar'
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     return (
         <div className="w-full bg-lightBackground rounded-b-lg">
-            <AccordionItem title="Homography" content={<HomographyRadar framesData={videoData.data} />} />
+            <AccordionItem title="Radar" content={<HomographyRadar framesData={videoData.data} />} />
             <Spacer />
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />

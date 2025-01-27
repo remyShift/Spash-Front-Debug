@@ -1,6 +1,7 @@
 import { JSONData } from "@/types/files";
 import { useEffect, useRef } from "react";
-import { useFrame } from "@/context/frame"; 
+import { useFrame } from "@/context/frame";
+import { drawRadar } from "@/utils/drawing/radar/drawRadar";
 
 export default function HomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
     const width = 350;
@@ -13,37 +14,7 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
 
     useEffect(() => {
         if (!canvas.current) return;
-
-        canvas.current.width = width;
-        canvas.current.height = height;
-        
-        const ctx = canvas.current.getContext('2d');
-        if (!ctx) return;
-
-        const frameData = framesData[currentFrame];
-        ctx.clearRect(0, 0, width, height);
-        
-        if (!frameData?.persontracking) return;
-        
-        Object.entries(frameData.persontracking).forEach(([, player]) => {
-            if (!player?.court_legs) return;
-            
-            const [x, y] = player.court_legs;
-            
-            const radarX = (-y) * (width/10);
-            const radarY = x * (height/20);
-
-            ctx.beginPath();
-            ctx.arc(radarX + width/2, radarY + height/2, 5, 0, 2 * Math.PI);
-            ctx.fillStyle = player.name === 'A' || player.name === 'B' ? '#FF0000' : '#0000FF';
-            ctx.fill();
-            ctx.closePath();
-
-            ctx.fillStyle = '#FFFFFF';
-            ctx.font = '12px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText(player.name || '', radarX + width/2, radarY + height/2 - 10);
-        });
+        drawRadar(framesData, currentFrame, canvas.current, width, height);
     }, [framesData, width, height, currentFrame]);
 
     return (
@@ -73,5 +44,5 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
                 <canvas ref={canvas} width={width} height={height} className='absolute inset-0 bg-red-500/10'></canvas>
             </div>
         </div>
-    )
+    );
 }
