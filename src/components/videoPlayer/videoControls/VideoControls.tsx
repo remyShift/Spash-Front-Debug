@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MainTimeline } from './MainTimeline';
 import { PlayPauseButton } from './PlayPauseButton';
-import { VolumeControl } from './VolumeControl';
 import { PlaybackSpeed } from './PlaybackSpeed';
 import { TimeDisplay } from './TimeDisplay';
 
@@ -19,7 +18,6 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [volume, setVolume] = useState(1);
     const [playbackRate, setPlaybackRate] = useState(1);
 
     useEffect(() => {
@@ -49,59 +47,48 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
     }, [videoRef]);
 
     return (
-        <div className="flex flex-col gap-2 w-full bg-lighterBackground/80 p-4 rounded-lg">
-            <MainTimeline 
-                currentTime={currentTime}
-                reels={reels}
-                duration={duration}
-                onTimeChange={(time) => {
+        <div className="flex items-center gap-4 w-full bg-lightBackground p-2 px-3 rounded-lg mt-2">
+            <div className="flex justify-between items-center w-full">
+                <MainTimeline 
+                    currentTime={currentTime}
+                    reels={reels}
+                    duration={duration}
+                    onTimeChange={(time) => {
+                        if (videoRef.current) {
+                            videoRef.current.currentTime = time;
+                            setCurrentTime(time);
+                        }
+                    }}
+                />
+
+                <TimeDisplay 
+                    currentTime={currentTime}
+                    duration={duration}
+                />
+            </div>
+
+            <PlayPauseButton 
+                isPlaying={isPlaying}
+                onToggle={() => {
                     if (videoRef.current) {
-                        videoRef.current.currentTime = time;
-                        setCurrentTime(time);
+                        if (isPlaying) {
+                            videoRef.current.pause();
+                        } else {
+                            videoRef.current.play();
+                        }
                     }
                 }}
             />
 
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <PlayPauseButton 
-                        isPlaying={isPlaying}
-                        onToggle={() => {
-                            if (videoRef.current) {
-                                if (isPlaying) {
-                                    videoRef.current.pause();
-                                } else {
-                                    videoRef.current.play();
-                                }
-                            }
-                        }}
-                    />
-                    <VolumeControl 
-                        volume={volume}
-                        onVolumeChange={(value) => {
-                            if (videoRef.current) {
-                                videoRef.current.volume = value;
-                                setVolume(value);
-                            }
-                        }}
-                    />
-                </div>
-                <div className="flex items-center gap-4">
-                    <PlaybackSpeed 
-                        speed={playbackRate}
-                        onSpeedChange={(speed) => {
-                        if (videoRef.current) {
-                            videoRef.current.playbackRate = speed;
-                            setPlaybackRate(speed);
-                        }
-                        }}
-                    />
-                    <TimeDisplay 
-                        currentTime={currentTime}
-                        duration={duration}
-                    />
-                </div>
-            </div>
+            <PlaybackSpeed 
+                speed={playbackRate}
+                onSpeedChange={(speed) => {
+                if (videoRef.current) {
+                    videoRef.current.playbackRate = speed;
+                    setPlaybackRate(speed);
+                }
+                }}
+            />
         </div>
     );
 }; 

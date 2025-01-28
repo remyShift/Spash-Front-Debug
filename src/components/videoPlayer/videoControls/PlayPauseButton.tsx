@@ -15,7 +15,7 @@ export const PlayPauseButton = ({ isPlaying, onToggle }: PlayPauseButtonProps) =
         >
             <FontAwesomeIcon 
                 icon={isPlaying ? faPause : faPlay} 
-                size="lg" 
+                size="sm" 
             />
         </button>
     );

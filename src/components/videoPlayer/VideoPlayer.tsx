@@ -89,15 +89,13 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     ref={persistentCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
-                <div className="absolute bottom-0 left-0 right-0 opacity-0 hover:opacity-100 transition-opacity duration-300">
-                    {videoRef.current && (
-                        <VideoControls 
-                            videoRef={videoRef as React.RefObject<HTMLVideoElement>}
-                            reels={statsData.reels}
-                        />
-                    )}
-                </div>
             </div>
+            {videoRef.current && (
+                <VideoControls
+                    videoRef={videoRef as React.RefObject<HTMLVideoElement>}
+                    reels={statsData.reels}
+                />
+            )}
         </div>
     );
 };

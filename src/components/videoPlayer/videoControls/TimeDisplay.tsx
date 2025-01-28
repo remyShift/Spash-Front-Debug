@@ -11,7 +11,7 @@ export const TimeDisplay = ({ currentTime, duration }: TimeDisplayProps) => {
     };
 
     return (
-        <div className="text-white font-medium">
+        <div className="text-white text-xs">
             {formatTime(currentTime)} / {formatTime(duration)}
         </div>
     );
