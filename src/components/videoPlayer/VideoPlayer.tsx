@@ -83,7 +83,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 />
                 <canvas
                     ref={mainCanvasRef}
-                    className="absolute top-0 left-0 z-50 pointer-events-none w-full h-full"
+                    className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
                 <canvas
                     ref={persistentCanvasRef}

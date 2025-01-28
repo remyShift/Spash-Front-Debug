@@ -6,16 +6,10 @@ export const getPlayerColor = (playerId: number): string => {
     }
 
     const colors = [
-        '#8B0000', // Rouge foncé
-        '#006400', // Vert foncé
-        '#00008B', // Bleu foncé
-        '#FF69B4', // Rose
-        '#8B008B', // Magenta foncé
-        '#008B8B', // Cyan foncé
-        '#8B4500', // Orange foncé
-        '#4B0082', // Indigo
-        '#2F4F4F', // Vert-gris foncé
-        '#800000', // Bordeaux
+        '#FF7F7F', // Rouge clair
+        '#66CDAA', // Vert clair
+        '#FFB6C1', // Rose clair
+        '#FFA07A', // Orange clair
     ];
 
     const colorIndex = Object.keys(playerColors).length % colors.length;
