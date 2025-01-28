@@ -25,12 +25,8 @@ git clone https://github.com/spash-ai/debug-devtool.git
 ```bash
 npm install
 ```
-3. Start the development server:
-```bash
-npm run dev
-```
 
-4. Create a `videos` folder in the `public` folder and create 1 subfolder per video to be analyzed with the associated json inside as follows :
+3. In the `public/videos` folder, create 1 subfolder per video to be analyzed with the associated json inside as follows :
 
 You should have something like this :
 ```
@@ -48,7 +44,14 @@ public/
             ...
 ```
 
-5. Select the video from the list and happy debugging.
+4. Start the development server:
+```bash
+npm run dev
+```
+
+5. Open the browser and go to `http://localhost:3000`
+
+6. Select the video from the list and happy debugging.
 
 ## Keyboard shortcuts ⌨️
 
