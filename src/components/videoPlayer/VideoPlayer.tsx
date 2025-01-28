@@ -6,6 +6,7 @@ import { Layers } from '@/types/layers';
 import { useCanvas } from '@/context/canvas';
 import KillFeed from './KillFeed';
 import { VideoControls } from './videoControls/VideoControls';
+import LayersMenu from './layers/LayersMenu';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -75,6 +76,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     src={currentVideo.videoPath}
                     className="w-full"
                 />
+                <LayersMenu jsonData={jsonData} />
                 <KillFeed 
                     currentFrame={currentFrame} 
                     frameData={jsonData.data[currentFrame] || {}} 

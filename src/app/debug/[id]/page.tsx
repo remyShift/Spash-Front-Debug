@@ -10,7 +10,6 @@ import ErrorMsg from "@/components/ui/ErrorMsg";
 import { VideoPlayer } from "@/components/videoPlayer/VideoPlayer";
 import Loader from "@/components/ui/Loader";
 import { fetchFiles } from "@/utils/fetchFiles";
-import Layers from "@/components/videoPlayer/layers/Layers";
 import { useActiveLayers } from "@/context/layers";
 import ToolBox from "@/components/toolBox/ToolBox";
 import AllTimelines from "@/components/timelines/AllTimelines";
@@ -92,7 +91,6 @@ export default function VideoPage() {
                     <BackBtn />
                     <div className="flex flex-col lg:flex-row lg:justify-between gap-12 lg:gap-0 mt-2 h-full w-full">
                         <div className="flex flex-col gap-0 w-[470px] md:w-[750px] xl:w-[1050px] h-full">
-                            <Layers jsonData={jsonData as JSONData} />
                             <div className="flex flex-col gap-4 lg:gap-2 w-full h-full">
                                 <VideoPlayer
                                     currentVideo={currentVideo} 

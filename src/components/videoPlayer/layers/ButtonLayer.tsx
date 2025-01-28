@@ -42,15 +42,15 @@ export default function ButtonLayer({
     }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, activeLayers, content, isActive]);
 
     return (
-        <button 
-            className={`w-fit px-4 h-6 md:h-8 md:px-8 bg-primary rounded-t-md transition-opacity duration-300 text-white font-semibold active:opacity-80 text-base ${isActive ? "opacity-100" : "opacity-50"}`}
+        <div 
+            className={`w-full px-4 py-2 bg-lightBackground cursor-pointer transition-all duration-300 text-white font-semibold ${isActive ? "bg-primary" : ""}`}
             onClick={handleButtonClick}
         >
             <div className="flex items-center whitespace-nowrap overflow-hidden">
-                <p className="text-white font-semibold truncate text-xs md:text-base">
+                <p className="text-white font-semibold truncate text-sm">
                     {content.charAt(0).toUpperCase() + content.slice(1)}
                 </p>
             </div>
-        </button>
+        </div>
     );
 }
