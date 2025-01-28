@@ -15,6 +15,27 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
     const currentTimeValue = isNaN(currentTime) ? 0 : currentTime;
     const progressWidth = maxDuration > 0 ? (currentTimeValue / maxDuration) * 100 : 0;
 
+    const maxFocusWindow = 100; 
+    const minFocusWindow = 50;
+    
+    const availableTimeAfter = maxDuration - currentTimeValue;
+    const availableTimeBefore = currentTimeValue;
+    
+    const effectiveWindowDuration = Math.min(
+        maxFocusWindow,
+        minFocusWindow + (Math.min(availableTimeBefore, availableTimeAfter) * 2)
+    );
+
+    const focusWindowWidth = (effectiveWindowDuration / maxDuration) * 100;
+    
+    const focusWindowPosition = Math.max(
+        0,
+        Math.min(
+            100 - focusWindowWidth,
+            ((currentTimeValue - (effectiveWindowDuration / 2)) / maxDuration) * 100
+        )
+    );
+
     return (
         <div className="relative w-[78%] md:w-[87%] xl:w-[92%] h-1 bg-lighterBackground rounded-full">
             <input
@@ -29,6 +50,15 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
                 className="absolute h-full bg-primary rounded-full transition-all"
                 style={{ width: `${progressWidth}%` }}
             />
+            
+            <div 
+                className="absolute h-4 -top-1.5 bg-white/10 border border-white/20 transition-all"
+                style={{ 
+                    width: `${focusWindowWidth}%`,
+                    left: `${focusWindowPosition}%`
+                }}
+            />
+
             {reels?.map((reel, index) => (
                 <div 
                     key={index}
