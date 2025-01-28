@@ -37,7 +37,7 @@ export default function StatsCategoryColumn() {
         }
     ];
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 justify-end">
             {stats.map((stat, index) => (
                 <StatBlock key={index} index={index} isEven={index % 2 === 0} rowCount={stat.rowCount}> 
                     <StatText value={stat.name} />

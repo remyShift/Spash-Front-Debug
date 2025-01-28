@@ -31,7 +31,7 @@ export default function StatBlock ({ isEven, children, className = "", rowCount 
 
     return (
         <div 
-            className={`w-52 rounded-lg ${isExpanded ? 'h-auto' : `h-[${height}px]`} ${isEven ? "bg-lightBackground" : "bg-lighterBackground"} cursor-pointer transition-all duration-300 flex flex-col justify-center items-center hide-scrollbar ${className}`} 
+            className={`w-28 md:w-36 lg:w-52 rounded-lg ${isExpanded ? 'h-auto' : `h-[${height}px]`} ${isEven ? "bg-lightBackground" : "bg-lighterBackground"} cursor-pointer-none transition-all duration-300 flex flex-col justify-center items-center hide-scrollbar ${className}`} 
             onClick={toggleExpand}
             style={{ minHeight: isExpanded ? 'auto' : `${height}px` }}
         >
@@ -39,7 +39,7 @@ export default function StatBlock ({ isEven, children, className = "", rowCount 
                 if (React.isValidElement(child) && child.type === 'video') {
                     return React.cloneElement(child, {
                         ref: videoRef,
-                        className: `w-full object-cover transition-all duration-300 ${isExpanded ? 'h-auto' : `h-[${height}px]`}`
+                        className: `w-full object-cover transition-all cursor-pointer duration-300 ${isExpanded ? 'h-auto' : `h-[${height}px]`}`
                     } as React.ComponentProps<'video'>);
                 }
                 return child;

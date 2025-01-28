@@ -5,7 +5,7 @@ import StatBlockSpacer from './StatBlockSpacer'
 
 export default function StatsNameColumn() {
     return (
-        <div className="flex flex-col justify-start gap-3">
+        <div className="flex flex-col justify-end gap-3">
             <StatBlock index={-1} isEven={false} className="gap-2 pt-2" rowCount={4}>
                 <StatText value="NoMansLand" />
                 <StatBlockSpacer />
