@@ -8,7 +8,7 @@ import ButtonLayer from './ButtonLayer';
 export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
     const [isOpen, setIsOpen] = useState(false);
     const { toggleActiveLayers } = useActiveLayers();
-    
+
     const layers = [
         { content: "players", handleClick: () => toggleActiveLayers('players') },
         { content: "ball", handleClick: () => toggleActiveLayers('ball') },
@@ -34,7 +34,7 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
             </button>
 
             {isOpen && (
-                <div className="absolute top-8 left-0 bg-lightBackground rounded-md shadow-lg">
+                <div className="absolute top-8 left-0 bg-lightBackground rounded-md shadow-lg z-50">
                     <div className="flex flex-col max-h-[70vh] overflow-y-auto w-full">
                         {layers.map((layer, index) => (
                             <div key={layer.content}>
