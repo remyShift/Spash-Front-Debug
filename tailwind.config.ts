@@ -69,7 +69,7 @@ export default {
 			},
 			backgroundImage: {
 				'point-gradient': 'linear-gradient(to bottom, #FF324B 50%, #181826)',
-				'inter-point-gradient': 'linear-gradient(to bottom, #3448FA 50%, #181826)'
+				'inter-point-gradient': `repeating-linear-gradient(45deg, #3448FA 0, #3448FA 3px, transparent 2px, transparent 8px), linear-gradient(to bottom, rgba(52, 72, 250, 0.5) 50%, #181826)`,
 			}
 		}
 	},
