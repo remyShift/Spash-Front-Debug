@@ -39,29 +39,29 @@ export default function HomographyRadar({ framesData }: { framesData: JSONData['
 
     return (
         <div ref={containerRef} className='flex flex-col gap-2 items-center justify-center py-4'>
-            <div className='relative' style={{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }}>
-                <div className='absolute inset-0 border-2 border-primary'></div>
+            <div className='relative bg-blue-700/80' style={{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }}>
+                <div className='absolute inset-0 border-2 border-white'></div>
                 
-                <div className='absolute left-1/2 w-0.5 bg-primary'
+                <div className='absolute left-1/2 w-0.5 bg-white'
                     style={{ 
                         top: `${serviceLineHeight}px`,
                         height: `${dimensions.height - (2 * serviceLineHeight)}px`
                     }}></div>
 
-                <div className='absolute top-0 left-0 right-0 h-0.5 bg-primary' 
+                <div className='absolute top-0 left-0 right-0 h-0.5 bg-white' 
                     style={{ top: `${serviceLineHeight}px` }}></div>
-                <div className='absolute bottom-0 left-0 right-0 h-0.5 bg-primary' 
+                <div className='absolute bottom-0 left-0 right-0 h-0.5 bg-white' 
                     style={{ bottom: `${serviceLineHeight}px` }}></div>
 
                 <div className='absolute top-0 left-0 right-0 h-0.5 bg-white' 
                     style={{ top: `${middleLineHeight}px` }}></div>
 
-                <div className='absolute top-0 left-0 w-1/2 border-primary'
+                <div className='absolute top-0 left-0 w-1/2 border-white'
                     style={{ height: `${serviceLineHeight}px` }}></div>
-                <div className='absolute bottom-0 right-0 w-1/2 border-primary'
+                <div className='absolute bottom-0 right-0 w-1/2 border-white'
                     style={{ height: `${serviceLineHeight}px` }}></div>
 
-                <canvas ref={canvas} width={dimensions.width} height={dimensions.height} className='absolute inset-0 bg-red-500/10'></canvas>
+                <canvas ref={canvas} width={dimensions.width} height={dimensions.height} className='absolute inset-0'></canvas>
             </div>
         </div>
     );
