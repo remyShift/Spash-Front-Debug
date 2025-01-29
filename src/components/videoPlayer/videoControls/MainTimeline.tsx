@@ -55,7 +55,7 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
             />
             
             <div 
-                className="absolute h-5 -top-2 bg-white/10 border border-white/20 transition-all"
+                className="absolute h-6 -top-2.5 bg-white/10 border border-white/20 transition-all"
                 style={{ 
                     width: `${focusWindowWidth}%`,
                     left: `${focusWindowPosition}%`
