@@ -111,85 +111,59 @@ export interface StatsData {
             score: number;
             nomansland: {
                 score: number;
-                value: number;
-                total: number;
-                percentage: number;
             };
             attack: {
                 score: number;
-                value: number;
-                total: number;
-                percentage: number;
             };
             defense: {
                 score: number;
-                value: number;
-                total: number;
-                percentage: number;
             };
         };
         movement: {
             score: number;
             lob_and_go: {
                 score: number;
-                value: number;
-                total: number;
-                percentage: number;
             };
             net_taking: {
                 score: number;
-                value: number;
-                total: number;
-                percentage: number;
             };
             attack_position: {
                 score: number;
-                value: number;
             };
             hit_and_move: {
                 score: number;
-                value: number;
             };
         };
         tactical: {
             score: number;
             first_serve: {
                 score: number;
-                value: number;
             };
             volley_service: {
                 score: number;
-                value: number;
             };
             services: {
                 score: number;
-                value: number;
             };
             diagonal: {
                 score: number;
-                value: number;
             };
             top_lob: {
                 score: number;
-                value: number;
             };
             divorce_zone: {
                 score: number;
-                value: number;
             };
             safe_ball: {
                 score: number;
-                value: number;
             };
         };
         teams: {
             chain_breaks: {
                 score: number;
-                value: number;
             };
             checks: {
                 score: number;
-                value: number;
             };
             score: number;
         };
@@ -197,18 +171,9 @@ export interface StatsData {
             score: number;
             distance: {
                 score: number;
-                total: number;
-                details: {
-                    [key: string]: number;
-                };
             };
             calories: {
                 score: number;
-                value: number;
-            };
-            intensities: {
-                score: number;
-                max_speed: number;
             };
         };
         badges: {
@@ -229,30 +194,11 @@ export interface StatsData {
 export interface PlayerStats {
     side: string;
     hits: number[];
-    fridge: {
-        ratio: number;
-        n_hits_by_player: number;
-        n_hits_team: number;
-    };
     lobs: number[];
-    net_taking: {
-        value: number;
-        total: number;
-        score?: number;
-    };
-    net_taking_after_service: {
-        value: number;
-        total: number;
-        score?: number;
-    };
-    net_taking_after_lob: {
-        value: number;
-        total: number;
-    };
+    services: number[];
     zone_counts: {
         [zone: string]: number;
     };
-    distances_to_net: number[];
     video_path: string;
     sentence: string;
 }

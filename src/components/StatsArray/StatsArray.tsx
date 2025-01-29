@@ -10,7 +10,7 @@ export default function StatsArray({ statsData }: { statsData: StatsData }) {
     const { accordionHeight } = useAccordionHeight();
 
     const containerStyle = {
-        marginTop: accordionHeight > 0 ? `${accordionHeight}px` : '0'
+        marginTop: accordionHeight > 0 ? `${accordionHeight / 5}px` : '0'
     };
 
     return (
