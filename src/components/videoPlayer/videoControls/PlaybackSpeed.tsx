@@ -10,7 +10,7 @@ export const PlaybackSpeed = ({ speed, onSpeedChange }: PlaybackSpeedProps) => {
         <select
             value={speed}
             onChange={(e) => onSpeedChange(parseFloat(e.target.value))}
-            className="bg-lighterBackground text-white rounded p-1 outline-none focus:ring-1 focus:ring-primary"
+            className="bg-lighterBackground text-white text-sm rounded p-1 outline-none focus:ring-1 focus:ring-primary"
         >
             {speeds.map((value) => (
                 <option key={value} value={value}>

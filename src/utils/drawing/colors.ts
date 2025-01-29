@@ -6,10 +6,10 @@ export const getPlayerColor = (playerId: number): string => {
     }
 
     const colors = [
-        '#FF7F7F', // Rouge clair
-        '#66CDAA', // Vert clair
-        '#FFB6C1', // Rose clair
-        '#FFA07A', // Orange clair
+        '#FF0000', // Rouge
+        '#008000', // Vert
+        '#A9A9A9', // Gris foncé
+        '#800080', // Violet
     ];
 
     const colorIndex = Object.keys(playerColors).length % colors.length;

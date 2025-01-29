@@ -56,8 +56,8 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
     };
 
     return (
-        <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
-            <div className="flex items-center w-full h-full gap-0">
+        <div className="w-full h-8 bg-lightBackground rounded-lg overflow-hidden">
+            <div className="flex items-center w-full h-full gap-0 justify-center">
                 <TimelineControl event={event.charAt(0).toUpperCase() + event.slice(1)} framesEvent={framesEvent} />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 

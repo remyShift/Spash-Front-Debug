@@ -47,7 +47,7 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
     }, [videoRef]);
 
     return (
-        <div className="flex items-center gap-4 w-full bg-lightBackground p-2 px-3 rounded-lg mt-2">
+        <div className="flex items-center gap-4 w-full bg-lightBackground p-1 px-3 rounded-lg mt-2">
             <div className="flex justify-between items-center w-full">
                 <MainTimeline 
                     currentTime={currentTime}

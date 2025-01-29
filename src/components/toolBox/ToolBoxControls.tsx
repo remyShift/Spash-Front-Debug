@@ -65,13 +65,13 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
             <GotoFrame handleFrameChange={handleFrameChange} videoData={videoData}/>
             <GotoPlayer handleFrameChange={handleFrameChange} videoData={videoData}/>
             <div className="flex gap-4 items-center justify-center">
-                <div className="flex w-auto lg:flex-col lg:w-1/2 xl:flex-row xl:w-auto gap-4 items-center">
+                <div className="flex flex-wrap w-auto lg:flex-col lg:w-1/2 xl:flex-row xl:w-auto gap-4 items-center">
                     <ControlBtn icon={faBackwardFast} onClick={() => handleFrameChange(0)} text="Start" />
                     <ControlBtn icon={faBackward} onClick={() => handleFrameChange(currentFrame - 100)} text="-100" />
                     <ControlBtn icon={faBackwardStep} onClick={() => handleFrameChange(currentFrame - 1)} text="-1" />
                     <ControlBtn icon={isVideoPlaying ? faPause : faPlay} onClick={togglePlay} text={isVideoPlaying ? "Pause" : "Play"} />
                 </div>
-                <div className="flex w-auto lg:flex-col lg:w-1/2 xl:flex-row xl:w-auto gap-4 items-center">
+                <div className="flex flex-wrap w-auto lg:flex-col lg:w-1/2 xl:flex-row xl:w-auto gap-4 items-center">
                     <ControlBtn icon={faForwardStep} onClick={() => handleFrameChange(currentFrame + 1)} text="+1" />
                     <ControlBtn icon={faForward} onClick={() => handleFrameChange(currentFrame + 100)} text="+100" />
                     <ControlBtn icon={faForwardFast} onClick={() => handleFrameChange(Object.keys(videoData.data).length - 1)} text="End" />

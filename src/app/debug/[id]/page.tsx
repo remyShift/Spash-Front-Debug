@@ -89,8 +89,8 @@ export default function VideoPage() {
             <div className="flex flex-col p-4 h-screen">
                 <div className="flex gap-6 h-full">
                     <BackBtn />
-                    <div className="flex flex-col lg:flex-row lg:justify-between gap-12 lg:gap-0 mt-2 h-full w-full xl:pr-8">
-                        <div className="flex flex-col gap-0 w-[470px] md:w-[750px] xl:w-[1050px] h-full">
+                    <div className="flex flex-col lg:flex-row lg:justify-between gap-12 mt-1 h-full w-full xl:pr-8">
+                        <div className="flex flex-col gap-0 w-[100%] xl:w-[1050px] h-full">
                             <div className="flex flex-col gap-4 lg:gap-2 w-full h-full">
                                 <VideoPlayer
                                     currentVideo={currentVideo} 

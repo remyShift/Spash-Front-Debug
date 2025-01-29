@@ -15,15 +15,18 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
     const currentTimeValue = isNaN(currentTime) ? 0 : currentTime;
     const progressWidth = maxDuration > 0 ? (currentTimeValue / maxDuration) * 100 : 0;
 
-    const maxFocusWindow = 100; 
-    const minFocusWindow = 50;
+    const maxFocusWindowSeconds = 100; 
+    const minFocusWindowSeconds = 50;
     
     const availableTimeAfter = maxDuration - currentTimeValue;
     const availableTimeBefore = currentTimeValue;
     
     const effectiveWindowDuration = Math.min(
-        maxFocusWindow,
-        minFocusWindow + (Math.min(availableTimeBefore, availableTimeAfter) * 2)
+        maxFocusWindowSeconds,
+        Math.min(
+            maxDuration,
+            minFocusWindowSeconds + (Math.min(availableTimeBefore, availableTimeAfter) * 2)
+        )
     );
 
     const focusWindowWidth = (effectiveWindowDuration / maxDuration) * 100;
@@ -52,7 +55,7 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
             />
             
             <div 
-                className="absolute h-6 -top-2.5 bg-white/10 border border-white/20 transition-all"
+                className="absolute h-5 -top-2 bg-white/10 border border-white/20 transition-all"
                 style={{ 
                     width: `${focusWindowWidth}%`,
                     left: `${focusWindowPosition}%`
