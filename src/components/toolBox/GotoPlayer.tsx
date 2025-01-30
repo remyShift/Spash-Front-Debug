@@ -48,7 +48,7 @@ export default function GotoPlayer({ handleFrameChange, videoData }: {
                     defaultValue=""
                 >
                     <option value="" disabled>Select</option>
-                    {playerIds.map((id) => (
+                    {playerIds.sort((a, b) => a - b).map((id) => (
                         <option key={id} value={id}>
                             {id}
                         </option>

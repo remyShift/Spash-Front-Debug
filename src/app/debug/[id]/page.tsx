@@ -17,6 +17,7 @@ import StatsArray from "@/components/StatsArray/StatsArray";
 import { calculateCumulativeDistances } from "@/utils/calculateCumulativeDistances";
 import { calculateCumulativeHits } from "@/utils/calculateCumulativeHits";
 import Footer from "@/components/ui/Footer";
+import PlayersTimeline from "@/components/PlayersTimeline/PlayersTimeline";
 
 export default function VideoPage() {
     const params = useParams();
@@ -85,7 +86,7 @@ export default function VideoPage() {
     }
 
     return (
-        <div className="flex flex-col gap-32 md:gap-72 lg:gap-18 h-full w-full">
+        <div className="flex flex-col gap-12 md:gap-16 lg:gap-8 h-full w-full">
             <div className="flex flex-col p-4 h-screen">
                 <div className="flex gap-6 h-full">
                     <BackBtn />
@@ -105,6 +106,7 @@ export default function VideoPage() {
                     </div>
                 </div>
             </div>
+            {jsonData && <PlayersTimeline jsonData={jsonData} />}
             <StatsArray statsData={statsData as StatsData} />
             <Footer />
         </div>
