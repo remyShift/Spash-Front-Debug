@@ -1,61 +1,53 @@
-import { NextResponse } from "next/server";
-import { writeFile, mkdir } from 'fs/promises';
+import { NextRequest, NextResponse } from "next/server";
+import { mkdir } from 'fs/promises';
 import path from 'path';
+import fs from 'fs';
 
-export async function POST(request: Request) {
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+export async function POST(request: NextRequest) {
+    const contentType = request.headers.get('content-type');
+    const folderName = request.headers.get('x-folder-name');
+    const fileName = request.headers.get('x-file-name');
+    const chunkIndex = parseInt(request.headers.get('x-chunk-index') || '0');
+    const totalChunks = parseInt(request.headers.get('x-total-chunks') || '1');
+
+    if (!contentType?.includes('application/octet-stream')) {
+        return NextResponse.json(
+            { error: "Le type de contenu doit être application/octet-stream" },
+            { status: 400 }
+        );
+    }
+
+    if (!folderName || !fileName) {
+        return NextResponse.json(
+            { error: "Informations manquantes dans les en-têtes" },
+            { status: 400 }
+        );
+    }
+
     try {
-        const formData = await request.formData();
-        const mainVideo = formData.get('mainVideo') as File;
-        const pipelineJson = formData.get('pipelineJson') as File;
-        const statsJson = formData.get('statsJson') as File;
-        const playerVideos = formData.getAll('playerVideos') as File[];
-
-        if (!mainVideo || !pipelineJson || !statsJson) {
-            return NextResponse.json(
-                { error: "Missing required files" },
-                { status: 400 }
-            );
-        }
-
-        const folderName = formData.get('folderName') as string;
         const uploadDir = path.join(process.cwd(), 'public', 'videos', folderName);
-
         await mkdir(uploadDir, { recursive: true });
 
-        await writeFile(
-            path.join(uploadDir, mainVideo.name),
-            Buffer.from(await mainVideo.arrayBuffer())
-        );
+        const filePath = path.join(uploadDir, fileName);
+        const fileData = await request.blob();
+        const buffer = Buffer.from(await fileData.arrayBuffer());
+        
+        const flags = chunkIndex === 0 ? 'w' : 'a';
+        await fs.promises.writeFile(filePath, buffer, { flag: flags });
 
-        await writeFile(
-            path.join(uploadDir, 'pipeline.json'),
-            Buffer.from(await pipelineJson.arrayBuffer())
-        );
-
-        await writeFile(
-            path.join(uploadDir, 'stats.json'),
-            Buffer.from(await statsJson.arrayBuffer())
-        );
-
-        for (const video of playerVideos) {
-            await writeFile(
-                path.join(uploadDir, video.name),
-                Buffer.from(await video.arrayBuffer())
-            );
-        }
-
-        return NextResponse.json({ success: true });
+        return NextResponse.json({ 
+            success: true,
+            chunkIndex,
+            isComplete: chunkIndex === totalChunks - 1
+        });
     } catch (error) {
-        console.error('Error uploading files:', error);
+        console.error('Erreur lors de l\'upload:', error);
         return NextResponse.json(
-            { error: "Error uploading files" },
+            { error: `Erreur lors de l'upload: ${error}` },
             { status: 500 }
         );
     }
-}
-
-export const config = {
-    api: {
-        bodyParser: false
-    }
-}; 
+} 

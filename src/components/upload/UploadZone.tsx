@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { Progress } from '@/components/ui/Progress';
 
 interface UploadFiles {
     mainVideo: File | null;
@@ -7,6 +8,14 @@ interface UploadFiles {
     statsJson: File | null;
     playerVideos: File[];
     folderName: string;
+}
+
+interface UploadProgress {
+    mainVideo: number;
+    pipelineJson: number;
+    statsJson: number;
+    playerVideos: { [key: string]: number };
+    global: number;
 }
 
 export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () => void }) {
@@ -17,6 +26,14 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
         playerVideos: [],
         folderName: ''
     });
+    const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
+        mainVideo: 0,
+        pipelineJson: 0,
+        statsJson: 0,
+        playerVideos: {},
+        global: 0
+    });
+    const [isUploading, setIsUploading] = useState(false);
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         const newFiles: UploadFiles = {
@@ -50,28 +67,109 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
         setFiles(prev => ({ ...prev, folderName: e.target.value }));
     };
 
+    const calculateGlobalProgress = (currentProgress: UploadProgress, totalFiles: number): number => {
+        const sum = currentProgress.mainVideo + 
+                    currentProgress.pipelineJson + 
+                    currentProgress.statsJson + 
+                    Object.values(currentProgress.playerVideos).reduce((acc, curr) => acc + curr, 0);
+        
+        return Math.round(sum / totalFiles);
+    };
+
     const handleUpload = async () => {
         if (!files.mainVideo || !files.pipelineJson || !files.statsJson || !files.folderName) {
             alert('Please provide all required files and a folder name');
             return;
         }
 
-        const formData = new FormData();
-        formData.append('mainVideo', files.mainVideo);
-        formData.append('pipelineJson', files.pipelineJson);
-        formData.append('statsJson', files.statsJson);
-        formData.append('folderName', files.folderName);
-        files.playerVideos.forEach(video => {
-            formData.append('playerVideos', video);
-        });
+        setIsUploading(true);
 
-        const response = await fetch('/api/v1/upload', {
-            method: 'POST',
-            body: formData
-        });
+        const uploadFile = async (file: File, fileName: string, progressKey: 'mainVideo' | 'pipelineJson' | 'statsJson' | string) => {
+            const chunkSize = 1024 * 1024; // 1MB par chunk
+            const totalChunks = Math.ceil(file.size / chunkSize);
+            let uploadedChunks = 0;
+
+            const uploadChunk = async (chunk: Blob, index: number) => {
+                const xhr = new XMLHttpRequest();
+                
+                return new Promise((resolve, reject) => {
+                    xhr.upload.addEventListener('progress', (event) => {
+                        if (event.lengthComputable) {
+                            const chunkProgress = Math.round((event.loaded / event.total) * 100);
+                            const totalProgress = Math.round(((uploadedChunks + (chunkProgress / 100)) / totalChunks) * 100);
+                            
+                            setUploadProgress(prev => {
+                                const newProgress = {
+                                    ...prev,
+                                    [progressKey]: totalProgress,
+                                    ...(progressKey.includes('player') ? {
+                                        playerVideos: {
+                                            ...prev.playerVideos,
+                                            [fileName]: totalProgress
+                                        }
+                                    } : {})
+                                };
+
+                                const totalFiles = 3 + files.playerVideos.length;
+                                newProgress.global = calculateGlobalProgress(newProgress, totalFiles);
+
+                                return newProgress;
+                            });
+                        }
+                    });
+
+                    xhr.addEventListener('load', () => {
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            resolve(JSON.parse(xhr.response));
+                        } else {
+                            reject(new Error(`Échec de l'upload pour ${fileName} (chunk ${index})`));
+                        }
+                    });
+
+                    xhr.addEventListener('error', () => {
+                        reject(new Error(`Erreur réseau pour ${fileName} (chunk ${index})`));
+                    });
+
+                    xhr.open('POST', '/api/v1/upload');
+                    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                    xhr.setRequestHeader('x-folder-name', files.folderName);
+                    xhr.setRequestHeader('x-file-name', fileName);
+                    xhr.setRequestHeader('x-chunk-index', index.toString());
+                    xhr.setRequestHeader('x-total-chunks', totalChunks.toString());
+                    xhr.setRequestHeader('x-file-size', file.size.toString());
+
+                    xhr.send(chunk);
+                });
+            };
+
+            try {
+                for (let i = 0; i < totalChunks; i++) {
+                    const start = i * chunkSize;
+                    const end = Math.min(start + chunkSize, file.size);
+                    const chunk = file.slice(start, end);
+                    
+                    await uploadChunk(chunk, i);
+                    uploadedChunks++;
+                }
+
+                return { success: true };
+            } catch (error) {
+                console.error(`Erreur lors de l'upload de ${fileName}:`, error);
+                throw error;
+            }
+        };
+
+        try {
+            await uploadFile(files.mainVideo, files.mainVideo.name, 'mainVideo');
             
-        if (response.ok) {
-            alert('Upload successful !');
+            await uploadFile(files.pipelineJson, 'pipeline.json', 'pipelineJson');
+            await uploadFile(files.statsJson, 'stats.json', 'statsJson');
+            
+            for (const video of files.playerVideos) {
+                await uploadFile(video, video.name, `player_${video.name}`);
+            }
+
+            alert('Upload réussi !');
             setFiles({
                 mainVideo: null,
                 pipelineJson: null,
@@ -80,8 +178,17 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                 folderName: ''
             });
             onUploadSuccess();
-        } else {
-            alert(`An error occurred during upload : ${response.statusText}`);
+        } catch (error) {
+            alert(`Une erreur s'est produite pendant l'upload : ${error}`);
+        } finally {
+            setIsUploading(false);
+            setUploadProgress({
+                mainVideo: 0,
+                pipelineJson: 0,
+                statsJson: 0,
+                playerVideos: {},
+                global: 0
+            });
         }
     };
 
@@ -132,6 +239,14 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                     >
                         Upload files
                     </button>
+                </div>
+            )}
+
+            {isUploading && (
+                <div className="mt-4">
+                    <div className="space-y-2">
+                        <Progress value={uploadProgress.global} label="Progress" />
+                    </div>
                 </div>
             )}
         </div>
