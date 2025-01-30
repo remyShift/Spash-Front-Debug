@@ -7,6 +7,8 @@ import { useCanvas } from '@/context/canvas';
 import KillFeed from './KillFeed';
 import { VideoControls } from './videoControls/VideoControls';
 import LayersMenu from './layers/LayersMenu';
+import { RenderTiming } from '@/types/performance';
+import { usePerformance } from '@/context/performance';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -23,6 +25,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     const persistentCanvasRef = useRef<HTMLCanvasElement>(null);
     const { setMainCanvasRef, setPersistentCanvasRef } = useCanvas();
     const lastDrawnFrame = useRef<number>(-1);
+    const { setMainTiming, setPersistentTiming } = usePerformance();
 
     useEffect(() => {
         if (mainCanvasRef.current) {
@@ -51,13 +54,19 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     { 
                         mainCanvas: mainCanvasRef.current, 
                         persistentCanvas: persistentCanvasRef.current 
+                    },
+                    {
+                        onTimingsUpdate: (main: RenderTiming, persistent: RenderTiming) => {
+                            setMainTiming(main);
+                            setPersistentTiming(persistent);
+                        }
                     }
                 );
             }
         }
         
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, setCurrentFrame]);
+    }, [jsonData, activeLayers, setCurrentFrame, setMainTiming, setPersistentTiming]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);

@@ -6,11 +6,14 @@ import EventsSection from './EventsSection';
 import InfosSection from './InfosSection';
 import BallSection from './BallSection';
 import PlayersSection from './PlayersSection';
+import PerformanceSection from './PerformanceSection';
 
-export default function FrameInfos({ framesData, events }: { 
-    framesData: JSONData['data'], 
-    events: JSONData['events'] 
-}) {
+interface FrameInfosProps {
+    framesData: JSONData['data'];
+    events: JSONData['events'];
+}
+
+export default function FrameInfos({ framesData, events }: FrameInfosProps) {
     const { currentFrame } = useFrame();
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
 
@@ -21,6 +24,7 @@ export default function FrameInfos({ framesData, events }: {
     return (
         <div className='p-4 flex flex-col gap-8 max-h-[500px] overflow-y-auto'>
             <FrameHeader currentFrame={currentFrame} frameData={frameData} />
+            <PerformanceSection />
             <EventsSection events={events} currentFrame={currentFrame} />
             <InfosSection frameData={frameData} />
             <BallSection frameData={frameData} />

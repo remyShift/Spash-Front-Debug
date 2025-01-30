@@ -16,10 +16,16 @@ import { drawHomography } from "./areas/drawHomography";
 import { drawDivorceZones } from "./zones/drawDivorceZones";
 import { drawSafeBallZones } from "./zones/drawSafeBallZones";
 import { drawTopLobZones } from "./zones/drawTopLobZones";
+import { RenderTiming } from "@/types/performance";
+import { measureRenderTime } from "@/utils/drawing/performance";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
     persistentCanvas: HTMLCanvasElement;
+}
+
+interface DrawOptions {
+    onTimingsUpdate?: (main: RenderTiming, persistent: RenderTiming) => void;
 }
 
 export const drawElements = (
@@ -27,23 +33,19 @@ export const drawElements = (
     activeLayers: Layers[], 
     videoRef: HTMLVideoElement,
     canvasRefs: CanvasRefs,
+    options?: DrawOptions
 ) => {
+    const mainMeasure = measureRenderTime('main');
+    const persistentMeasure = measureRenderTime('persistent');
+    
+    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd', 'divorces', 'top lob', 'safe ball'];
+    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography'];
+    
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
     const mainCtx = canvasRefs.mainCanvas.getContext('2d');
     const persistentCtx = canvasRefs.persistentCanvas.getContext('2d');
 
     if (!frameData || !videoWidth || !videoHeight || !mainCtx || !persistentCtx) return;
-    
-    mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
-    
-    persistentCtx.clearRect(0, 0, canvasRefs.persistentCanvas.width, canvasRefs.persistentCanvas.height);
-
-    [mainCtx, persistentCtx].forEach(ctx => {
-        if (ctx) {
-            ctx.globalCompositeOperation = 'source-over';
-            ctx.imageSmoothingEnabled = false;
-        }
-    });
 
     if (canvasRefs.mainCanvas.width !== videoWidth || canvasRefs.mainCanvas.height !== videoHeight) {
         [canvasRefs.mainCanvas, canvasRefs.persistentCanvas].forEach(canvas => {
@@ -52,9 +54,8 @@ export const drawElements = (
         });
     }
 
-    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography'];
-    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd', 'divorces', 'top lob', 'safe ball'];
-
+    persistentCtx.clearRect(0, 0, canvasRefs.persistentCanvas.width, canvasRefs.persistentCanvas.height);
+    
     const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
 
     if (activeLayers.includes('areas-ab')) {
@@ -65,12 +66,23 @@ export const drawElements = (
     }
 
     activeLayers.forEach(layer => {
-        if (mainLayerOperations.includes(layer)) {
-            processMainLayer(layer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
-        } else if (persistentLayerOperations.includes(layer) && !['areas-ab', 'areas-cd'].includes(layer)) {
+        if (persistentLayerOperations.includes(layer) && !['areas-ab', 'areas-cd'].includes(layer)) {
             processPersistentLayer(layer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
         }
     });
+
+    mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
+    
+    activeLayers.forEach(layer => {
+        if (mainLayerOperations.includes(layer)) {
+            processMainLayer(layer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
+        }
+    });
+
+    const persistentTiming = persistentMeasure();
+    const mainTiming = mainMeasure();
+
+    options?.onTimingsUpdate?.(mainTiming, persistentTiming);
 }
 
 function processMainLayer(
