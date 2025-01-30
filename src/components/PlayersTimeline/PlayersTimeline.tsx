@@ -51,12 +51,10 @@ export default function PlayersTimeline({ jsonData }: { jsonData: JSONData }) {
         const numberOfMarkers = Math.ceil(totalFrames / frameInterval);
 
         for (let i = 0; i <= numberOfMarkers; i++) {
-            const frame = i * frameInterval;
-            if (frame <= totalFrames) {
-                const seconds = frame / FPS;
-                const position = (frame / totalFrames) * 100;
-                markers.push({ time: seconds, position });
-            }
+            const frame = Math.min(i * frameInterval, totalFrames);
+            const seconds = frame / FPS;
+            const position = (frame / totalFrames) * 100;
+            markers.push({ time: seconds, position });
         }
 
         return markers;

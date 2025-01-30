@@ -1,19 +1,24 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useStore } from "@/context/store";
 import { VideoList } from "./VideoList";
 import { fetchFiles } from "@/utils/fetchFiles";
 import Loader from "../ui/Loader";
 import ErrorMsg from "../ui/ErrorMsg";
+import UploadZone from "../upload/UploadZone";
 
 export default function Home() {
   const { videos, setVideos } = useStore();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const refreshVideos = useCallback(() => {
     fetchFiles({ setLoading, setError, setVideos });
   }, [setVideos]);
+
+  useEffect(() => {
+    refreshVideos();
+  }, [refreshVideos]);
 
   if (loading) {
     return (
@@ -37,7 +42,8 @@ export default function Home() {
         <h1 className="text-4xl text-white font-semibold italic">
           Welcome to the debug devtool !
         </h1>
-        <h2 className="text-white text-3xl italic">
+        <UploadZone onUploadSuccess={refreshVideos} />
+        <h2 className="text-white text-3xl italic mt-8">
           Please choose a video below :
         </h2>
 
