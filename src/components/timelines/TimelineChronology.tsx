@@ -6,11 +6,14 @@ import TimelineUI from "./TimelineUI";
 
 const TIMELINE_DURATION = 300;
 const FPS = 25;
+const VISIBLE_WINDOW = 60;
+const BUFFER_WINDOW = 30;
 
 export default function TimelineChronology({ timeline }: { timeline: TimelineInterval[] }) {
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
+    const [visibleIntervals, setVisibleIntervals] = useState<TimelineInterval[]>([]);
 
     useEffect(() => {
         const updateContainerWidth = () => {
@@ -34,14 +37,25 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
         if (timelineRef.current) {
             timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
         }
-    }, [currentFrame]);
+
+        const startWindow = Math.max(0, currentTimeInSeconds - VISIBLE_WINDOW - BUFFER_WINDOW);
+        const endWindow = currentTimeInSeconds + VISIBLE_WINDOW + BUFFER_WINDOW;
+
+        const visible = timeline.filter(interval => {
+            const startTime = interval.start / FPS;
+            const endTime = interval.end / FPS;
+            return (startTime >= startWindow && startTime <= endWindow) || 
+                    (endTime >= startWindow && endTime <= endWindow) ||
+                    (startTime <= startWindow && endTime >= endWindow);
+        });
+
+        setVisibleIntervals(visible);
+    }, [currentFrame, timeline]);
 
     const calculateIntervalPosition = (start: number): string => {
         if (!containerWidth) return '';
-
         const frameTime = start / FPS;
         const position = (frameTime / TIMELINE_DURATION) * 100;
-
         return `${position}%`;
     };
 
@@ -55,7 +69,6 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
         const startTimeInSeconds = start / FPS;
         const endTimeInSeconds = end / FPS;
         const currentTimeInSeconds = currentFrame / FPS;
-        
         return currentTimeInSeconds >= startTimeInSeconds && currentTimeInSeconds <= endTimeInSeconds;
     };
 
@@ -70,7 +83,7 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
                         <div className="absolute -top-6 w-[300%] z-0"
                                 ref={timelineRef}
                                 style={{ left: '50%' }}>
-                            {containerWidth > 0 && timeline.map((interval) => (
+                            {containerWidth > 0 && visibleIntervals.map((interval) => (
                                 <div 
                                     key={`${interval.start}-${interval.end}`}
                                     className={`absolute h-10 transition-opacity duration-200 ${interval.type === 'Point' ? 'bg-point-gradient' : 'bg-inter-point-gradient'}`}

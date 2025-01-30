@@ -6,11 +6,14 @@ import { Event } from "@/types/events";
 
 const TIMELINE_DURATION = 300;
 const FPS = 25;
+const VISIBLE_WINDOW = 60;
+const BUFFER_WINDOW = 30;
 
 export default function Timeline({ event, framesEvent }: { event: Event; framesEvent: number[] }) {
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
+    const [visibleMarkers, setVisibleMarkers] = useState<number[]>([]);
 
     useEffect(() => {
         const updateContainerWidth = () => {
@@ -34,7 +37,17 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
         if (timelineRef.current) {
             timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
         }
-    }, [currentFrame]);
+
+        const startWindow = Math.max(0, currentTimeInSeconds - VISIBLE_WINDOW - BUFFER_WINDOW);
+        const endWindow = currentTimeInSeconds + VISIBLE_WINDOW + BUFFER_WINDOW;
+
+        const visible = framesEvent.filter(frame => {
+            const frameTime = frame / FPS;
+            return frameTime >= startWindow && frameTime <= endWindow;
+        });
+
+        setVisibleMarkers(visible);
+    }, [currentFrame, framesEvent]);
 
     const calculateMarkerPosition = (frame: number): string => {
         if (!containerWidth) return '';
@@ -66,7 +79,7 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
                         <div className="absolute -top-4 w-[300%] z-50"
                                 ref={timelineRef}
                                 style={{ left: '50%' }}>
-                            {containerWidth > 0 && framesEvent.map((frame) => (
+                            {containerWidth > 0 && visibleMarkers.map((frame) => (
                                 <div 
                                     key={frame}
                                     className="absolute"

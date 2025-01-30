@@ -42,7 +42,7 @@ export const drawPlayerBBox = (
     const [x1, y1, x2, y2] = player.bbox;
     if (!isValidBBox(x1, y1, x2, y2, videoWidth, videoHeight)) return;
 
-    const [, legsY] = player.court_legs;
+    const [, legsY] = player.player_legs;
 
     const scaledX1 = x1 * scaleX;
     const scaledY1 = y1 * scaleY;
