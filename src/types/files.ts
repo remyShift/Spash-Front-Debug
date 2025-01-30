@@ -175,6 +175,9 @@ export interface StatsData {
             calories: {
                 score: number;
             };
+            intensities: {
+                score: number;
+            };
         };
         badges: {
             badge_type: string;

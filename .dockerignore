@@ -1,0 +1,17 @@
+
+# dependencies
+node_modules
+.next
+.git
+.env*
+README.md
+.gitignore
+
+/public/videos/*
+
+# misc
+.DS_Store
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts

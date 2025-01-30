@@ -1,0 +1,8 @@
+services:
+  spash-debug-devtool:
+    build: .
+    ports:
+      - "3800:3000"
+    volumes:
+      - ./public:/app/public
+    command: npm run dev
