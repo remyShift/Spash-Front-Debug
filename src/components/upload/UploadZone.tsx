@@ -73,7 +73,8 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                     currentProgress.statsJson + 
                     Object.values(currentProgress.playerVideos).reduce((acc, curr) => acc + curr, 0);
         
-        return Math.round(sum / totalFiles);
+        const totalPossibleProgress = totalFiles * 100;
+        return Math.round((sum / totalPossibleProgress) * 100);
     };
 
     const handleUpload = async () => {
@@ -85,9 +86,32 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
         setIsUploading(true);
 
         const uploadFile = async (file: File, fileName: string, progressKey: 'mainVideo' | 'pipelineJson' | 'statsJson' | string) => {
-            const chunkSize = 1024 * 1024; // 1MB par chunk
+            const chunkSize = 1024 * 1024;
             const totalChunks = Math.ceil(file.size / chunkSize);
             let uploadedChunks = 0;
+
+            const updateProgress = (progress: number) => {
+                return new Promise<void>(resolve => {
+                    setUploadProgress(prev => {
+                        const newProgress = {
+                            ...prev,
+                            [progressKey]: progress,
+                            ...(progressKey.includes('player') ? {
+                                playerVideos: {
+                                    ...prev.playerVideos,
+                                    [fileName]: progress
+                                }
+                            } : {})
+                        };
+
+                        const totalFiles = 3 + files.playerVideos.length;
+                        newProgress.global = calculateGlobalProgress(newProgress, totalFiles);
+
+                        return newProgress;
+                    });
+                    resolve();
+                });
+            };
 
             const uploadChunk = async (chunk: Blob, index: number) => {
                 const xhr = new XMLHttpRequest();
@@ -97,29 +121,15 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                         if (event.lengthComputable) {
                             const chunkProgress = Math.round((event.loaded / event.total) * 100);
                             const totalProgress = Math.round(((uploadedChunks + (chunkProgress / 100)) / totalChunks) * 100);
-                            
-                            setUploadProgress(prev => {
-                                const newProgress = {
-                                    ...prev,
-                                    [progressKey]: totalProgress,
-                                    ...(progressKey.includes('player') ? {
-                                        playerVideos: {
-                                            ...prev.playerVideos,
-                                            [fileName]: totalProgress
-                                        }
-                                    } : {})
-                                };
-
-                                const totalFiles = 3 + files.playerVideos.length;
-                                newProgress.global = calculateGlobalProgress(newProgress, totalFiles);
-
-                                return newProgress;
-                            });
+                            updateProgress(totalProgress);
                         }
                     });
 
-                    xhr.addEventListener('load', () => {
+                    xhr.addEventListener('load', async () => {
                         if (xhr.status >= 200 && xhr.status < 300) {
+                            uploadedChunks++;
+                            const progress = Math.round((uploadedChunks / totalChunks) * 100);
+                            await updateProgress(progress);
                             resolve(JSON.parse(xhr.response));
                         } else {
                             reject(new Error(`Échec de l'upload pour ${fileName} (chunk ${index})`));
@@ -147,11 +157,10 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                     const start = i * chunkSize;
                     const end = Math.min(start + chunkSize, file.size);
                     const chunk = file.slice(start, end);
-                    
                     await uploadChunk(chunk, i);
-                    uploadedChunks++;
                 }
 
+                await updateProgress(100);
                 return { success: true };
             } catch (error) {
                 console.error(`Erreur lors de l'upload de ${fileName}:`, error);
@@ -159,9 +168,24 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
             }
         };
 
+        const waitForProgress = () => {
+            return new Promise<void>((resolve) => {
+                const checkProgress = () => {
+                    setUploadProgress(prev => {
+                        if (prev.global === 100) {
+                            setTimeout(resolve, 100);
+                        } else {
+                            setTimeout(checkProgress, 100);
+                        }
+                        return prev;
+                    });
+                };
+                checkProgress();
+            });
+        };
+
         try {
             await uploadFile(files.mainVideo, files.mainVideo.name, 'mainVideo');
-            
             await uploadFile(files.pipelineJson, 'pipeline.json', 'pipelineJson');
             await uploadFile(files.statsJson, 'stats.json', 'statsJson');
             
@@ -169,15 +193,21 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                 await uploadFile(video, video.name, `player_${video.name}`);
             }
 
-            alert('Upload réussi !');
-            setFiles({
-                mainVideo: null,
-                pipelineJson: null,
-                statsJson: null,
-                playerVideos: [],
-                folderName: ''
-            });
-            onUploadSuccess();
+            // S'assurer que la progression est à 100%
+            await waitForProgress();
+            
+            // Attendre un peu avant d'afficher l'alerte
+            setTimeout(() => {
+                alert('Upload réussi !');
+                setFiles({
+                    mainVideo: null,
+                    pipelineJson: null,
+                    statsJson: null,
+                    playerVideos: [],
+                    folderName: ''
+                });
+                onUploadSuccess();
+            }, 200);
         } catch (error) {
             alert(`Une erreur s'est produite pendant l'upload : ${error}`);
         } finally {
