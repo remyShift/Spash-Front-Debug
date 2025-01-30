@@ -15,7 +15,7 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
     const currentTimeValue = isNaN(currentTime) ? 0 : currentTime;
     const progressWidth = maxDuration > 0 ? (currentTimeValue / maxDuration) * 100 : 0;
 
-    const maxFocusWindowSeconds = 100; 
+    const maxFocusWindowSeconds = 84; 
     const minFocusWindowSeconds = 50;
     
     const availableTimeAfter = maxDuration - currentTimeValue;

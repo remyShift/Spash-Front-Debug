@@ -4,9 +4,9 @@ import { useFrame } from "@/context/frame";
 import { useEffect, useRef, useState } from "react";
 import { Event } from "@/types/events";
 
-const TIMELINE_DURATION = 300;
+const TIMELINE_DURATION = 500;
 const FPS = 25;
-const VISIBLE_WINDOW = 60;
+const VISIBLE_WINDOW = 100;
 const BUFFER_WINDOW = 30;
 
 export default function Timeline({ event, framesEvent }: { event: Event; framesEvent: number[] }) {
