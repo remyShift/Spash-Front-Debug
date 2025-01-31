@@ -10,7 +10,7 @@ interface PlayerPresence {
     name?: string;
 }
 
-export default function PlayersTimeline({ jsonData }: { jsonData: JSONData }) {
+export default function PlayersPresenceTimeline({ jsonData }: { jsonData: JSONData }) {
     const [playerPresences, setPlayerPresences] = useState<PlayerPresence[]>([]);
     const { setCurrentFrame } = useFrame();
     const totalFrames = Object.keys(jsonData.data).length;
@@ -108,9 +108,15 @@ export default function PlayersTimeline({ jsonData }: { jsonData: JSONData }) {
                                     >
                                         <div className="w-[10%] flex">
                                             <div className="w-1/2 text-white font-medium text-center">
-                                                <span className="text-primary">
-                                                    {player.name || 'N/A'}
-                                                </span>
+                                                {player.name ? (
+                                                    <span className="text-primary font-bold underline">
+                                                        {player.name}
+                                                    </span>
+                                                ) : (
+                                                    <span className="text-white">
+                                                        {player.id}
+                                                    </span>
+                                                )}
                                             </div>
                                             <div className="w-1/2 text-white font-medium text-center">
                                                 {player.id}

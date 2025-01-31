@@ -17,7 +17,7 @@ import StatsArray from "@/components/StatsArray/StatsArray";
 import { calculateCumulativeDistances } from "@/utils/calculateCumulativeDistances";
 import { calculateCumulativeHits } from "@/utils/calculateCumulativeHits";
 import Footer from "@/components/ui/Footer";
-import PlayersTimeline from "@/components/PlayersTimeline/PlayersTimeline";
+import PlayersPresenceTimeline from "@/components/PlayersPresenceTimeline/PlayersPresenceTimeline";
 
 export default function VideoPage() {
     const params = useParams();
@@ -106,7 +106,7 @@ export default function VideoPage() {
                     </div>
                 </div>
             </div>
-            {jsonData && <PlayersTimeline jsonData={jsonData} />}
+            {jsonData && <PlayersPresenceTimeline jsonData={jsonData} />}
             <StatsArray statsData={statsData as StatsData} />
             <Footer />
         </div>
