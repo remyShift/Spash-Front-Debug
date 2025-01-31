@@ -21,7 +21,8 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
         { content: "homography", handleClick: () => toggleActiveLayers('homography') },
         { content: "divorces", handleClick: () => toggleActiveLayers('divorces') },
         { content: "top lob", handleClick: () => toggleActiveLayers('top lob') },
-        { content: "safe ball", handleClick: () => toggleActiveLayers('safe ball') }
+        { content: "safe ball", handleClick: () => toggleActiveLayers('safe ball') },
+        { content: "cumulative distances", handleClick: () => toggleActiveLayers('cumulative distances') }
     ];
 
     return (

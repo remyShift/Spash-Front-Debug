@@ -18,6 +18,7 @@ import { drawSafeBallZones } from "./zones/drawSafeBallZones";
 import { drawTopLobZones } from "./zones/drawTopLobZones";
 import { RenderTiming } from "@/types/performance";
 import { measureRenderTime } from "@/utils/drawing/performance";
+import { drawCumulativeDistances } from "./players/drawCumulativeDistances";
 
 interface CanvasRefs {
     mainCanvas: HTMLCanvasElement;
@@ -39,7 +40,7 @@ export const drawElements = (
     const persistentMeasure = measureRenderTime('persistent');
     
     const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd', 'divorces', 'top lob', 'safe ball'];
-    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography'];
+    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography', 'cumulative distances'];
     
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
     const mainCtx = canvasRefs.mainCanvas.getContext('2d');
@@ -138,6 +139,11 @@ function processMainLayer(
         case 'homography':
             if (videoData.zones.homography) {
                 drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
+            }
+            break;
+        case 'cumulative distances':
+            if (players) {
+                drawCumulativeDistances(players, videoWidth, videoHeight, mainCtx);
             }
             break;
     }
