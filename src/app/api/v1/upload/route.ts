@@ -15,14 +15,14 @@ export async function POST(request: NextRequest) {
 
     if (!contentType?.includes('application/octet-stream')) {
         return NextResponse.json(
-            { error: "Le type de contenu doit être application/octet-stream" },
+            { error: "The content type must be application/octet-stream" },
             { status: 400 }
         );
     }
 
     if (!folderName || !fileName) {
         return NextResponse.json(
-            { error: "Informations manquantes dans les en-têtes" },
+            { error: "Missing information in headers" },
             { status: 400 }
         );
     }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('Erreur lors de l\'upload:', error);
         return NextResponse.json(
-            { error: `Erreur lors de l'upload: ${error}` },
+            { error: `Error during upload: ${error}` },
             { status: 500 }
         );
     }

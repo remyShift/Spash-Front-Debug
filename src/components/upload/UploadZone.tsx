@@ -132,12 +132,12 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                             await updateProgress(progress);
                             resolve(JSON.parse(xhr.response));
                         } else {
-                            reject(new Error(`Échec de l'upload pour ${fileName} (chunk ${index})`));
+                            reject(new Error(`Error during upload for ${fileName} (chunk ${index})`));
                         }
                     });
 
                     xhr.addEventListener('error', () => {
-                        reject(new Error(`Erreur réseau pour ${fileName} (chunk ${index})`));
+                        reject(new Error(`Network error during upload for ${fileName} (chunk ${index})`));
                     });
 
                     xhr.open('POST', '/api/v1/upload');
@@ -163,7 +163,7 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                 await updateProgress(100);
                 return { success: true };
             } catch (error) {
-                console.error(`Erreur lors de l'upload de ${fileName}:`, error);
+                console.error(`Error during upload for ${fileName}:`, error);
                 throw error;
             }
         };
@@ -193,10 +193,8 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                 await uploadFile(video, video.name, `player_${video.name}`);
             }
 
-            // S'assurer que la progression est à 100%
             await waitForProgress();
-            
-            // Attendre un peu avant d'afficher l'alerte
+
             setTimeout(() => {
                 alert('Upload réussi !');
                 setFiles({
@@ -209,7 +207,7 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                 onUploadSuccess();
             }, 200);
         } catch (error) {
-            alert(`Une erreur s'est produite pendant l'upload : ${error}`);
+            alert(`An error occurred during upload: ${error}`);
         } finally {
             setIsUploading(false);
             setUploadProgress({
