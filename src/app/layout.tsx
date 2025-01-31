@@ -8,7 +8,26 @@ config.autoAddCss = false
 
 export const metadata: Metadata = {
   title: "Debug Spash Devtool",
-  description: "Tool to help Spash developers debug AI results !",
+  description: "Debug tool for Spash developers to analyze the results of the AI on videos",
+  keywords: ["debug", "spash", "tennis", "AI", "video analysis", "development tool"],
+  authors: [{ name: "remyShift" }],
+  creator: "remyShift",
+  publisher: "Spash",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: '/svg/logo.svg', sizes: 'any' },
+    ]
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 const gilRoy = localFont({
@@ -43,7 +62,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className={`${gilRoy.variable} font-gilroy mesh-bg overflow-x-hidden`}>
         {children}
       </body>
