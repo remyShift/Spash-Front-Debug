@@ -1,22 +1,9 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Progress } from '@/components/ui/Progress';
-
-interface UploadFiles {
-    mainVideo: File | null;
-    pipelineJson: File | null;
-    statsJson: File | null;
-    playerVideos: File[];
-    folderName: string;
-}
-
-interface UploadProgress {
-    mainVideo: number;
-    pipelineJson: number;
-    statsJson: number;
-    playerVideos: { [key: string]: number };
-    global: number;
-}
+import { UploadFiles, UploadProgress } from '@/types/upload';
+import { processDroppedFiles } from '@/utils/upload/processDroppedFiles';
+import { uploadFile } from '@/utils/upload/uploadFile';
 
 export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () => void }) {
     const [files, setFiles] = useState<UploadFiles>({
@@ -36,45 +23,12 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
     const [isUploading, setIsUploading] = useState(false);
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
-        const newFiles: UploadFiles = {
-            ...files,
-            mainVideo: null,
-            pipelineJson: null,
-            statsJson: null,
-            playerVideos: []
-        };
-
-        acceptedFiles.forEach(file => {
-            if (file.type.startsWith('video/')) {
-                if (file.name.includes('player')) {
-                    newFiles.playerVideos.push(file);
-                } else {
-                    newFiles.mainVideo = file;
-                }
-            } else if (file.type === 'application/json') {
-                if (file.name === 'stats.json') {
-                    newFiles.statsJson = file;
-                } else {
-                    newFiles.pipelineJson = file;
-                }
-            }
-        });
-
+        const newFiles = processDroppedFiles(acceptedFiles, files);
         setFiles(newFiles);
     }, [files]);
 
     const handleFolderNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFiles(prev => ({ ...prev, folderName: e.target.value }));
-    };
-
-    const calculateGlobalProgress = (currentProgress: UploadProgress, totalFiles: number): number => {
-        const sum = currentProgress.mainVideo + 
-                    currentProgress.pipelineJson + 
-                    currentProgress.statsJson + 
-                    Object.values(currentProgress.playerVideos).reduce((acc, curr) => acc + curr, 0);
-        
-        const totalPossibleProgress = totalFiles * 100;
-        return Math.round((sum / totalPossibleProgress) * 100);
     };
 
     const handleUpload = async () => {
@@ -84,119 +38,19 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
         }
 
         setIsUploading(true);
-
-        const uploadFile = async (file: File, fileName: string, progressKey: 'mainVideo' | 'pipelineJson' | 'statsJson' | string) => {
-            const chunkSize = 1024 * 1024;
-            const totalChunks = Math.ceil(file.size / chunkSize);
-            let uploadedChunks = 0;
-
-            const updateProgress = (progress: number) => {
-                return new Promise<void>(resolve => {
-                    setUploadProgress(prev => {
-                        const newProgress = {
-                            ...prev,
-                            [progressKey]: progress,
-                            ...(progressKey.includes('player') ? {
-                                playerVideos: {
-                                    ...prev.playerVideos,
-                                    [fileName]: progress
-                                }
-                            } : {})
-                        };
-
-                        const totalFiles = 3 + files.playerVideos.length;
-                        newProgress.global = calculateGlobalProgress(newProgress, totalFiles);
-
-                        return newProgress;
-                    });
-                    resolve();
-                });
-            };
-
-            const uploadChunk = async (chunk: Blob, index: number) => {
-                const xhr = new XMLHttpRequest();
-                
-                return new Promise((resolve, reject) => {
-                    xhr.upload.addEventListener('progress', (event) => {
-                        if (event.lengthComputable) {
-                            const chunkProgress = Math.round((event.loaded / event.total) * 100);
-                            const totalProgress = Math.round(((uploadedChunks + (chunkProgress / 100)) / totalChunks) * 100);
-                            updateProgress(totalProgress);
-                        }
-                    });
-
-                    xhr.addEventListener('load', async () => {
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            uploadedChunks++;
-                            const progress = Math.round((uploadedChunks / totalChunks) * 100);
-                            await updateProgress(progress);
-                            resolve(JSON.parse(xhr.response));
-                        } else {
-                            reject(new Error(`Error during upload for ${fileName} (chunk ${index})`));
-                        }
-                    });
-
-                    xhr.addEventListener('error', () => {
-                        reject(new Error(`Network error during upload for ${fileName} (chunk ${index})`));
-                    });
-
-                    xhr.open('POST', '/api/v1/upload');
-                    xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-                    xhr.setRequestHeader('x-folder-name', files.folderName);
-                    xhr.setRequestHeader('x-file-name', fileName);
-                    xhr.setRequestHeader('x-chunk-index', index.toString());
-                    xhr.setRequestHeader('x-total-chunks', totalChunks.toString());
-                    xhr.setRequestHeader('x-file-size', file.size.toString());
-
-                    xhr.send(chunk);
-                });
-            };
-
-            try {
-                for (let i = 0; i < totalChunks; i++) {
-                    const start = i * chunkSize;
-                    const end = Math.min(start + chunkSize, file.size);
-                    const chunk = file.slice(start, end);
-                    await uploadChunk(chunk, i);
-                }
-
-                await updateProgress(100);
-                return { success: true };
-            } catch (error) {
-                console.error(`Error during upload for ${fileName}:`, error);
-                throw error;
-            }
-        };
-
-        const waitForProgress = () => {
-            return new Promise<void>((resolve) => {
-                const checkProgress = () => {
-                    setUploadProgress(prev => {
-                        if (prev.global === 100) {
-                            setTimeout(resolve, 100);
-                        } else {
-                            setTimeout(checkProgress, 100);
-                        }
-                        return prev;
-                    });
-                };
-                checkProgress();
-            });
-        };
+        const totalFiles = 3 + files.playerVideos.length;
 
         try {
-            await uploadFile(files.mainVideo, files.mainVideo.name, 'mainVideo');
-            await uploadFile(files.pipelineJson, 'pipeline.json', 'pipelineJson');
-            await uploadFile(files.statsJson, 'stats.json', 'statsJson');
+            await uploadFile(files.mainVideo, files.mainVideo.name, 'mainVideo', files.folderName, setUploadProgress, totalFiles);
+            await uploadFile(files.pipelineJson, 'pipeline.json', 'pipelineJson', files.folderName, setUploadProgress, totalFiles);
+            await uploadFile(files.statsJson, 'stats.json', 'statsJson', files.folderName, setUploadProgress, totalFiles);
             
             for (const video of files.playerVideos) {
-                await uploadFile(video, video.name, `player_${video.name}`);
+                await uploadFile(video, video.name, `player_${video.name}`, files.folderName, setUploadProgress, totalFiles);
             }
 
-            await waitForProgress();
-
             setTimeout(() => {
-                alert('Upload réussi !');
+                alert('Upload successful!');
                 setFiles({
                     mainVideo: null,
                     pipelineJson: null,

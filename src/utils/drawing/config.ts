@@ -10,8 +10,8 @@ export const defaultDrawingConfig: DrawingConfig = {
 export const initializeAnimation = (video: HTMLVideoElement, jsonData: JSONData) => {
     const fps = 25;
     const currentFrame = Math.round(video.currentTime * fps);
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
+    const videoWidth = jsonData?.info.width;
+    const videoHeight = jsonData?.info.height;
     const frameData = jsonData?.data[currentFrame];
 
     return {

@@ -33,7 +33,6 @@ export const drawPlayerBBox = (
     context: CanvasRenderingContext2D
 ): void => {
     if (!player?.bbox) return;
-    console.log(player);
 
     const canvas = context.canvas;
     const scaleX = canvas.width / videoWidth;

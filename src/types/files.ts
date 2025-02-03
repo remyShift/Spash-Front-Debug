@@ -51,6 +51,10 @@ export interface PersonTracking {
 };
 
 export interface JSONData {
+    info: {
+        width: number;
+        height: number;
+    };
     path: string;
     data: {
         [frame: string]: {

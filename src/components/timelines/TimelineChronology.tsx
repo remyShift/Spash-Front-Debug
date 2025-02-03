@@ -14,6 +14,7 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
     const [visibleIntervals, setVisibleIntervals] = useState<TimelineInterval[]>([]);
+    const previousFrameRef = useRef(currentFrame);
 
     useEffect(() => {
         const updateContainerWidth = () => {
@@ -31,6 +32,11 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
     }, []);
 
     useEffect(() => {
+        if (previousFrameRef.current === currentFrame) {
+            return;
+        }
+        previousFrameRef.current = currentFrame;
+
         const currentTimeInSeconds = currentFrame / FPS;
         const newOffset = (currentTimeInSeconds / TIMELINE_DURATION) * 100;
 

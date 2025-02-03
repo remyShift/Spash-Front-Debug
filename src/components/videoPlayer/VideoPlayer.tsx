@@ -44,29 +44,37 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
         
         if (newFrame !== lastDrawnFrame.current) {
             lastDrawnFrame.current = newFrame;
-            setCurrentFrame(newFrame);
             
-            if (mainCanvasRef.current && persistentCanvasRef.current) {
-                drawElements(
-                    jsonData, 
-                    activeLayers, 
-                    videoRef.current, 
-                    { 
-                        mainCanvas: mainCanvasRef.current, 
-                        persistentCanvas: persistentCanvasRef.current 
-                    },
-                    {
-                        onTimingsUpdate: (main: RenderTiming, persistent: RenderTiming) => {
-                            setMainTiming(main);
-                            setPersistentTiming(persistent);
+            if (newFrame !== currentFrame) {
+                setCurrentFrame(newFrame).then(() => {
+                    drawElements(
+                        jsonData, 
+                        activeLayers, 
+                        videoRef.current!, 
+                        { 
+                            mainCanvas: mainCanvasRef.current!, 
+                            persistentCanvas: persistentCanvasRef.current! 
+                        },
+                        {
+                            onTimingsUpdate: (main: RenderTiming, persistent: RenderTiming) => {
+                                setMainTiming(main);
+                                setPersistentTiming(persistent);
+                            }
                         }
-                    }
-                );
+                    );
+                });
             }
         }
         
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, setCurrentFrame, setMainTiming, setPersistentTiming]);
+        console.log("videoref", videoRef.current);
+        console.log("video width", videoRef.current?.videoWidth);
+        console.log("video height", videoRef.current?.videoHeight);
+        console.log("main canvas width", mainCanvasRef.current?.width);
+        console.log("main canvas height", mainCanvasRef.current?.height);
+        console.log("persistent canvas width", persistentCanvasRef.current?.width);
+        console.log("persistent canvas height", persistentCanvasRef.current?.height);
+    }, [jsonData, activeLayers, currentFrame, setCurrentFrame, setMainTiming, setPersistentTiming]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);

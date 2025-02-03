@@ -22,7 +22,6 @@ const PlayerLegs = ({ legs }: { legs: number[] }) => (
 );
 
 export default function PlayersSection({ frameData }: PlayersSectionProps) {
-    console.log(frameData?.persontracking);
     return (
         <div className='flex flex-col gap-2'>
             <p className='text-white font-semibold text-center text-lg'>- - - - - Players - - - - -</p>
