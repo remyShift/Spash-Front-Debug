@@ -67,13 +67,6 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
         }
         
         frameRequestRef.current = requestAnimationFrame(animate);
-        console.log("videoref", videoRef.current);
-        console.log("video width", videoRef.current?.videoWidth);
-        console.log("video height", videoRef.current?.videoHeight);
-        console.log("main canvas width", mainCanvasRef.current?.width);
-        console.log("main canvas height", mainCanvasRef.current?.height);
-        console.log("persistent canvas width", persistentCanvasRef.current?.width);
-        console.log("persistent canvas height", persistentCanvasRef.current?.height);
     }, [jsonData, activeLayers, currentFrame, setCurrentFrame, setMainTiming, setPersistentTiming]);
 
     useEffect(() => {
@@ -95,8 +88,9 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 />
                 <LayersMenu jsonData={jsonData} />
                 <KillFeed 
-                    currentFrame={currentFrame} 
-                    frameData={jsonData.data[currentFrame] || {}} 
+                    currentFrame={currentFrame}
+                    frameData={jsonData.data[currentFrame] || {}}
+                    playerEvents={jsonData.stats.players} 
                 />
                 <canvas
                     ref={mainCanvasRef}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { PersonTracking } from '@/types/files';
+import { JSONData } from '@/types/files';
 import ServeIcon from '../ui/icons/ServeIcon';
 import LobIcon from '../ui/icons/LobIcon';
 import BallIcon from '../ui/icons/BallIcon';
@@ -12,17 +12,13 @@ interface FeedEvent {
 
 interface KillFeedProps {
     currentFrame: number;
-    frameData: {
-        persontracking?: {
-            [key: string]: PersonTracking;
-        };
-        detection?: string;
-    };
+    frameData: JSONData['data'][number];
+    playerEvents: JSONData['stats']['players'];
 }
 
 const MAX_EVENTS = 4;
 
-export default function KillFeed({ currentFrame, frameData }: KillFeedProps) {
+export default function KillFeed({ currentFrame, frameData, playerEvents }: KillFeedProps) {
     const [events, setEvents] = useState<FeedEvent[]>([]);
     const [containerHeight, setContainerHeight] = useState(0);
     
@@ -39,30 +35,48 @@ export default function KillFeed({ currentFrame, frameData }: KillFeedProps) {
     }, []);
     
     useEffect(() => {
-        if (frameData?.persontracking) {
-            Object.values(frameData.persontracking).forEach(player => {
-                if (player.do_hit) {
-                    const newEvent: FeedEvent = {
-                        id: Date.now() + Math.random(),
-                        message: `Player ${player.name} ${frameData.detection?.toLowerCase() || 'hit'}`,
-                        timestamp: currentFrame
-                    };
-                    
-                    setEvents(prev => {
-                        const updatedEvents = [newEvent, ...prev].slice(0, MAX_EVENTS);
-                        return updatedEvents;
-                    });
+        if (!playerEvents || !frameData?.persontracking) return;
+
+        Object.values(frameData.persontracking).forEach(playerFrame => {
+            if (!playerFrame.do_hit) return;
+
+            let eventType = '';
+            const playerEvent = Object.values(playerEvents).find(event => 
+                event && (
+                    (Array.isArray(event.lobs) && event.lobs.includes(currentFrame)) ||
+                    (Array.isArray(event.services) && event.services.includes(currentFrame))
+                )
+            );
+
+            if (playerEvent) {
+                if (Array.isArray(playerEvent.lobs) && playerEvent.lobs.includes(currentFrame)) {
+                    eventType = 'lob';
+                } else if (Array.isArray(playerEvent.services) && playerEvent.services.includes(currentFrame)) {
+                    eventType = 'service';
                 }
+            } else {
+                eventType = 'hit';
+            }
+
+            const newEvent: FeedEvent = {
+                id: Date.now() + Math.random(),
+                message: `Player ${playerFrame.name} ${eventType}`,
+                timestamp: currentFrame
+            };
+            
+            setEvents(prev => {
+                const updatedEvents = [newEvent, ...prev].slice(0, MAX_EVENTS);
+                return updatedEvents;
             });
-        }
-    }, [currentFrame, frameData]);
+        });
+    }, [currentFrame, frameData, playerEvents]);
 
     const eventHeight = 40;
     const maxVisibleEvents = Math.min(Math.floor(containerHeight * 0.3 / eventHeight), MAX_EVENTS);
 
     return (
         <div 
-            className="absolute top-1 right-1 z-50 flex flex-col-reverse gap-2 items-center justify-center pointer-events-none"
+            className="absolute top-1 right-1 z-50 flex flex-col-reverse gap-2 items-end justify-center pointer-events-none"
             style={{ maxHeight: `${maxVisibleEvents * eventHeight}px` }}
         >
             {events.slice(0, maxVisibleEvents).map(event => (
