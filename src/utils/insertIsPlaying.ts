@@ -1,0 +1,1 @@
+import { JSONData } from "@/types/files";
