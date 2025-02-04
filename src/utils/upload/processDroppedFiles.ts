@@ -3,10 +3,7 @@ import { UploadFiles } from '@/types/upload';
 export const processDroppedFiles = (acceptedFiles: File[], currentFiles: UploadFiles): UploadFiles => {
     const newFiles: UploadFiles = {
         ...currentFiles,
-        mainVideo: null,
-        pipelineJson: null,
-        statsJson: null,
-        playerVideos: []
+        playerVideos: [...currentFiles.playerVideos]
     };
 
     acceptedFiles.forEach(file => {

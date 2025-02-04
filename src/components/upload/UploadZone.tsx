@@ -2,10 +2,13 @@ import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Progress } from '@/components/ui/Progress';
 import { UploadFiles, UploadProgress } from '@/types/upload';
-import { processDroppedFiles } from '@/utils/upload/processDroppedFiles';
 import { uploadFile } from '@/utils/upload/uploadFile';
+import { processDroppedFiles } from '@/utils/upload/processDroppedFiles';
 
 export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () => void }) {
+    const [isUploading, setIsUploading] = useState(false);
+    const [isUploadReady, setIsUploadReady] = useState(false);
+
     const [files, setFiles] = useState<UploadFiles>({
         mainVideo: null,
         pipelineJson: null,
@@ -13,6 +16,7 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
         playerVideos: [],
         folderName: ''
     });
+
     const [uploadProgress, setUploadProgress] = useState<UploadProgress>({
         mainVideo: 0,
         pipelineJson: 0,
@@ -20,11 +24,13 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
         playerVideos: {},
         global: 0
     });
-    const [isUploading, setIsUploading] = useState(false);
 
     const onDrop = useCallback((acceptedFiles: File[]) => {
         const newFiles = processDroppedFiles(acceptedFiles, files);
         setFiles(newFiles);
+        if (newFiles.mainVideo && newFiles.pipelineJson && newFiles.statsJson) {
+            setIsUploadReady(true);
+        }
     }, [files]);
 
     const handleFolderNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,8 +103,8 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                 </p>
             </div>
 
-            {(files.mainVideo || files.pipelineJson || files.statsJson || files.playerVideos.length > 0) && (
-                <div className="mt-4">
+            <div className="mt-4">
+                {isUploadReady && (
                     <input
                         type="text"
                         value={files.folderName}
@@ -106,28 +112,47 @@ export default function UploadZone({ onUploadSuccess }: { onUploadSuccess: () =>
                         placeholder="Folder name"
                         className="w-full p-2 mb-4 bg-lighterBackground text-white rounded-md"
                     />
-                    <h3 className="text-white font-semibold mb-2">Selected files :</h3>
-                    <ul className="space-y-2 text-white">
-                        {files.mainVideo && <li>Main video : {files.mainVideo.name}</li>}
-                        {files.pipelineJson && <li>Pipeline JSON : {files.pipelineJson.name}</li>}
-                        {files.statsJson && <li>Stats JSON : {files.statsJson.name}</li>}
-                        {files.playerVideos.map((video, index) => (
-                            <li key={index}>Player video {index + 1} : {video.name}</li>
-                        ))}
-                    </ul>
-                    <button 
-                        onClick={handleUpload}
-                        className="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-primary/80"
-                    >
-                        Upload files
-                    </button>
+                )}
+                
+                <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2">
+                        <div className={`w-3 h-3 rounded-full ${files.mainVideo ? 'bg-green-500' : 'bg-red-500'}`} />
+                        <p className="text-white">Main video {files.mainVideo && `(${files.mainVideo.name})`}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className={`w-3 h-3 rounded-full ${files.pipelineJson ? 'bg-green-500' : 'bg-red-500'}`} />
+                        <p className="text-white">Pipeline JSON {files.pipelineJson && `(${files.pipelineJson.name})`}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className={`w-3 h-3 rounded-full ${files.statsJson ? 'bg-green-500' : 'bg-red-500'}`} />
+                        <p className="text-white">Stats JSON {files.statsJson && `(${files.statsJson.name})`}</p>
+                    </div>
+                    {files.playerVideos.length > 0 && (
+                        <div className="mt-2">
+                            <p className="text-white font-semibold">Players videos :</p>
+                            {files.playerVideos.map((video, index) => (
+                                <p key={index} className="text-white ml-4">{video.name}</p>
+                            ))}
+                        </div>
+                    )}
                 </div>
-            )}
+
+                <button 
+                    onClick={handleUpload}
+                    disabled={!isUploadReady}
+                    className={`w-1/3 mt-4 px-4 py-2 rounded text-white font-semibold
+                        ${isUploadReady 
+                            ? 'bg-primary hover:bg-primary/80' 
+                            : 'bg-gray-500 cursor-not-allowed'}`}
+                >
+                    {isUploadReady ? 'Upload files' : 'Missing files'}
+                </button>
+            </div>
 
             {isUploading && (
                 <div className="mt-4">
                     <div className="space-y-2">
-                        <Progress value={uploadProgress.global} label="Progress" />
+                        <Progress value={uploadProgress.global} label="Progression" />
                     </div>
                 </div>
             )}

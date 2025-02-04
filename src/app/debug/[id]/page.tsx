@@ -34,9 +34,9 @@ export default function VideoPage() {
 
     useEffect(() => {
         if (videos.length === 0) {
-            fetchFiles({ setLoading, setError, setVideos });
+            fetchFiles({ setLoading, setError, setVideos, videos, page: 1, limit: 5, setHasMore: () => {} });
         }
-    }, [setVideos, videos.length]);
+    }, [setVideos, videos.length, videos]);
 
     useEffect(() => {
         const video = videos.find(v => v.videoPath === decodeURIComponent(paramsId as string));
@@ -113,4 +113,4 @@ export default function VideoPage() {
             <Footer />
         </div>
     );
-}   
+}
