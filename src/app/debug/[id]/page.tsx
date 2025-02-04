@@ -14,8 +14,8 @@ import { useActiveLayers } from "@/context/layers";
 import ToolBox from "@/components/toolBox/ToolBox";
 import AllTimelines from "@/components/timelines/AllTimelines";
 import StatsArray from "@/components/StatsArray/StatsArray";
-import { calculateCumulativeDistances } from "@/utils/calculateCumulativeDistances";
-import { calculateCumulativeHits } from "@/utils/calculateCumulativeHits";
+import { insertCumulativeDistances } from "@/utils/insertCumulativeDistances";
+import { insertCumulativeHits } from "@/utils/insertCumulativeHits";
 import Footer from "@/components/ui/Footer";
 import PlayersPresenceTimeline from "@/components/PlayersPresenceTimeline/PlayersPresenceTimeline";
 
@@ -46,8 +46,9 @@ export default function VideoPage() {
             fetchVideoData(video.videoPath)
                 .then(data => {
                     if (data?.jsonData) {
-                        calculateCumulativeHits(data.jsonData);
-                        calculateCumulativeDistances(data.jsonData);
+                        insertCumulativeHits(data.jsonData);
+                        insertCumulativeDistances(data.jsonData);
+                        insertIsPlaying(data.jsonData);
                         
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData);

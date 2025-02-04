@@ -64,7 +64,7 @@ const handleNormalHit = (
     }
 };
 
-export const calculateCumulativeHits = (jsonData: JSONData): void => {
+export const insertCumulativeHits = (jsonData: JSONData): void => {
     const cumulativeHits: CumulativeHits = {};
     const playersHits = jsonData.stats.players;
 

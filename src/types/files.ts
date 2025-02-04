@@ -81,6 +81,7 @@ export interface JSONData {
             speed?: number;
             frame_idx: number;
             detection?: string;
+            isPlaying?: boolean;
         };
     };
     events: {

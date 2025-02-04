@@ -1,7 +1,7 @@
 import { JSONData, PersonTracking } from "@/types/files";
 import { calculateDistance } from "./calculateDistance";
 
-export const calculateCumulativeDistances = (data: JSONData): void => {
+export const insertCumulativeDistances = (data: JSONData): void => {
     const previousLegs: { [key: string]: [number, number] } = {};
     const cumulativeDistances: { [key: number]: number } = {};
 
