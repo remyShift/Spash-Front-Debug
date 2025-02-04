@@ -84,7 +84,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 <video
                     ref={videoRef}
                     src={currentVideo.videoPath}
-                    className="w-full"
+                    className={`w-full ${jsonData.data[currentFrame]?.isPlaying ? 'video-border-point' : 'video-border-interpoint'}`}
                 />
                 <LayersMenu jsonData={jsonData} />
                 <KillFeed 

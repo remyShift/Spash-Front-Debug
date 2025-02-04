@@ -13,6 +13,14 @@
   border: none;
 }
 
+.video-border-point {
+  border: 1px solid red !important;
+}
+
+.video-border-interpoint {
+  border: 1px solid blue !important;
+}
+
 .mesh-bg {
   background-color: hsla(352.6829268292683, 100%, 59%, 1);
   background-image: radial-gradient(circle at 47% 50%, hsla(240, 9%, 22%, 1) 81.57180487428948%, transparent 128.40267573445306%);

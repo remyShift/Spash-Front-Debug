@@ -7,5 +7,5 @@ export interface EventTimeline {
 export interface TimelineInterval {
     start: number;
     end: number;
-    type: string;
+    type: "Point" | "InterPoint";
 }

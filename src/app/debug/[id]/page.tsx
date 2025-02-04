@@ -18,6 +18,7 @@ import { insertCumulativeDistances } from "@/utils/insertCumulativeDistances";
 import { insertCumulativeHits } from "@/utils/insertCumulativeHits";
 import Footer from "@/components/ui/Footer";
 import PlayersPresenceTimeline from "@/components/PlayersPresenceTimeline/PlayersPresenceTimeline";
+import { insertIsPlaying } from "@/utils/insertIsPlaying";
 
 export default function VideoPage() {
     const params = useParams();
@@ -48,7 +49,7 @@ export default function VideoPage() {
                     if (data?.jsonData) {
                         insertCumulativeHits(data.jsonData);
                         insertCumulativeDistances(data.jsonData);
-                        insertIsPlaying(data.jsonData);
+                        insertIsPlaying(data.jsonData.data, data.jsonData.timeline);
                         
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData);
