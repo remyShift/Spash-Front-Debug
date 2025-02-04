@@ -90,7 +90,6 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 <KillFeed 
                     currentFrame={currentFrame}
                     frameData={jsonData.data[currentFrame] || {}}
-                    playerEvents={jsonData.stats.players} 
                 />
                 <canvas
                     ref={mainCanvasRef}

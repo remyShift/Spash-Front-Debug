@@ -13,12 +13,11 @@ interface FeedEvent {
 interface KillFeedProps {
     currentFrame: number;
     frameData: JSONData['data'][number];
-    playerEvents: JSONData['stats']['players'];
 }
 
 const MAX_EVENTS = 4;
 
-export default function KillFeed({ currentFrame, frameData, playerEvents }: KillFeedProps) {
+export default function KillFeed({ currentFrame, frameData }: KillFeedProps) {
     const [events, setEvents] = useState<FeedEvent[]>([]);
     const [containerHeight, setContainerHeight] = useState(0);
     
@@ -35,41 +34,24 @@ export default function KillFeed({ currentFrame, frameData, playerEvents }: Kill
     }, []);
     
     useEffect(() => {
-        if (!playerEvents || !frameData?.persontracking) return;
+        if (!frameData.persontracking) return;
 
-        Object.values(frameData.persontracking).forEach(playerFrame => {
-            if (!playerFrame.do_hit) return;
+        Object.values(frameData.persontracking).forEach(player => {
+            if (Object.values(player.do_hit).some(Boolean)) {
+                const hitType = Object.keys(player.do_hit).find(key => player.do_hit[key as keyof typeof player.do_hit]) || 'hit';
+                const newEvent: FeedEvent = {
+                    id: Date.now() + Math.random(),
+                    message: `Player ${player.name} ${hitType}`,
+                    timestamp: currentFrame
+                };
 
-            let eventType = '';
-            const playerEvent = Object.values(playerEvents).find(event => 
-                event && (
-                    (Array.isArray(event.lobs) && event.lobs.includes(currentFrame)) ||
-                    (Array.isArray(event.services) && event.services.includes(currentFrame))
-                )
-            );
-
-            if (playerEvent) {
-                if (Array.isArray(playerEvent.lobs) && playerEvent.lobs.includes(currentFrame)) {
-                    eventType = 'lob';
-                } else if (Array.isArray(playerEvent.services) && playerEvent.services.includes(currentFrame)) {
-                    eventType = 'service';
-                }
-            } else {
-                eventType = 'hit';
+                setEvents(prev => {
+                    const updatedEvents = [newEvent, ...prev].slice(0, MAX_EVENTS);
+                    return updatedEvents;
+                });
             }
-
-            const newEvent: FeedEvent = {
-                id: Date.now() + Math.random(),
-                message: `Player ${playerFrame.name} ${eventType}`,
-                timestamp: currentFrame
-            };
-            
-            setEvents(prev => {
-                const updatedEvents = [newEvent, ...prev].slice(0, MAX_EVENTS);
-                return updatedEvents;
-            });
         });
-    }, [currentFrame, frameData, playerEvents]);
+    }, [currentFrame, frameData]);
 
     const eventHeight = 40;
     const maxVisibleEvents = Math.min(Math.floor(containerHeight * 0.3 / eventHeight), MAX_EVENTS);

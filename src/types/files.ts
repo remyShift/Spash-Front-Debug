@@ -41,7 +41,11 @@ export interface PersonTracking {
         defense: boolean;
         nomansland: boolean;
     };
-    do_hit: boolean;
+    do_hit: {
+        service: boolean;
+        lob: boolean;
+        hit: boolean;
+    };
     hit_count: {
         service: number;
         lob: number;

@@ -40,7 +40,7 @@ const handleServiceHit = (
 ) => {
     const playerId = player.id.toString();
     if (playerStats?.hits?.includes(frameIdx)) {
-        player.do_hit = true;
+        player.do_hit.service = true;
         cumulativeHits[playerId].service++;
         player.hit_count.service = cumulativeHits[playerId].service;
     }
@@ -54,11 +54,11 @@ const handleNormalHit = (
 ) => {
     const playerId = player.id.toString();
     if (playerStats?.lobs?.includes(frameIdx)) {
-        player.do_hit = true;
+        player.do_hit.lob = true;
         cumulativeHits[playerId].lob++;
         player.hit_count.lob = cumulativeHits[playerId].lob;
     } else if (playerStats?.hits?.includes(frameIdx)) {
-        player.do_hit = true;
+        player.do_hit.hit = true;
         cumulativeHits[playerId].hit++;
         player.hit_count.hit = cumulativeHits[playerId].hit;
     }
@@ -77,7 +77,11 @@ export const calculateCumulativeHits = (jsonData: JSONData): void => {
             initializePlayerHits(playerId, cumulativeHits);
             updatePlayerHitCount(player, cumulativeHits);
             
-            player.do_hit = false;
+            player.do_hit = {
+                service: false,
+                lob: false,
+                hit: false
+            };
             const playerStats = playersHits[playerId];
             
             if (frame.detection?.toLowerCase() === 'service') {
