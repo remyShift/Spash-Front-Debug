@@ -3,18 +3,20 @@ import { useEffect, useRef, useState } from "react";
 import { TimelineInterval } from "@/types/events";
 import TimelineControl from "./TimelineControl";
 import TimelineUI from "./TimelineUI";
+import { JSONData } from "@/types/files";
 
 const TIMELINE_DURATION = 300;
 const FPS = 25;
 const VISIBLE_WINDOW = 60;
 const BUFFER_WINDOW = 30;
 
-export default function TimelineChronology({ timeline }: { timeline: TimelineInterval[] }) {
+export default function TimelineChronology({ timeline, jsonData }: { timeline: TimelineInterval[], jsonData: JSONData["data"] }) {
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
     const [visibleIntervals, setVisibleIntervals] = useState<TimelineInterval[]>([]);
     const previousFrameRef = useRef(currentFrame);
+    const [title, setTitle] = useState<string>('');
 
     useEffect(() => {
         const updateContainerWidth = () => {
@@ -30,6 +32,14 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
             window.removeEventListener('resize', updateContainerWidth);
         };
     }, []);
+
+    useEffect(() => {
+        if (jsonData[currentFrame]?.isPlaying) {
+            setTitle('Point');
+        } else {
+            setTitle('InterPoint');
+        }
+    }, [currentFrame, jsonData]);
 
     useEffect(() => {
         if (previousFrameRef.current === currentFrame) {
@@ -81,7 +91,7 @@ export default function TimelineChronology({ timeline }: { timeline: TimelineInt
     return (
         <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
-                <TimelineControl event="Timeline" framesEvent={timeline.map((interval) => interval.start)} />
+                <TimelineControl event={title} framesEvent={timeline.map((interval) => interval.start)} />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 
                 <div className="flex items-end w-full h-full pb-3 overflow-hidden">

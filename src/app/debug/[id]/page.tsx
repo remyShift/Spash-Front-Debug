@@ -101,7 +101,7 @@ export default function VideoPage() {
                                     activeLayers={activeLayers}
                                     statsData={statsData as StatsData}
                                 />
-                                {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} />}
+                                {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} jsonData={jsonData.data} />}
                             </div>
                         </div>
                         <ToolBox videoData={jsonData as JSONData} />
