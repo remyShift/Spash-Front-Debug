@@ -29,35 +29,54 @@ export default function VideoPage() {
     const [statsData, setStatsData] = useState<StatsData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
+    const [dataInitialized, setDataInitialized] = useState(false);
 
     const paramsId = params.id;
 
     useEffect(() => {
         if (videos.length === 0) {
-            fetchFiles({ setLoading, setError, setVideos, videos, page: 1, limit: 5, setHasMore: () => {} });
+            setLoading(true);
+            fetchFiles({ 
+                setLoading, 
+                setError, 
+                setVideos, 
+                videos, 
+                page: 1, 
+                limit: 5, 
+                setHasMore: () => {} 
+            }).then(() => {
+                setLoading(false);
+            });
         }
     }, [setVideos, videos.length, videos]);
 
     useEffect(() => {
+        if (!paramsId || videos.length === 0 || !videos) return;
+
         const video = videos.find(v => v.videoPath === decodeURIComponent(paramsId as string));
         setCurrentVideo(video || null);
 
         if (video) {
             setLoading(true);
+            setError("");
+
             fetchVideoData(video.videoPath)
                 .then(data => {
-                    if (data?.jsonData) {
+                    if (data?.jsonData?.data && data?.statsData?.players) {
                         insertCumulativeHits(data.jsonData);
                         insertCumulativeDistances(data.jsonData);
                         insertIsPlaying(data.jsonData.data, data.jsonData.timeline);
-                        
                         setJsonData(data.jsonData);
-                        setStatsData(data.statsData);
+                        setStatsData(data.statsData); 
+                        setDataInitialized(true);
+                    } else {
+                        const missingFiles = [];
+                        if (!data?.jsonData?.data) missingFiles.push('JSON');
+                        if (!data?.statsData?.players) missingFiles.push('Stats');
+                        throw new Error(`Fichiers manquants ou invalides : ${missingFiles.join(' et ')}`);
                     }
-                    setLoading(false);
                 })
-                .catch(err => {
-                    setError(`Error loading JSON data: ${err}`);
+                .then(() => {
                     setLoading(false);
                 });
         }
@@ -79,10 +98,10 @@ export default function VideoPage() {
         );
     }
 
-    if (!currentVideo) {
+    if (!dataInitialized || !currentVideo || !jsonData || !statsData) {
         return (
             <div className="flex-1 justify-center items-center">
-                <ErrorMsg error="Vidéo non trouvée" />
+                <ErrorMsg error="Data not available" />
             </div>
         );
     }
@@ -97,19 +116,25 @@ export default function VideoPage() {
                             <div className="flex flex-col gap-4 lg:gap-2 w-full h-full">
                                 <VideoPlayer
                                     currentVideo={currentVideo} 
-                                    jsonData={jsonData as JSONData}
+                                    jsonData={jsonData}
                                     activeLayers={activeLayers}
-                                    statsData={statsData as StatsData}
+                                    statsData={statsData}
                                 />
-                                {jsonData?.events && <AllTimelines events={jsonData.events} timeline={jsonData.timeline} jsonData={jsonData.data} />}
+                                {jsonData.events && (
+                                    <AllTimelines 
+                                        events={jsonData.events} 
+                                        timeline={jsonData.timeline} 
+                                        jsonData={jsonData.data} 
+                                    />
+                                )}
                             </div>
                         </div>
-                        <ToolBox videoData={jsonData as JSONData} />
+                        <ToolBox videoData={jsonData} />
                     </div>
                 </div>
             </div>
-            {jsonData && <PlayersPresenceTimeline jsonData={jsonData} />}
-            <StatsArray statsData={statsData as StatsData} />
+            <PlayersPresenceTimeline jsonData={jsonData} />
+            <StatsArray statsData={statsData} />
             <Footer />
         </div>
     );

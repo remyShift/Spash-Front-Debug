@@ -9,10 +9,40 @@ export const fetchVideoData = (videoPath: string): Promise<{ jsonData: JSONData 
             return response.json();
         })
         .then(data => {
+            console.log("Received data:", data);
+
+            if (!data) {
+                console.error("No data received from API");
+                return { jsonData: null, statsData: null };
+            }
+
+            const hasValidJsonData = data.jsonData && 
+                                    data.jsonData.data && 
+                                    Object.keys(data.jsonData.data).length > 0;
+
+            const hasValidStatsData = data.statsData && 
+                                    data.statsData.players && 
+                                    Array.isArray(data.statsData.players);
+
+            console.log("Data validation:", {
+                hasValidJsonData,
+                hasValidStatsData,
+                jsonDataKeys: data.jsonData ? Object.keys(data.jsonData) : [],
+                statsDataKeys: data.statsData ? Object.keys(data.statsData) : []
+            });
+
+            if (!hasValidJsonData || !hasValidStatsData) {
+                const missingParts = [];
+                if (!hasValidJsonData) missingParts.push('JSON data');
+                if (!hasValidStatsData) missingParts.push('Stats data');
+                console.error("Missing or invalid data parts:", missingParts);
+                return { jsonData: null, statsData: null };
+            }
+
             return data;
         })
         .catch(err => {
-            console.error("Error loading JSON data:", err);
+            console.error("Error in fetchVideoData:", err);
             return { jsonData: null, statsData: null };
         });
 };

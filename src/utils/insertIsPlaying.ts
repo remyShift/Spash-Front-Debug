@@ -12,6 +12,5 @@ export const insertIsPlaying = (jsonData: JSONData["data"], timeline: TimelineIn
                 frame.isPlaying = true;
             }
         });
-        console.log(`frame.isPlaying: ${frame.frame_idx} - ${frame.isPlaying}`);
     });
 };
