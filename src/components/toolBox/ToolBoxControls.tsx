@@ -10,6 +10,8 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useCanvas } from '@/context/canvas';
 import GotoFrame from './GotoFrame';
 import GotoPlayer from './GotoPlayer';
+import { useHomographyPoints } from '@/context/homographyPoints';
+import { useHomographyPointsDrag } from '@/hooks/useHomographyPointsDrag';
 
 export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
     const { currentFrame, setCurrentFrame } = useFrame();
@@ -17,10 +19,66 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const { mainCanvasRef, persistentCanvasRef } = useCanvas();
     const { activeLayers } = useActiveLayers();
+    const { homographyPoints, setHomographyPoints } = useHomographyPoints();
+    const {
+        selectedPoint,
+        handlePointSelect,
+        handlePointMove,
+        handlePointRelease
+    } = useHomographyPointsDrag(setHomographyPoints);
 
     useEffect(() => {
         videoRef.current = document.querySelector('video');
     }, []);
+
+    useEffect(() => {
+        if (!mainCanvasRef?.current || !activeLayers.includes('homography')) return;
+
+        const canvas = mainCanvasRef.current;
+        const scaleX = canvas.width / (videoRef.current?.videoWidth || 0);
+        const scaleY = canvas.height / (videoRef.current?.videoHeight || 0);
+
+        const handleMouseDown = (e: MouseEvent) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left);
+            const mouseY = (e.clientY - rect.top);
+
+            Object.entries(homographyPoints).forEach(([key, point]) => {
+                const [px, py] = point.camera;
+                const scaledX = px * scaleX;
+                const scaledY = py * scaleY;
+                const distance = Math.sqrt(
+                    Math.pow(mouseX - scaledX, 2) + 
+                    Math.pow(mouseY - scaledY, 2)
+                );
+                if (distance < 10) {
+                    handlePointSelect(key);
+                }
+            });
+        };
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) / scaleX;
+            const mouseY = (e.clientY - rect.top) / scaleY;
+            
+            if (selectedPoint) {
+                handlePointMove(selectedPoint, mouseX, mouseY);
+            }
+        };
+
+        canvas.addEventListener('mousedown', handleMouseDown);
+        canvas.addEventListener('mousemove', handleMouseMove);
+        canvas.addEventListener('mouseup', handlePointRelease);
+        canvas.addEventListener('mouseleave', handlePointRelease);
+
+        return () => {
+            canvas.removeEventListener('mousedown', handleMouseDown);
+            canvas.removeEventListener('mousemove', handleMouseMove);
+            canvas.removeEventListener('mouseup', handlePointRelease);
+            canvas.removeEventListener('mouseleave', handlePointRelease);
+        };
+    }, [mainCanvasRef, activeLayers, homographyPoints, selectedPoint, handlePointSelect, handlePointMove, handlePointRelease]);
 
     const handleFrameChange = async (frameNumber: number) => {
         if (!mainCanvasRef?.current || !persistentCanvasRef?.current || !videoRef.current) return;

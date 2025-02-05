@@ -37,7 +37,7 @@ export default function ButtonLayer({
             {
                 mainCanvas: mainCanvasRef.current,
                 persistentCanvas: persistentCanvasRef.current
-            }
+            },
         );
     }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, activeLayers, content, isActive]);
 

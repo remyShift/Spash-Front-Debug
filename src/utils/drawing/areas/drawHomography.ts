@@ -1,4 +1,9 @@
-export const drawHomography = (homography: number[][][], videoWidth: number, videoHeight: number, context: CanvasRenderingContext2D) => {
+export const drawHomography = (
+    homography: number[][][],
+    videoWidth: number,
+    videoHeight: number,
+    context: CanvasRenderingContext2D,
+) => {
     const canvas = context.canvas;
     const scaleX = canvas.width / videoWidth;
     const scaleY = canvas.height / videoHeight;
@@ -8,7 +13,6 @@ export const drawHomography = (homography: number[][][], videoWidth: number, vid
 
     homography.forEach(line => {
         context.beginPath();
-        
         const [firstX, firstY] = line[0];
         context.moveTo(firstX * scaleX, firstY * scaleY);
         
@@ -17,7 +21,6 @@ export const drawHomography = (homography: number[][][], videoWidth: number, vid
                 context.lineTo(x * scaleX, y * scaleY);
             }
         });
-        
         context.stroke();
     });
 };

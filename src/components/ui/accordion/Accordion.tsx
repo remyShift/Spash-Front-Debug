@@ -6,6 +6,7 @@ import { JSONData } from '@/types/files'
 import FrameInfos from '../../toolBox/frameInfos/FrameInfos'
 import HomographyRadar from '@/components/toolBox/HomographyRadar'
 import { useAccordionHeight } from '@/context/accordion'
+import HomographyEditor from '@/components/toolBox/HomographyEditor'
 
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     const accordionRef = useRef<HTMLDivElement>(null);
@@ -39,6 +40,8 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
             <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
+            <Spacer />
+            <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} />} />
         </div>
     )
 }

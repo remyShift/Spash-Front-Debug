@@ -9,6 +9,7 @@ import { VideoControls } from './videoControls/VideoControls';
 import LayersMenu from './layers/LayersMenu';
 import { RenderTiming } from '@/types/performance';
 import { usePerformance } from '@/context/performance';
+import HomographyPoints from '@/components/videoPlayer/layers/HomographyPoints';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -107,6 +108,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     ref={persistentCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
+                {activeLayers.includes('homography') && <HomographyPoints />}
             </div>
             {videoRef.current && (
                 <VideoControls

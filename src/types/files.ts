@@ -51,19 +51,26 @@ export interface PersonTracking {
     cumulate_distance?: number;
 };
 
-export interface JSONData {
-    info: {
-        video: {
-            width: number;
-            height: number;
-            fps: number;
-            start: number;
-            end: number;
-        };
-        cfg: {
-            sport: string;
-        };
+export interface JSONInfo {
+    video: {
+        width: number;
+        height: number;
+        fps: number;
+        start: number;
+        end: number;
     };
+    cfg: {
+        sport: string;
+    };
+    homography: {
+        [key: string]: {
+            camera: number[];
+        };
+    }
+}
+
+export interface JSONData {
+    info: JSONInfo;
     path: string;
     data: {
         [frame: string]: {
