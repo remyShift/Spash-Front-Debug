@@ -15,7 +15,6 @@ export default function TimelineChronology({ timeline, jsonData }: { timeline: T
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
     const [visibleIntervals, setVisibleIntervals] = useState<TimelineInterval[]>([]);
-    const previousFrameRef = useRef(currentFrame);
     const [title, setTitle] = useState<string>('');
 
     useEffect(() => {
@@ -34,26 +33,16 @@ export default function TimelineChronology({ timeline, jsonData }: { timeline: T
     }, []);
 
     useEffect(() => {
-        if (jsonData[currentFrame]?.isPlaying) {
-            setTitle('Point');
-        } else {
-            setTitle('InterPoint');
-        }
-    }, [currentFrame, jsonData]);
-
-    useEffect(() => {
-        if (previousFrameRef.current === currentFrame) {
-            return;
-        }
-        previousFrameRef.current = currentFrame;
-
         const currentTimeInSeconds = currentFrame / FPS;
         const newOffset = (currentTimeInSeconds / TIMELINE_DURATION) * 100;
 
         if (timelineRef.current) {
             timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
         }
+    }, [currentFrame]);
 
+    useEffect(() => {
+        const currentTimeInSeconds = currentFrame / FPS;
         const startWindow = Math.max(0, currentTimeInSeconds - VISIBLE_WINDOW - BUFFER_WINDOW);
         const endWindow = currentTimeInSeconds + VISIBLE_WINDOW + BUFFER_WINDOW;
 
@@ -66,7 +55,16 @@ export default function TimelineChronology({ timeline, jsonData }: { timeline: T
         });
 
         setVisibleIntervals(visible);
+
+        const newOffset = (currentTimeInSeconds / TIMELINE_DURATION) * 100;
+        if (timelineRef.current) {
+            timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
+        }
     }, [currentFrame, timeline]);
+
+    useEffect(() => {
+        setTitle(jsonData[currentFrame]?.isPlaying ? 'Point' : 'InterPoint');
+    }, [currentFrame, jsonData]);
 
     const calculateIntervalPosition = (start: number): string => {
         if (!containerWidth) return '';

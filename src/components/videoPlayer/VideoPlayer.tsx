@@ -36,6 +36,26 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
         }
     }, [setMainCanvasRef, setPersistentCanvasRef]);
 
+    const renderLayers = useCallback(() => {
+        if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
+        
+        drawElements(
+            jsonData, 
+            activeLayers, 
+            videoRef.current, 
+            { 
+                mainCanvas: mainCanvasRef.current, 
+                persistentCanvas: persistentCanvasRef.current 
+            },
+            {
+                onTimingsUpdate: (main: RenderTiming, persistent: RenderTiming) => {
+                    setMainTiming(main);
+                    setPersistentTiming(persistent);
+                }
+            }
+        );
+    }, [jsonData, activeLayers, setMainTiming, setPersistentTiming]);
+
     const animate = useCallback(() => {
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
         
@@ -46,28 +66,16 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
             lastDrawnFrame.current = newFrame;
             
             if (newFrame !== currentFrame) {
-                setCurrentFrame(newFrame).then(() => {
-                    drawElements(
-                        jsonData, 
-                        activeLayers, 
-                        videoRef.current!, 
-                        { 
-                            mainCanvas: mainCanvasRef.current!, 
-                            persistentCanvas: persistentCanvasRef.current! 
-                        },
-                        {
-                            onTimingsUpdate: (main: RenderTiming, persistent: RenderTiming) => {
-                                setMainTiming(main);
-                                setPersistentTiming(persistent);
-                            }
-                        }
-                    );
-                });
+                setCurrentFrame(newFrame);
             }
         }
         
         frameRequestRef.current = requestAnimationFrame(animate);
-    }, [jsonData, activeLayers, currentFrame, setCurrentFrame, setMainTiming, setPersistentTiming]);
+    }, [currentFrame, setCurrentFrame]);
+
+    useEffect(() => {
+        renderLayers();
+    }, [currentFrame, renderLayers]);
 
     useEffect(() => {
         frameRequestRef.current = requestAnimationFrame(animate);
