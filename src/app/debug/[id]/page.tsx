@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStore } from "@/context/store";
-import { VideoInfo, JSONData, StatsData } from "@/types/files";
+import { VideoInfo, JSONData, JSONStats } from "@/types/files";
 import { fetchVideoData } from "@/utils/fetchVideoData";
 import BackBtn from "@/components/ui/BackBtn";
 import ErrorMsg from "@/components/ui/ErrorMsg";
@@ -26,7 +26,7 @@ export default function VideoPage() {
     const { videos, setVideos } = useStore();
     const [currentVideo, setCurrentVideo] = useState<VideoInfo | null>(null);
     const [jsonData, setJsonData] = useState<JSONData | null>(null);
-    const [statsData, setStatsData] = useState<StatsData | null>(null);
+    const [statsData, setStatsData] = useState<JSONStats | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
     const [dataInitialized, setDataInitialized] = useState(false);
@@ -61,7 +61,7 @@ export default function VideoPage() {
             setError("");
 
             fetchVideoData(video.videoPath)
-                .then(data => {
+                .then((data: { jsonData: JSONData, statsData: JSONStats }) => {
                     if (data?.jsonData?.data && data?.statsData?.players) {
                         insertCumulativeHits(data.jsonData);
                         insertCumulativeDistances(data.jsonData);
@@ -120,7 +120,7 @@ export default function VideoPage() {
                                     activeLayers={activeLayers}
                                     statsData={statsData}
                                 />
-                                {jsonData.events && (
+                                {(jsonData.events && jsonData.timeline) && (
                                     <AllTimelines 
                                         events={jsonData.events} 
                                         timeline={jsonData.timeline} 

@@ -12,6 +12,7 @@ export const insertCumulativeDistances = (data: JSONData): void => {
             if (!frame.persontracking) return;
 
             Object.values(frame.persontracking).forEach((player: PersonTracking) => {
+                if (!player.id) return;
                 if (!cumulativeDistances[player.id]) {
                     cumulativeDistances[player.id] = 0;
                 }

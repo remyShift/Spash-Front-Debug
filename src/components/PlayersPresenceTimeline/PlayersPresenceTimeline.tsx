@@ -23,6 +23,7 @@ export default function PlayersPresenceTimeline({ jsonData }: { jsonData: JSONDa
             const frame = parseInt(frameIndex);
             
             Object.values(frameData.persontracking || {}).forEach(player => {
+                if (!player.id) return;
                 if (!presences.has(player.id)) {
                     presences.set(player.id, { 
                         id: player.id, 

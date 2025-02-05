@@ -2,79 +2,50 @@ import React from 'react'
 import StatBlock from './StatBlock'
 import StatText from './StatText'
 import StatBlockSpacer from './StatBlockSpacer'
+import { extractStatsStructure } from "@/utils/statsStructure"
 
-export default function StatsNameColumn() {
+export default function StatsNameColumn({ player }: { player: object }) {
+    const structure = extractStatsStructure(player)
+
     return (
         <div className="flex flex-col justify-end gap-3">
-            <StatBlock index={-1} isEven={false} className="gap-2 pt-2" rowCount={4}>
-                <StatText value="NoMansLand" />
-                <StatBlockSpacer />
-                <StatText value="Attack" />
-                <StatBlockSpacer />
-                <StatText value="Defense" />
-                <StatBlockSpacer />
-                <StatText value="Total" />
-            </StatBlock>
+            {structure.map((category, index) => {
+                if (!category.subcategories) {
+                    return (
+                        <StatBlock 
+                            key={category.key} 
+                            index={-1} 
+                            isEven={index % 2 === 0} 
+                            className="gap-2" 
+                            rowCount={category.rowCount}
+                        >
+                            <StatText value="" />
+                        </StatBlock>
+                    )
+                }
 
-            <StatBlock index={-1} isEven={true} className="gap-2" rowCount={5}>
-                <StatText value="Lob and Go" />
-                <StatBlockSpacer />
-                <StatText value="Net Taking" />
-                <StatBlockSpacer />
-                <StatText value="Attack Position" />
-                <StatBlockSpacer />
-                <StatText value="Hit and Move" />
-                <StatBlockSpacer />
-                <StatText value="Total" />
-            </StatBlock>
-
-            <StatBlock index={-1} isEven={false} className="gap-2" rowCount={7}>
-                <StatText value="First Serve" />
-                <StatBlockSpacer />
-                <StatText value="Volley Service" />
-                <StatBlockSpacer />
-                <StatText value="Services" />
-                <StatBlockSpacer />
-                <StatText value="Diagonal" />
-                <StatBlockSpacer />
-                <StatText value="Top Lob" />
-                <StatBlockSpacer />
-                <StatText value="Divorce Zone" />
-                <StatBlockSpacer />
-                <StatText value="Safe Ball" />
-                <StatBlockSpacer />
-                <StatText value="Total" />
-            </StatBlock>
-
-            <StatBlock index={-1} isEven={true} className="gap-2" rowCount={3}>
-                <StatText value="Chain Breaks" />
-                <StatBlockSpacer />
-                <StatText value="Checks" />
-                <StatBlockSpacer />
-                <StatText value="Total" />
-            </StatBlock>
-
-            <StatBlock index={-1} isEven={false} className="gap-2" rowCount={4}>
-                <StatText value="Distance" />
-                <StatBlockSpacer />
-                <StatText value="Calories" />
-                <StatBlockSpacer />
-                <StatText value="Intensities" />
-                <StatBlockSpacer />
-                <StatText value="Total" />
-            </StatBlock>
-
-            <StatBlock index={-1} isEven={true} rowCount={3}>
-                <StatText value="Top Badges" />
-            </StatBlock>
-
-            <StatBlock index={-1} isEven={false} rowCount={2}>
-                <StatText value="" />
-            </StatBlock>
-
-            <StatBlock index={-1} isEven={true} rowCount={3}>
-                <StatText value="" />
-            </StatBlock>
+                return (
+                    <StatBlock 
+                        key={category.key} 
+                        index={-1} 
+                        isEven={index % 2 === 0} 
+                        className="gap-2" 
+                        rowCount={category.rowCount}
+                    >
+                        {category.subcategories.map((subcat: string, idx: number) => (
+                            <React.Fragment key={idx}>
+                                <StatText 
+                                    value={subcat.split('_')
+                                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                        .join(' ')} 
+                                />
+                                <StatBlockSpacer />
+                            </React.Fragment>
+                        ))}
+                        <StatText value="Total" />
+                    </StatBlock>
+                )
+            })}
         </div>
     )
 }

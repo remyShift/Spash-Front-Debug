@@ -14,6 +14,7 @@ interface PlayerStats {
 }
 
 const initializePlayerHits = (playerId: string, cumulativeHits: CumulativeHits) => {
+    if (!playerId) return;
     if (!cumulativeHits[playerId]) {
         cumulativeHits[playerId] = {
             service: 0,
@@ -24,6 +25,7 @@ const initializePlayerHits = (playerId: string, cumulativeHits: CumulativeHits) 
 };
 
 const updatePlayerHitCount = (player: PersonTracking, cumulativeHits: CumulativeHits) => {
+    if (!player.id) return;
     const playerId = player.id.toString();
     player.hit_count = {
         service: cumulativeHits[playerId].service,
@@ -38,6 +40,7 @@ const handleServiceHit = (
     playerStats: PlayerStats,
     cumulativeHits: CumulativeHits
 ) => {
+    if (!player.id) return;
     const playerId = player.id.toString();
     if (playerStats?.hits?.includes(frameIdx)) {
         player.do_hit.service = true;
@@ -52,6 +55,7 @@ const handleNormalHit = (
     playerStats: PlayerStats,
     cumulativeHits: CumulativeHits
 ) => {
+    if (!player.id) return;
     const playerId = player.id.toString();
     if (playerStats?.lobs?.includes(frameIdx)) {
         player.do_hit.lob = true;
@@ -72,6 +76,7 @@ export const insertCumulativeHits = (jsonData: JSONData): void => {
         if (!frame.persontracking) return;
 
         Object.values(frame.persontracking).forEach(player => {
+            if (!player.id) return;
             const playerId = player.id.toString();
             
             initializePlayerHits(playerId, cumulativeHits);

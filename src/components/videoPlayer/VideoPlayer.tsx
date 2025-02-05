@@ -1,4 +1,4 @@
-import { JSONData, StatsData, VideoInfo } from '@/types/files';
+import { JSONData, JSONStats, VideoInfo } from '@/types/files';
 import { useEffect, useRef, useCallback } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
@@ -14,7 +14,7 @@ interface VideoPlayerProps {
     currentVideo: VideoInfo;
     jsonData: JSONData;
     activeLayers: Layers[];
-    statsData: StatsData;
+    statsData: JSONStats;
 }
 
 export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }: VideoPlayerProps) => {

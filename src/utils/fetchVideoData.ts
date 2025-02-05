@@ -1,6 +1,9 @@
-import { JSONData, StatsData } from "@/types/files";
+import { JSONData, JSONStats } from "@/types/files";
 
-export const fetchVideoData = (videoPath: string): Promise<{ jsonData: JSONData | null, statsData: StatsData | null }> => {
+export async function fetchVideoData(videoPath: string): Promise<{ 
+    jsonData: JSONData; 
+    statsData: JSONStats; 
+}> {
     return fetch(`/api/v1/files/${encodeURIComponent(videoPath)}`)
         .then(response => {
             if (!response.ok) {

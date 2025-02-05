@@ -18,6 +18,7 @@ export default function FrameInfos({ framesData, events }: FrameInfosProps) {
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
 
     useEffect(() => {
+        if (!framesData || !currentFrame) return;
         setFrameData(framesData[currentFrame]);
     }, [framesData, currentFrame]);
 
@@ -25,12 +26,10 @@ export default function FrameInfos({ framesData, events }: FrameInfosProps) {
         <div className='p-4 flex flex-col gap-8 max-h-[500px] overflow-y-auto'>
             <FrameHeader currentFrame={currentFrame} frameData={frameData} />
             <PerformanceSection />
-            <EventsSection events={events} currentFrame={currentFrame} />
+            {events && <EventsSection events={events} currentFrame={currentFrame} />}
             <InfosSection frameData={frameData} />
             <BallSection frameData={frameData} />
-            <PlayersSection 
-                frameData={frameData} 
-            />
+            <PlayersSection frameData={frameData} />
         </div>
     )
 } 

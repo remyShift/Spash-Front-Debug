@@ -7,6 +7,9 @@ export interface VideoInfo {
     path: string;
     size: number;
     createdAt: string;
+    playerVideoPath: {
+        [key: string]: string;
+    };
 }
 
 export interface PlayerPair {
@@ -22,9 +25,9 @@ export interface VideoJSONPair {
 export interface PersonTracking {
     name: string;
     bbox: [number, number, number, number];
-    class: number;
     confidence: number;
-    id: number;
+    class?: number;
+    id?: number;
     old_id: number;
     legs: [number, number];
     player_legs: [number, number];
@@ -50,8 +53,16 @@ export interface PersonTracking {
 
 export interface JSONData {
     info: {
-        width: number;
-        height: number;
+        video: {
+            width: number;
+            height: number;
+            fps: number;
+            start: number;
+            end: number;
+        };
+        cfg: {
+            sport: string;
+        };
     };
     path: string;
     data: {
@@ -104,7 +115,7 @@ export interface JSONData {
     };
 }
 
-export interface StatsData {
+export interface JSONStats {
     players: {
         name: string;
         score: number;

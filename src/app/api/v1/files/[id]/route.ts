@@ -52,7 +52,9 @@ export async function GET(request: Request, props: { params: Promise<{ id: strin
                         'Content-Type': 'application/json',
                         'Content-Encoding': 'gzip',
                         'Content-Length': compressedData.length.toString(),
-                        'Cache-Control': 'public, max-age=3600'
+                        'Cache-Control': 'no-store, must-revalidate',
+                        'Pragma': 'no-cache',
+                        'Expires': '0'
                     }
                 });
             });
