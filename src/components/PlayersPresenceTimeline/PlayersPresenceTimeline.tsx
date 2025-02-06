@@ -20,7 +20,7 @@ export default function PlayersPresenceTimeline({ jsonData }: { jsonData: JSONDa
 
 
     const containerStyle = {
-        marginTop: accordionHeight > 0 ? `${accordionHeight / 5}px` : '0'
+        marginTop: accordionHeight > 0 ? `${accordionHeight / 2}px` : '0'
     };
     
     useEffect(() => {
