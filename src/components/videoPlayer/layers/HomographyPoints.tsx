@@ -1,18 +1,15 @@
 import { useHomographyPoints } from '@/context/homographyPoints';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useActiveLayers } from '@/context/layers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import ZoomWindow from './ZoomWindow';
 
-export default function HomographyPoints() {
+export default function HomographyPoints({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement> }) {
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
     const dragRef = useRef<string | null>(null);
-    const videoRef = useRef<HTMLVideoElement | null>(null);
     const { activeLayers } = useActiveLayers();
-
-    useEffect(() => {
-        videoRef.current = document.querySelector('video');
-    }, []);
+    const [mousePos, setMousePos] = useState<{ x: number, y: number } | null>(null);
 
     const handleMouseDown = (key: string) => {
         dragRef.current = key;
@@ -25,6 +22,8 @@ export default function HomographyPoints() {
         if (!canvas) return;
 
         const rect = canvas.getBoundingClientRect();
+        setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
 
@@ -44,10 +43,11 @@ export default function HomographyPoints() {
             ...homographyPoints,
             [dragRef.current]: { camera: [clampedX, clampedY] }
         });
-    }, [homographyPoints, setHomographyPoints]);
+    }, [homographyPoints, setHomographyPoints, videoRef]);
 
     const handleMouseUp = useCallback(() => {
         dragRef.current = null;
+        setMousePos(null);
     }, []);
 
     useEffect(() => {
@@ -78,6 +78,16 @@ export default function HomographyPoints() {
                     />
                 );
             })}
+            
+            {mousePos && dragRef.current && videoRef.current && (
+                <ZoomWindow
+                    x={mousePos.x}
+                    y={mousePos.y}
+                    videoRef={videoRef}
+                    zoomFactor={4}
+                    size={150}
+                />
+            )}
         </div>
     );
 } 

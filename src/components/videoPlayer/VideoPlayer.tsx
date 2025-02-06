@@ -108,7 +108,9 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     ref={persistentCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
-                {activeLayers.includes('homography') && <HomographyPoints />}
+                {(activeLayers.includes('homography') && videoRef.current) && (
+                    <HomographyPoints videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
+                )}
             </div>
             {videoRef.current && (
                 <VideoControls

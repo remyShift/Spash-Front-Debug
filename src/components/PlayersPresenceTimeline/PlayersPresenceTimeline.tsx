@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { getPlayerColor } from '@/utils/drawing/colors';
 import Spacer from '../ui/Spacer';
 import { useFrame } from '@/context/frame';
+import { useAccordionHeight } from '@/context/accordion';
 
 interface PlayerPresence {
     id: number;
@@ -15,6 +16,12 @@ export default function PlayersPresenceTimeline({ jsonData }: { jsonData: JSONDa
     const { setCurrentFrame } = useFrame();
     const totalFrames = Object.keys(jsonData.data).length;
     const FPS = 25;
+    const { accordionHeight } = useAccordionHeight();
+
+
+    const containerStyle = {
+        marginTop: accordionHeight > 0 ? `${accordionHeight / 5}px` : '0'
+    };
     
     useEffect(() => {
         const presences = new Map<number, PlayerPresence>();
@@ -71,7 +78,9 @@ export default function PlayersPresenceTimeline({ jsonData }: { jsonData: JSONDa
     };
 
     return (
-        <div className="flex w-full px-14">
+        <div className="flex w-full px-14"
+            style={containerStyle}
+        >
             <div className="w-full bg-lightBackground p-4 rounded-lg mb-8">
                 <h2 className="text-white text-lg font-semibold mb-4 text-center">Players presence</h2>
                 <div className="flex flex-col gap-4">
