@@ -19,6 +19,7 @@ import { insertCumulativeHits } from "@/utils/insertCumulativeHits";
 import Footer from "@/components/ui/Footer";
 import PlayersPresenceTimeline from "@/components/PlayersPresenceTimeline/PlayersPresenceTimeline";
 import { insertIsPlaying } from "@/utils/insertIsPlaying";
+import { useSport } from "@/context/sport";
 
 export default function VideoPage() {
     const params = useParams();
@@ -30,6 +31,7 @@ export default function VideoPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string>("");
     const [dataInitialized, setDataInitialized] = useState(false);
+    const { setSport } = useSport();
 
     const paramsId = params.id;
 
@@ -66,6 +68,7 @@ export default function VideoPage() {
                         insertCumulativeHits(data.jsonData);
                         insertCumulativeDistances(data.jsonData);
                         insertIsPlaying(data.jsonData.data, data.jsonData.timeline);
+                        setSport(data.jsonData.info.cfg.sport);
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData); 
                         setDataInitialized(true);
@@ -80,7 +83,7 @@ export default function VideoPage() {
                     setLoading(false);
                 });
         }
-    }, [paramsId, videos]);
+    }, [paramsId, videos, setSport]);
 
     if (loading) {
         return (
@@ -133,7 +136,7 @@ export default function VideoPage() {
                     </div>
                 </div>
             </div>
-            <PlayersPresenceTimeline jsonData={jsonData} />
+            {jsonData.info.cfg.sport === 'padel' && <PlayersPresenceTimeline jsonData={jsonData} />}
             <StatsArray statsData={statsData} />
             <Footer />
         </div>

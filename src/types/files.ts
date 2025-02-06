@@ -60,7 +60,7 @@ export interface JSONInfo {
         end: number;
     };
     cfg: {
-        sport: string;
+        sport: "padel" | "foot";
     };
     homography: {
         [key: string]: {

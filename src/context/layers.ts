@@ -1,18 +1,18 @@
 import { create } from "zustand";
-import { Layers } from "@/types/layers";
+import { PadelLayers, FootballLayers } from "@/types/layers";
 
 interface ActiveLayers {
-    activeLayers: Layers[];
-    setActiveLayers: (activeLayers: Layers[]) => void;
-    toggleActiveLayers: (layer: Layers) => void;
+    activeLayers: (PadelLayers | FootballLayers)[];
+    setActiveLayers: (activeLayers: PadelLayers[] | FootballLayers[]) => void;
+    toggleActiveLayers: (layer: PadelLayers | FootballLayers) => void;
 }
 
 export const useActiveLayers = create<ActiveLayers>((set) => ({
-    activeLayers: ["players"],
-    setActiveLayers: (layers: Layers[]) => {
+    activeLayers: [],
+    setActiveLayers: (layers: PadelLayers[] | FootballLayers[]) => {
         set({ activeLayers: layers });
     },
-    toggleActiveLayers: (layer: Layers) => {
+    toggleActiveLayers: (layer: PadelLayers | FootballLayers) => {
         set((state) => {
             const isLayerActive = state.activeLayers.includes(layer);
             const newLayers = isLayerActive 

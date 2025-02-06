@@ -40,8 +40,13 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
             <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
-            <Spacer />
-            <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} />} />
+            {/* TODO REMOVE FOR FOOTBALL */}
+            {videoData.info.cfg.sport === 'padel' && (
+                <>
+                    <Spacer />
+                    <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} />} />
+                </>
+            )}
         </div>
     )
 }

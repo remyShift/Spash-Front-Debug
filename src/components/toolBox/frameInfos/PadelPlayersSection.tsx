@@ -21,7 +21,7 @@ const PlayerLegs = ({ legs }: { legs: number[] }) => (
     </div>
 );
 
-export default function PlayersSection({ frameData }: PlayersSectionProps) {
+export default function PadelPlayersSection({ frameData }: PlayersSectionProps) {
     return (
         <div className='flex flex-col gap-2'>
             <p className='text-white font-semibold text-center text-lg'>- - - - - Players - - - - -</p>

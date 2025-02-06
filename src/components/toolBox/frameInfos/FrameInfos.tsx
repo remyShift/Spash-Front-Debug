@@ -5,8 +5,10 @@ import FrameHeader from './FrameHeader';
 import EventsSection from './EventsSection';
 import InfosSection from './InfosSection';
 import BallSection from './BallSection';
-import PlayersSection from './PlayersSection';
+import PadelPlayersSection from './PadelPlayersSection';
 import PerformanceSection from './PerformanceSection';
+import { useSport } from '@/context/sport';
+import FootballPlayersSection from './FootballPlayersSection';
 
 interface FrameInfosProps {
     framesData: JSONData['data'];
@@ -15,6 +17,7 @@ interface FrameInfosProps {
 
 export default function FrameInfos({ framesData, events }: FrameInfosProps) {
     const { currentFrame } = useFrame();
+    const { sport } = useSport();
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
 
     useEffect(() => {
@@ -29,7 +32,8 @@ export default function FrameInfos({ framesData, events }: FrameInfosProps) {
             {events && <EventsSection events={events} currentFrame={currentFrame} />}
             <InfosSection frameData={frameData} />
             <BallSection frameData={frameData} />
-            <PlayersSection frameData={frameData} />
+            {sport === "padel" && <PadelPlayersSection frameData={frameData} />}
+            {sport === "foot" && <FootballPlayersSection frameData={frameData} />}
         </div>
     )
 } 

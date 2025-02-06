@@ -1,5 +1,5 @@
 import { JSONData } from "@/types/files";
-import { BallLayer, Layers } from "@/types/layers";
+import { BallLayer, PadelLayers, FootballLayers, AllLayers } from "@/types/layers";
 import { initializeAnimation } from "./config";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
 import { drawBall } from "./ball/drawBall";
@@ -31,16 +31,13 @@ interface DrawOptions {
 
 export const drawElements = (
     videoData: JSONData, 
-    activeLayers: Layers[], 
+    activeLayers: PadelLayers[] | FootballLayers[], 
     videoRef: HTMLVideoElement,
     canvasRefs: CanvasRefs,
     options?: DrawOptions
 ) => {
     const mainMeasure = measureRenderTime('main');
     const persistentMeasure = measureRenderTime('persistent');
-    
-    const persistentLayerOperations: Layers[] = ['hits', 'trajectories', 'areas-ab', 'areas-cd', 'divorces', 'top lob', 'safe ball'];
-    const mainLayerOperations: Layers[] = ['players', 'ball', 'distance', 'rebounds', 'homography', 'cumulative distances'];
     
     const { videoWidth, videoHeight, frameData, currentFrame } = initializeAnimation(videoRef, videoData);
     const mainCtx = canvasRefs.mainCanvas.getContext('2d');
@@ -56,29 +53,29 @@ export const drawElements = (
     }
 
     persistentCtx.clearRect(0, 0, canvasRefs.persistentCanvas.width, canvasRefs.persistentCanvas.height);
-    
-    const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
-
-    if (activeLayers.includes('areas-ab')) {
-        processPersistentLayer('areas-ab', players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
-    }
-    if (activeLayers.includes('areas-cd')) {
-        processPersistentLayer('areas-cd', players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
-    }
-
-    activeLayers.forEach(layer => {
-        if (persistentLayerOperations.includes(layer) && !['areas-ab', 'areas-cd'].includes(layer)) {
-            processPersistentLayer(layer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
-        }
-    });
-
     mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
     
-    activeLayers.forEach(layer => {
-        if (mainLayerOperations.includes(layer)) {
-            processMainLayer(layer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
-        }
-    });
+    const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
+    const sport = videoData.info.cfg.sport;
+
+    if (sport === 'padel') {
+        activeLayers.forEach(layer => {
+            const padelLayer = layer as PadelLayers;
+            if (['areas-ab', 'areas-cd', 'hits', 'trajectories', 'divorces', 'top lob', 'safe ball'].includes(padelLayer)) {
+                processPersistentLayer(padelLayer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
+            }
+            if (['players', 'ball', 'distance', 'rebounds', 'homography', 'cumulative distances'].includes(padelLayer)) {
+                processMainLayer(padelLayer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
+            }
+        });
+    } else if (sport === 'foot') {
+        activeLayers.forEach(layer => {
+            const footballLayer = layer as FootballLayers;
+            if (['players', 'ball'].includes(footballLayer)) {
+                processMainLayer(footballLayer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
+            }
+        });
+    }
 
     const persistentTiming = persistentMeasure();
     const mainTiming = mainMeasure();
@@ -87,7 +84,7 @@ export const drawElements = (
 }
 
 function processMainLayer(
-    layer: Layers,
+    layer: AllLayers,
     players: [string, PersonTracking][],
     frameData: JSONData['data'][number],
     videoWidth: number,
@@ -150,7 +147,7 @@ function processMainLayer(
 }
 
 function processPersistentLayer(
-    layer: Layers,
+    layer: AllLayers,
     players: [string, PersonTracking][],
     frameData: JSONData['data'][number],
     videoData: JSONData,

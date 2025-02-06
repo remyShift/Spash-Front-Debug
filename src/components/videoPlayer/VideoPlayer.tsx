@@ -2,7 +2,7 @@ import { JSONData, JSONStats, VideoInfo } from '@/types/files';
 import { useEffect, useRef, useCallback } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawElements } from '@/utils/drawing/drawElements';
-import { Layers } from '@/types/layers';
+import { PadelLayers, FootballLayers } from '@/types/layers';
 import { useCanvas } from '@/context/canvas';
 import KillFeed from './KillFeed';
 import { VideoControls } from './videoControls/VideoControls';
@@ -14,7 +14,7 @@ import HomographyPoints from '@/components/videoPlayer/layers/HomographyPoints';
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
     jsonData: JSONData;
-    activeLayers: Layers[];
+    activeLayers: PadelLayers[] | FootballLayers[];
     statsData: JSONStats;
 }
 
@@ -42,7 +42,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
         
         drawElements(
             jsonData, 
-            activeLayers, 
+            activeLayers,
             videoRef.current, 
             { 
                 mainCanvas: mainCanvasRef.current, 
@@ -108,7 +108,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     ref={persistentCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
-                {(activeLayers.includes('homography') && videoRef.current) && (
+                {(jsonData.info.cfg.sport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
                     <HomographyPoints videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
                 )}
             </div>
