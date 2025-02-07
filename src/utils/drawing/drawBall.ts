@@ -19,10 +19,10 @@ export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: numbe
     context.beginPath();
     context.arc(adjustedX, adjustedY, 10, 0, 2 * Math.PI);
     context.lineWidth = 4;
-    context.strokeStyle = 'yellow';
+    context.strokeStyle = 'black';
     context.stroke();
 
-    context.shadowColor = 'yellow';
+    context.shadowColor = 'black';
     context.shadowBlur = 5;
     context.stroke();
     context.restore();

@@ -2,7 +2,7 @@ import { AllLayers, BallLayer } from "@/types/layers";
 import { JSONData } from "@/types/files";
 import { PersonTracking } from "@/types/files";
 import { drawPlayerBBox } from "./players/drawBboxPlayer";
-import { drawBall } from "./ball/drawBall";
+import { drawBall } from "../drawBall";
 import { drawTeamDistances } from "./players/drawTeamDistances";
 import { getNextReboundFrame } from "../../getNextReboundFrame";
 import { drawBounceGlow } from "./ball/drawBounces";

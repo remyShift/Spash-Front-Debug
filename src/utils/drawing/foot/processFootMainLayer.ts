@@ -2,7 +2,7 @@ import { AllLayers, BallLayer } from "@/types/layers";
 import { JSONData } from "@/types/files";
 import { PersonTracking } from "@/types/files";
 import { drawFootPlayerBBox } from "./players/drawFootBboxPlayer";
-import { drawBall } from "@/utils/drawing/padel/ball/drawBall";
+import { drawBall } from "@/utils/drawing/drawBall";
 import { drawHomography } from "@/utils/drawing/drawHomography";
 
 export function processFootMainLayer(
@@ -29,9 +29,18 @@ export function processFootMainLayer(
                 speed: frameData.speed || 0,
                 score: frameData["ball.score"] || 0
             };
+            console.log("ball", ball);
             drawBall(ball, videoWidth, videoHeight, mainCtx);
             break;
         case 'homography':
+            if (videoData.zones.homography) {
+                drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
+            }
+            break;
+        case 'homography':
+            console.log("videoData", videoData);
+            console.log("videoData.zones", videoData.zones);
+            console.log("videoData.zones.homography", videoData.zones.homography);
             if (videoData.zones.homography) {
                 drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
             }
