@@ -1,37 +1,25 @@
 import { PersonTracking } from "@/types/files";
-import { configureContext } from '../canvas';
-import { calculateBoundedDimensions, isValidBBox } from './boundingBox';
-import { BoundingBoxDimensions } from '@/types/draw';
-import { getPlayerColor } from "../colors";
+import { configureContext } from "../../canvas";
+import { isValidBBox } from "../../boundingBox";
 
-export const drawSquare = (
-    dimensions: BoundingBoxDimensions,
-    videoWidth: number,
-    videoHeight: number,
-    canvasRef: React.RefObject<HTMLCanvasElement | null>
-): void => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    const boundedDimensions = calculateBoundedDimensions(dimensions, videoWidth, videoHeight);
-    configureContext(ctx);
-    ctx.strokeRect(
-        boundedDimensions.x,
-        boundedDimensions.y,
-        boundedDimensions.width,
-        boundedDimensions.height
-    );
+const getFootPlayerColor = (playerClass: number): string => {
+    switch (playerClass) {
+        case 2:
+            return '#00FF00'; // Vert pour la classe 3
+        case 3:
+            return '#FF0000'; // Rouge pour la classe 2
+        default:
+            return '#FFFFFF'; // Blanc par défaut
+    }
 };
 
-export const drawPlayerBBox = (
+export const drawFootPlayerBBox = (
     player: PersonTracking,
     videoWidth: number,
     videoHeight: number,
     context: CanvasRenderingContext2D
 ): void => {
+    console.log('player foot', player);
     if (!player?.bbox) return;
 
     const canvas = context.canvas;
@@ -41,7 +29,7 @@ export const drawPlayerBBox = (
     const [x1, y1, x2, y2] = player.bbox;
     if (!isValidBBox(x1, y1, x2, y2, videoWidth, videoHeight)) return;
 
-    const [, legsY] = player.player_legs;
+    const [, legsY] = player.player_legs || [0, 0];
 
     const scaledX1 = x1 * scaleX;
     const scaledY1 = y1 * scaleY;
@@ -51,13 +39,14 @@ export const drawPlayerBBox = (
     const boxWidth = Math.abs(scaledX2 - scaledX1);
     const boxHeight = Math.abs(y2 - y1) * scaleY;
 
-    const playerColor = getPlayerColor(player?.id || 0);
+    if (!player.class) return;
+    const playerColor = getFootPlayerColor(player.class);
     configureContext(context, { strokeStyle: playerColor });
     
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
-    const text = `${player.id} ${player.old_id ? `[${player.old_id}]` : ''} | ${player.name || 'N/A'} | ${player.speed_legs?.toFixed(2) || 0}km/h | ${player.confidence.toFixed(2)}`;
+    const text = `${player.id} | Class: ${player.class} | Conf: ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
     const padding = 4;
     const textHeight = 30;
@@ -79,6 +68,7 @@ export const drawPlayerBBox = (
         scaledY1 - (textHeight / 2)
     );
 
+    // Ajout du point pour les jambes du joueur
     const centerX = scaledX1 + (boxWidth / 2);
     const bottomY = scaledLegsY;
 

@@ -1,5 +1,5 @@
 import { JSONData } from "@/types/files";
-import { getPlayerColor } from "../colors";
+import { getPlayerColor } from "../../colors";
 
 export const drawRadar = (
     framesData: JSONData['data'],
@@ -29,8 +29,10 @@ export const drawRadar = (
 
         ctx.beginPath();
         ctx.arc(radarX + width/2, radarY + height/2, 5, 0, 2 * Math.PI);
-        ctx.fillStyle = getPlayerColor(player.id);
-        ctx.fill();
+        if (player.id) {
+            ctx.fillStyle = getPlayerColor(player.id);
+            ctx.fill();
+        }
         ctx.closePath();
 
         ctx.fillStyle = '#FFFFFF';

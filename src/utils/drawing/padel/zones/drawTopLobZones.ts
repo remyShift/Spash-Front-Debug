@@ -1,14 +1,14 @@
-import { configureContext } from "../canvas";
+import { configureContext } from "../../canvas";
 import { JSONData, PersonTracking } from "@/types/files";
 
-interface DivorceZone {
+interface TopLobZone {
     name: string;
     points: [number, number][];
     color: string;
-    zoneKey: 'divorce_zone_right' | 'divorce_zone_left';
+    zoneKey: 'top_lob_right' | 'top_lob_left';
 }
 
-export const drawDivorceZones = (
+export const drawTopLobZones = (
     players: [string, PersonTracking][],
     currentFrame: number,
     videoWidth: number,
@@ -16,25 +16,25 @@ export const drawDivorceZones = (
     context: CanvasRenderingContext2D,
     videoData: JSONData,
     zones: {
-        divorce_right: [number, number][];
-        divorce_left: [number, number][];
+        top_lob_right: [number, number][];
+        top_lob_left: [number, number][];
     }
 ) => {
     const canvas = context.canvas;
     configureContext(context);
 
-    const zonesConfig: DivorceZone[] = [
+    const zonesConfig: TopLobZone[] = [
         {
-            name: "DIVORCE RIGHT",
-            points: zones.divorce_right,
-            color: "rgba(255, 0, 255, 0.2)",
-            zoneKey: "divorce_zone_right"
+            name: "TOP LOB RIGHT",
+            points: zones.top_lob_right,
+            color: "rgba(255, 165, 0, 0.2)",
+            zoneKey: "top_lob_right"
         },
         {
-            name: "DIVORCE LEFT",
-            points: zones.divorce_left,
-            color: "rgba(255, 0, 255, 0.2)",
-            zoneKey: "divorce_zone_left"
+            name: "TOP LOB LEFT",
+            points: zones.top_lob_left,
+            color: "rgba(255, 165, 0, 0.2)",
+            zoneKey: "top_lob_left"
         }
     ];
 
@@ -73,6 +73,6 @@ export const drawDivorceZones = (
         context.textAlign = "center";
         const centerX = scaledPoints.reduce((sum, [x]) => sum + x, 0) / scaledPoints.length;
         const centerY = scaledPoints.reduce((sum, [, y]) => sum + y, 0) / scaledPoints.length;
-        context.fillText("DIVORCE", centerX, centerY);
+        context.fillText("TOP LOB", centerX, centerY);
     });
 };

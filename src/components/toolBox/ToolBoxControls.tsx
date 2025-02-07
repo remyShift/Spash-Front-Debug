@@ -4,8 +4,8 @@ import ControlBtn from './ControlBtn';
 import { useActiveLayers } from '@/context/layers';
 import { useVideoPlayer } from '@/hooks/useVideoPlayer';
 import { useFrame } from '@/context/frame';
-import { drawElements } from '@/utils/drawing/drawElements';
 import { JSONData } from '@/types/files';
+import { drawSportElements } from '@/utils/drawing/drawSportElements';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { useCanvas } from '@/context/canvas';
 import GotoFrame from './GotoFrame';
@@ -107,7 +107,8 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
         const frameData = videoData?.data[safeFrame];
         if (!frameData) return;
         
-        drawElements(
+        drawSportElements(
+            sport,
             videoData,
             activeLayers,
             videoRef.current,

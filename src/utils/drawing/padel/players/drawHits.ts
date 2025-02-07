@@ -1,6 +1,6 @@
 import { PersonTracking } from "@/types/files";
-import { isValidBBox } from "./boundingBox";
-import { configureContext } from "../canvas";
+import { isValidBBox } from "../../boundingBox";
+import { configureContext } from "../../canvas";
 
 const GLOW_DURATION = 10;
 const GLOW_INTENSITY = 15;
@@ -34,7 +34,7 @@ export const drawHits = (player: PersonTracking, currentFrame: number, videoWidt
             activeHits.push({
                 startFrame: currentFrame,
                 endFrame: currentFrame + GLOW_DURATION,
-                playerId: player.id
+                playerId: player.id ?? 0
             });
         }
     }

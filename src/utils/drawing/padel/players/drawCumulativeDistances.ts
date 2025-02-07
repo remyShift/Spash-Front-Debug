@@ -1,6 +1,6 @@
 import { PersonTracking } from "@/types/files";
-import { getPlayerColor } from "../colors";
-import { configureContext } from "../canvas";
+import { getPlayerColor } from "../../colors";
+import { configureContext } from "../../canvas";
 
 export const drawCumulativeDistances = (
     players: [string, PersonTracking][],

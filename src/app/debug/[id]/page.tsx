@@ -65,10 +65,12 @@ export default function VideoPage() {
             fetchVideoData(video.videoPath)
                 .then((data: { jsonData: JSONData, statsData: JSONStats }) => {
                     if (data?.jsonData?.data && data?.statsData?.players) {
-                        insertCumulativeHits(data.jsonData);
-                        insertCumulativeDistances(data.jsonData);
-                        insertIsPlaying(data.jsonData.data, data.jsonData.timeline);
                         setSport(data.jsonData.info.cfg.sport);
+                        if (data.jsonData.info.cfg.sport === 'padel') {
+                            insertCumulativeHits(data.jsonData);
+                            insertCumulativeDistances(data.jsonData);
+                            insertIsPlaying(data.jsonData.data, data.jsonData.timeline);
+                        }
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData); 
                         setDataInitialized(true);

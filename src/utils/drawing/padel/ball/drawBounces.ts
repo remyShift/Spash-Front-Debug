@@ -1,5 +1,5 @@
 import { BallLayer } from "@/types/layers";
-import { configureContext } from "../canvas";
+import { configureContext } from "../../canvas";
 
 const BOUNCE_GLOW_DURATION = 10;
 const BOUNCE_GLOW_INTENSITY = 15;

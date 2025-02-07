@@ -4,12 +4,14 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { JSONData } from '@/types/files';
 import ButtonLayer from './ButtonLayer';
+import { useSport } from '@/context/sport';
 
 export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
     const [isOpen, setIsOpen] = useState(false);
     const { toggleActiveLayers } = useActiveLayers();
+    const { sport } = useSport();
 
-    const layers = [
+    const layers = sport === 'padel' ? [
         { content: "players", handleClick: () => toggleActiveLayers('players') },
         { content: "ball", handleClick: () => toggleActiveLayers('ball') },
         { content: "areas-ab", handleClick: () => toggleActiveLayers('areas-ab') },
@@ -23,6 +25,9 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
         { content: "top lob", handleClick: () => toggleActiveLayers('top lob') },
         { content: "safe ball", handleClick: () => toggleActiveLayers('safe ball') },
         { content: "cumulative distances", handleClick: () => toggleActiveLayers('cumulative distances') }
+    ] : [
+        { content: "players", handleClick: () => toggleActiveLayers('players') },
+        { content: "ball", handleClick: () => toggleActiveLayers('ball') }
     ];
 
     return (

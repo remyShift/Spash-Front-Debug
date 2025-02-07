@@ -1,4 +1,4 @@
-import { configureContext } from "../canvas";
+import { configureContext } from "../../canvas";
 
 
 export const drawNextReboundPrediction = (

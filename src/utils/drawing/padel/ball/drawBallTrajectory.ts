@@ -1,6 +1,6 @@
 import { BallLayer } from "@/types/layers";
-import { configureContext } from "../canvas";
-import { calculateDistance } from "../../calculateDistance";
+import { configureContext } from "../../canvas";
+import { calculateDistance } from "../../../calculateDistance";
 
 const TRAIL_LENGTH = 25;
 const MIN_OPACITY = 0.1;

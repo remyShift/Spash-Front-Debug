@@ -12,7 +12,6 @@ export async function fetchVideoData(videoPath: string): Promise<{
             return response.json();
         })
         .then(data => {
-            console.log("Received data:", data);
 
             if (!data) {
                 console.error("No data received from API");
@@ -26,13 +25,6 @@ export async function fetchVideoData(videoPath: string): Promise<{
             const hasValidStatsData = data.statsData && 
                                     data.statsData.players && 
                                     Array.isArray(data.statsData.players);
-
-            console.log("Data validation:", {
-                hasValidJsonData,
-                hasValidStatsData,
-                jsonDataKeys: data.jsonData ? Object.keys(data.jsonData) : [],
-                statsDataKeys: data.statsData ? Object.keys(data.statsData) : []
-            });
 
             if (!hasValidJsonData || !hasValidStatsData) {
                 const missingParts = [];

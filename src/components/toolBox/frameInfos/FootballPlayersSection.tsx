@@ -27,7 +27,6 @@ const PlayerLegs = ({ legs }: { legs: number[] }) => (
 // - Show ball
 
 export default function PadelPlayersSection({ frameData }: PlayersSectionProps) {
-    console.log(frameData);
     return (
         <div className='flex flex-col gap-2'>
             <p className='text-white font-semibold text-center text-lg'>- - - - - Players - - - - -</p>

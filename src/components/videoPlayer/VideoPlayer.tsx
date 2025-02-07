@@ -1,7 +1,7 @@
 import { JSONData, JSONStats, VideoInfo } from '@/types/files';
 import { useEffect, useRef, useCallback } from 'react';
 import { useFrame } from "@/context/frame";
-import { drawElements } from '@/utils/drawing/drawElements';
+import { drawSportElements } from '@/utils/drawing/drawSportElements';
 import { PadelLayers, FootballLayers } from '@/types/layers';
 import { useCanvas } from '@/context/canvas';
 import KillFeed from './KillFeed';
@@ -10,6 +10,7 @@ import LayersMenu from './layers/LayersMenu';
 import { RenderTiming } from '@/types/performance';
 import { usePerformance } from '@/context/performance';
 import HomographyPoints from '@/components/videoPlayer/layers/HomographyPoints';
+import { useSport } from '@/context/sport';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -26,6 +27,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     const persistentCanvasRef = useRef<HTMLCanvasElement>(null);
     const { setMainCanvasRef, setPersistentCanvasRef } = useCanvas();
     const lastDrawnFrame = useRef<number>(-1);
+    const { sport } = useSport();
     const { setMainTiming, setPersistentTiming } = usePerformance();
 
     useEffect(() => {
@@ -40,7 +42,8 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     const renderLayers = useCallback(() => {
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
         
-        drawElements(
+        drawSportElements(
+            sport,
             jsonData, 
             activeLayers,
             videoRef.current, 
@@ -55,7 +58,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 }
             }
         );
-    }, [jsonData, activeLayers, setMainTiming, setPersistentTiming]);
+    }, [jsonData, activeLayers, setMainTiming, setPersistentTiming, sport]);
 
     const animate = useCallback(() => {
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
@@ -96,10 +99,6 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     className={`w-full ${jsonData.data[currentFrame]?.isPlaying ? 'video-border-point' : 'video-border-interpoint'}`}
                 />
                 <LayersMenu jsonData={jsonData} />
-                <KillFeed 
-                    currentFrame={currentFrame}
-                    frameData={jsonData.data[currentFrame] || {}}
-                />
                 <canvas
                     ref={mainCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
@@ -108,8 +107,14 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     ref={persistentCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
-                {(jsonData.info.cfg.sport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
-                    <HomographyPoints videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
+                {(sport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
+                    <>
+                        <HomographyPoints videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
+                        <KillFeed 
+                            currentFrame={currentFrame}
+                            frameData={jsonData.data[currentFrame] || {}}
+                        />
+                    </>
                 )}
             </div>
             {videoRef.current && (
