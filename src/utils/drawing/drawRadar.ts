@@ -38,6 +38,6 @@ export const drawRadar = (
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '12px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText(player.name || '', radarX + width/2, radarY + height/2 - 10);
+        ctx.fillText(player.name || player.id?.toString() || '', radarX + width/2, radarY + height/2 - 10);
     });
 }; 
