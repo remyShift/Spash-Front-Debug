@@ -30,7 +30,7 @@ export function processFootMainLayer(
                 speed: frameData.speed || 0,
                 score: frameData["ball.score"] || 0
             };
-            drawBall(ball, videoWidth, videoHeight, mainCtx);
+            drawBall(ball, videoWidth, videoHeight, mainCtx, videoData.info.cfg.sport);
             break;
         case 'homography':
             if (videoData.zones.homography) {

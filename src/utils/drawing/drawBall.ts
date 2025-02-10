@@ -1,6 +1,6 @@
 import { BallLayer } from "@/types/layers";
 
-export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: number, context: CanvasRenderingContext2D) => {
+export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: number, context: CanvasRenderingContext2D, sport: string) => {
     const canvas = context.canvas;
     const scaleX = canvas.width / videoWidth;
     const scaleY = canvas.height / videoHeight;
@@ -19,7 +19,7 @@ export const drawBall = (ball: BallLayer, videoWidth: number, videoHeight: numbe
     context.beginPath();
     context.arc(adjustedX, adjustedY, 10, 0, 2 * Math.PI);
     context.lineWidth = 4;
-    context.strokeStyle = 'black';
+    context.strokeStyle = sport === 'padel' ? '#00FF00' : 'black';
     context.stroke();
 
     context.shadowColor = 'black';
