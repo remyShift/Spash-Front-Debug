@@ -39,10 +39,13 @@ export default function HomographyPoints({ videoRef }: { videoRef: React.RefObje
         const clampedX = Math.max(0, Math.min(x, videoRef.current.videoWidth));
         const clampedY = Math.max(0, Math.min(y, videoRef.current.videoHeight));
 
-        setHomographyPoints({
+        setHomographyPoints(Object.values({
             ...homographyPoints,
-            [dragRef.current]: { camera: [clampedX, clampedY] }
-        });
+            [dragRef.current]: { 
+                ...homographyPoints[dragRef.current],
+                camera: [clampedX, clampedY] 
+            }
+        }));
     }, [homographyPoints, setHomographyPoints, videoRef]);
 
     const handleMouseUp = useCallback(() => {

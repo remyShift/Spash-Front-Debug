@@ -3,69 +3,38 @@ import { JSONData } from '@/types/files';
 import { useHomographyPoints } from '@/context/homographyPoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { useSport } from '@/context/sport';
 
 export default function HomographyEditor({ videoData }: { videoData: JSONData }) {
     const jsonHomographyPoints = videoData.info.homography;
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
-    const { currentSport } = useSport();
 
     useEffect(() => {
         setHomographyPoints(jsonHomographyPoints);
     }, [setHomographyPoints, jsonHomographyPoints]);
 
     const handleCopyToClipboard = () => {
-        const pointOrder = currentSport === 'padel' ? [
-            "TOP_LEFT_CORNER",
-            "TOP_LEFT_SERVICE_LINE",
-            "TOP_NET",
-            "TOP_RIGHT_SERVICE_LINE",
-            "TOP_RIGHT_CORNER",
-            "LEFT_T",
-            "NET_CENTER",
-            "RIGHT_T",
-            "BOTTOM_LEFT_CORNER",
-            "BOTTOM_LEFT_SERVICE_LINE",
-            "BOTTOM_NET",
-            "BOTTOM_RIGHT_SERVICE_LINE",
-            "BOTTOM_RIGHT_CORNER"
-        ] : [
-            "TOP_LEFT_CORNER",
-            "TOP_RIGHT_CORNER",
-            "BOTTOM_LEFT_CORNER",
-            "LEFT_GOAL_POST_BOT",
-            "LEFT_GOAL_POST_TOP",
-            "RIGHT_GOAL_POST_BOT",
-            "RIGHT_GOAL_POST_TOP"
-        ];
-
-        const orderedPoints: { [key: string]: { camera: number[] } } = {};
-        pointOrder.forEach(key => {
-            if (homographyPoints[key]) {
-                orderedPoints[key] = homographyPoints[key];
-            }
-        });
-
-        navigator.clipboard.writeText(JSON.stringify(orderedPoints, null, 2))
+        const coordinates = Object.values(homographyPoints).map(point => point.camera);
+        
+        navigator.clipboard.writeText(JSON.stringify(coordinates, null, 2))
             .then(() => {
-                alert('Homography points copied to clipboard !');
+                alert('Coordonnées copiées dans le presse-papiers !');
             })
             .catch(err => {
-                console.error('Error copying points:', err);
-                alert('Error copying points');
+                console.error('Erreur lors de la copie :', err);
+                alert('Erreur lors de la copie');
             });
     };
 
-    const handleCoordinateChange = (point: string, index: number, value: number) => {
+    const handleCoordinateChange = (key: string, coordIndex: number, value: number) => {
         const newPoints = { ...homographyPoints };
-        newPoints[point].camera[index] = value;
-        setHomographyPoints(newPoints);
+        newPoints[key].camera[coordIndex] = value;
+        setHomographyPoints(Object.values(newPoints));
     };
 
-    const adjustCoordinate = (point: string, index: number, increment: boolean) => {
+    const adjustCoordinate = (key: string, coordIndex: number, increment: boolean) => {
         const newPoints = { ...homographyPoints };
-        newPoints[point].camera[index] += increment ? 1 : -1;
-        setHomographyPoints(newPoints);
+        newPoints[key].camera[coordIndex] += increment ? 1 : -1;
+        setHomographyPoints(Object.values(newPoints));
     };
 
     return (
@@ -81,26 +50,26 @@ export default function HomographyEditor({ videoData }: { videoData: JSONData })
                 </div>
             </div>
             {
-                Object.keys(homographyPoints).map((point, index) => (
-                    <div key={index} className='flex flex-col justify-center items-center gap-2'>
-                        <p className='text-base text-white font-bold'>{point.toString()} :</p>
+                Object.entries(homographyPoints).map(([key, point]) => (
+                    <div key={key} className='flex flex-col justify-center items-center gap-2'>
+                        <p className='text-base text-white font-bold'>{point.name || key} :</p>
                         <div className='flex gap-12'>
                             {[0, 1].map((coordIndex) => (
                                 <div key={coordIndex} className='flex justify-center items-center gap-1'>
                                     <button
-                                        onClick={() => adjustCoordinate(point, coordIndex, false)}
+                                        onClick={() => adjustCoordinate(key, coordIndex, false)}
                                         className='px-2 py-1 bg-primary text-white rounded-lg hover:bg-opacity-80'
                                     >
                                         <FontAwesomeIcon icon={faMinus} />
                                     </button>
                                     <input
                                         type="number"
-                                        value={Math.round(homographyPoints[point].camera[coordIndex])}
-                                        onChange={(e) => handleCoordinateChange(point, coordIndex, parseInt(e.target.value))}
+                                        value={Math.round(point.camera[coordIndex])}
+                                        onChange={(e) => handleCoordinateChange(key, coordIndex, parseInt(e.target.value))}
                                         className='w-20 px-2 py-1 bg-lighterBackground text-white rounded-lg text-center'
                                     />
                                     <button
-                                        onClick={() => adjustCoordinate(point, coordIndex, true)}
+                                        onClick={() => adjustCoordinate(key, coordIndex, true)}
                                         className='px-2 py-1 bg-primary text-white rounded-lg hover:bg-opacity-80'
                                     >
                                         <FontAwesomeIcon icon={faPlus} />

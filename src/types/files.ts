@@ -62,11 +62,7 @@ export interface JSONInfo {
     cfg: {
         sport: "padel" | "foot";
     };
-    homography: {
-        [key: string]: {
-            camera: number[];
-        };
-    }
+    homography: HomographyPoint[];
 }
 
 export interface JSONData {
@@ -229,4 +225,10 @@ export interface PlayerStats {
 
 export interface PlayerHits {
     [playerId: string]: PlayerStats;
+}
+
+export interface HomographyPoint {
+    name: string;
+    camera: [number, number];
+    object: [number, number];
 }
