@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
-type Sport = 'padel' | 'foot';
+export type Sport = 'padel' | 'foot';
 
 interface SportStore {
-    sport: Sport;
+    currentSport: Sport;
     setSport: (sport: Sport) => void;
 }
 
 export const useSport = create<SportStore>((set) => ({
-    sport: "padel",
+    currentSport: "padel",
     setSport: (sport: Sport) => {
-        set({ sport: sport });
+        set({ currentSport: sport });
     },
 }));
