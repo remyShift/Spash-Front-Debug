@@ -41,6 +41,7 @@ export async function GET(request: Request) {
                             path: `/videos/${entry.name}`,
                             size: videoStats.size,
                             createdAt: videoStats.birthtime.toISOString(),
+                            playerVideoPath: { path: `/videos/${entry.name}/body.mp4` },
                         });
                     }
                 }

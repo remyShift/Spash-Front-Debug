@@ -3,6 +3,7 @@ import { JSONData } from '@/types/files';
 import { useHomographyPoints } from '@/context/homographyPoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { fetchHomography } from '@/utils/fetchHomography';
 
 export default function HomographyEditor({ videoData }: { videoData: JSONData }) {
     const jsonHomographyPoints = videoData.info.homography;
@@ -23,6 +24,15 @@ export default function HomographyEditor({ videoData }: { videoData: JSONData })
                 console.error('Erreur lors de la copie :', err);
                 alert('Erreur lors de la copie');
             });
+    };
+
+    const handleUpdateHomography = async () => {
+        await fetchHomography({
+            camera: Object.values(homographyPoints).map(point => point.camera),
+            height: videoData.info.video.height,
+            width: videoData.info.video.width,
+            sport: videoData.info.cfg.sport
+        });
     };
 
     const handleCoordinateChange = (key: string, coordIndex: number, value: number) => {
@@ -46,6 +56,12 @@ export default function HomographyEditor({ videoData }: { videoData: JSONData })
                         className='px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-80 transition-all'
                     >
                         Save to Clipboard
+                    </button>
+                    <button 
+                        onClick={handleUpdateHomography}
+                        className='px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-80 transition-all'
+                    >
+                        Update Homography
                     </button>
                 </div>
             </div>
