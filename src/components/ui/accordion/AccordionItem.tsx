@@ -23,13 +23,14 @@ export default function AccordionItem({ title, content }: { title: string, conte
             {accordionOpen && <Spacer />}
 
             <div
-                className={`grid overflow-hidden transition-all duration-300 ease-in-out text-slate-600 text-sm ${
-                accordionOpen
-                    ? "grid-rows-[1fr] opacity-100"
-                    : "grid-rows-[0fr] opacity-0"
-                }`}
+                className={`grid overflow-hidden transition-all duration-300 ease-in-out text-slate-600 text-sm`}
+                style={{
+                    gridTemplateRows: accordionOpen ? '1fr' : '0fr',
+                    opacity: accordionOpen ? 1 : 0,
+                    visibility: accordionOpen ? 'visible' : 'hidden'
+                }}
             >
-                <div className="overflow-hidden">
+                <div className="overflow-hidden min-h-0">
                     {contentWithProps}
                 </div>
             </div>

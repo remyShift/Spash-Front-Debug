@@ -19,19 +19,25 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
     useEffect(() => {
         const updateHeight = () => {
             if (accordionRef.current) {
-                setAccordionHeight(accordionRef.current.offsetHeight);
+                const height = accordionRef.current.getBoundingClientRect().height;
+                setAccordionHeight(height);
             }
         };
 
-        updateHeight();
-        window.addEventListener('resize', updateHeight);
+        const timeoutId = setTimeout(updateHeight, 300);
         
-        const observer = new ResizeObserver(updateHeight);
+        const observer = new ResizeObserver(() => {
+            updateHeight();
+        });
+
         if (accordionRef.current) {
             observer.observe(accordionRef.current);
         }
 
+        window.addEventListener('resize', updateHeight);
+
         return () => {
+            clearTimeout(timeoutId);
             window.removeEventListener('resize', updateHeight);
             observer.disconnect();
         };
@@ -39,19 +45,19 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
 
     const fieldSize = calculateFootFieldSize(videoData.info);
     
-    if (!fieldSize) return;
+    if (!fieldSize && currentSport === 'foot') return;
 
     return (
         <div ref={accordionRef} className="w-full bg-lightBackground rounded-b-lg">
             <AccordionItem title="Radar" content={currentSport === 'padel' ? 
                 <PadelRadar framesData={videoData.data} /> : 
-                <FootballRadar framesData={videoData.data} fieldSize={fieldSize} />} />
+                fieldSize ? <FootballRadar framesData={videoData.data} fieldSize={fieldSize} /> : <div />} />
             <Spacer />
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
-            <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
-            <Spacer />
             <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} />} />
+            <Spacer />
+            <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
         </div>
     )
 }
