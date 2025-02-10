@@ -138,7 +138,7 @@ export default function VideoPage() {
                     </div>
                 </div>
             </div>
-            {jsonData.info.cfg.sport === 'padel' && <PlayersPresenceTimeline jsonData={jsonData} />}
+            <PlayersPresenceTimeline jsonData={jsonData} />
             <StatsArray statsData={statsData} />
             <Footer />
         </div>

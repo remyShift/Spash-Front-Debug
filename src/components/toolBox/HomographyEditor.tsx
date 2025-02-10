@@ -3,17 +3,19 @@ import { JSONData } from '@/types/files';
 import { useHomographyPoints } from '@/context/homographyPoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { useSport } from '@/context/sport';
 
 export default function HomographyEditor({ videoData }: { videoData: JSONData }) {
     const jsonHomographyPoints = videoData.info.homography;
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
+    const { currentSport } = useSport();
 
     useEffect(() => {
         setHomographyPoints(jsonHomographyPoints);
     }, [setHomographyPoints, jsonHomographyPoints]);
 
     const handleCopyToClipboard = () => {
-        const pointOrder = [
+        const pointOrder = currentSport === 'padel' ? [
             "TOP_LEFT_CORNER",
             "TOP_LEFT_SERVICE_LINE",
             "TOP_NET",
@@ -27,6 +29,14 @@ export default function HomographyEditor({ videoData }: { videoData: JSONData })
             "BOTTOM_NET",
             "BOTTOM_RIGHT_SERVICE_LINE",
             "BOTTOM_RIGHT_CORNER"
+        ] : [
+            "TOP_LEFT_CORNER",
+            "TOP_RIGHT_CORNER",
+            "BOTTOM_LEFT_CORNER",
+            "LEFT_GOAL_POST_BOT",
+            "LEFT_GOAL_POST_TOP",
+            "RIGHT_GOAL_POST_BOT",
+            "RIGHT_GOAL_POST_TOP"
         ];
 
         const orderedPoints: { [key: string]: { camera: number[] } } = {};
