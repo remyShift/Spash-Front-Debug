@@ -1,9 +1,8 @@
+import { HomographyPoint } from '@/types/files';
 import { useState, useCallback } from 'react';
 
-type HomographyPoints = { [key: string]: { camera: number[] } };
-
 export const useHomographyPointsDrag = (
-    setHomographyPoints: (points: HomographyPoints) => void
+    setHomographyPoints: (points: HomographyPoint[]) => void
 ) => {
     const [selectedPoint, setSelectedPoint] = useState<string | null>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -15,8 +14,13 @@ export const useHomographyPointsDrag = (
 
     const handlePointMove = useCallback((pointKey: string, x: number, y: number) => {
         if (isDragging && selectedPoint === pointKey) {
-            const newPoints: HomographyPoints = { [pointKey]: { camera: [x, y] } };
-            setHomographyPoints(newPoints);
+            const newPoints = { 
+                [pointKey]: { 
+                    name: pointKey,
+                    camera: [x, y] as [number, number],
+                } 
+            };
+            setHomographyPoints(Object.values(newPoints));
         }
     }, [isDragging, selectedPoint, setHomographyPoints]);
 

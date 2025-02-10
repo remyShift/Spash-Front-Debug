@@ -1,5 +1,5 @@
 import { JSONData } from "@/types/files";
-import ToolBoxControls from "./ToolBoxControls";
+import ToolBoxControls from "./toolboxControls/ToolBoxControls";
 import Accordion from "@/components/ui/accordion/Accordion";
 import Spacer from "../ui/Spacer";
 

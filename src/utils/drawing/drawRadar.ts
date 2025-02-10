@@ -1,5 +1,5 @@
 import { JSONData } from "@/types/files";
-import { getPlayerColor } from "../../colors";
+import { getPlayerColor } from "@/utils/drawing/colors";
 
 export const drawRadar = (
     framesData: JSONData['data'],

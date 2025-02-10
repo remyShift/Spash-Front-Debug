@@ -21,6 +21,10 @@
   border: 1px solid blue !important;
 }
 
+.foot-radar-border {
+  border: 1px solid white !important;
+}
+
 .mesh-bg {
   background-color: hsla(352.6829268292683, 100%, 59%, 1);
   background-image: radial-gradient(circle at 47% 50%, hsla(240, 9%, 22%, 1) 81.57180487428948%, transparent 128.40267573445306%);

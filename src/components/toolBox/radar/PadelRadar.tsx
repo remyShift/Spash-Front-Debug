@@ -1,9 +1,9 @@
 import { JSONData } from "@/types/files";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@/context/frame";
-import { drawRadar } from "@/utils/drawing/padel/radar/drawRadar";
+import { drawRadar } from "@/utils/drawing/drawRadar";
 
-export default function HomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
+export default function PadelHomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvas = useRef<HTMLCanvasElement>(null);
     const currentFrame = useFrame(state => state.currentFrame);

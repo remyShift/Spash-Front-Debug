@@ -4,12 +4,16 @@ import Spacer from '../Spacer'
 import KeyboardShortcuts from '../../toolBox/KeyboardShortcuts'
 import { JSONData } from '@/types/files'
 import FrameInfos from '../../toolBox/frameInfos/FrameInfos'
-import HomographyRadar from '@/components/toolBox/HomographyRadar'
+import PadelRadar from '@/components/toolBox/radar/PadelRadar'
 import { useAccordionHeight } from '@/context/accordion'
 import HomographyEditor from '@/components/toolBox/HomographyEditor'
+import { useSport } from '@/context/sport'
+import FootballRadar from '@/components/toolBox/radar/FootballRadar'
+import { calculateFootFieldSize } from '@/utils/calculateFootFieldSize'
 
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     const accordionRef = useRef<HTMLDivElement>(null);
+    const { currentSport } = useSport();
     const { setAccordionHeight } = useAccordionHeight();
 
     useEffect(() => {
@@ -33,9 +37,15 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
         };
     }, [setAccordionHeight]);
 
+    const fieldSize = calculateFootFieldSize(videoData.info);
+    
+    if (!fieldSize) return;
+
     return (
         <div ref={accordionRef} className="w-full bg-lightBackground rounded-b-lg">
-            <AccordionItem title="Radar" content={<HomographyRadar framesData={videoData.data} />} />
+            <AccordionItem title="Radar" content={currentSport === 'padel' ? 
+                <PadelRadar framesData={videoData.data} /> : 
+                <FootballRadar framesData={videoData.data} fieldSize={fieldSize} />} />
             <Spacer />
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
