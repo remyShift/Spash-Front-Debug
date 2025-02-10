@@ -55,7 +55,7 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
             <Spacer />
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
-            <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} />} />
+            <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} accordionOpen={false} />} />
             <Spacer />
             <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
         </div>

@@ -21,7 +21,6 @@ export const drawSportElements = (
     canvasRefs: CanvasRefs,
     options?: DrawOptions
 ) => {
-    console.log("sport", sport);
     if (sport === 'padel') {
         const typedActiveLayers = activeLayers as PadelLayers[];
         drawPadelElements(videoData, typedActiveLayers, videoRef, canvasRefs);

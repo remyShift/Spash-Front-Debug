@@ -2,7 +2,8 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
     const data = await req.json();
-    return fetch('http://10.0.0.50:38001/api/homography', {
+    console.log('Data received:', data);
+    return fetch('http://10.0.0.5:9123/api/homography', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ type UpdateHomographyArguments = {
 }
 
 export const fetchHomography = async (params: UpdateHomographyArguments) => {
-    console.log('Fetching homography with params:', JSON.stringify(params));
+
     return fetch(`/api/v1/proxy`, {
         method: 'POST',
         headers: {
@@ -17,11 +17,11 @@ export const fetchHomography = async (params: UpdateHomographyArguments) => {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Homography mise à jour avec succès:', data);
+        console.log('Homography updated successfully :', data);
         return data;
     })
     .catch(error => {
-        console.error('Error fetching homography:', error);
+        console.error('Error fetching homography :', error);
         throw error;
     });
 }

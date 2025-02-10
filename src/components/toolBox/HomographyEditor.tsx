@@ -4,35 +4,67 @@ import { useHomographyPoints } from '@/context/homographyPoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { fetchHomography } from '@/utils/fetchHomography';
+import { useEditMode } from '@/context/editMode';
+import { drawHomography } from '@/utils/drawing/drawHomography';
 
-export default function HomographyEditor({ videoData }: { videoData: JSONData }) {
+interface HomographyEditorProps {
+    videoData: JSONData;
+    accordionOpen: boolean;
+}
+
+export default function HomographyEditor({ videoData, accordionOpen }: HomographyEditorProps) {
     const jsonHomographyPoints = videoData.info.homography;
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
+    const { setEditMode } = useEditMode();
 
     useEffect(() => {
         setHomographyPoints(jsonHomographyPoints);
     }, [setHomographyPoints, jsonHomographyPoints]);
+
+    useEffect(() => {
+        if (accordionOpen) {
+            setEditMode(true);
+        }
+    }, [accordionOpen, setEditMode]);
 
     const handleCopyToClipboard = () => {
         const coordinates = Object.values(homographyPoints).map(point => point.camera);
         
         navigator.clipboard.writeText(JSON.stringify(coordinates, null, 2))
             .then(() => {
-                alert('Coordonnées copiées dans le presse-papiers !');
+                alert('Coordinates copied to clipboard !');
             })
             .catch(err => {
-                console.error('Erreur lors de la copie :', err);
-                alert('Erreur lors de la copie');
+                console.error('Error copying coordinates :', err);
+                alert('Error copying coordinates');
             });
     };
 
     const handleUpdateHomography = async () => {
-        await fetchHomography({
+        const response = await fetchHomography({
             camera: Object.values(homographyPoints).map(point => point.camera),
             height: videoData.info.video.height,
             width: videoData.info.video.width,
             sport: videoData.info.cfg.sport
         });
+
+        if (response && response.code === 0) {
+            const video = document.querySelector('video');
+            const mainCanvas = document.querySelector('canvas');
+            
+            if (video && mainCanvas) {
+                const context = mainCanvas.getContext('2d');
+                if (context) {
+                    context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+                    drawHomography(
+                        response.data.homography,
+                        video.videoWidth,
+                        video.videoHeight,
+                        context
+                    );
+                }
+            }
+        }
     };
 
     const handleCoordinateChange = (key: string, coordIndex: number, value: number) => {

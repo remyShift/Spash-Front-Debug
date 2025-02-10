@@ -22,7 +22,6 @@ export default function FootballRadar({ framesData, fieldSize }: {
         const baseWidth = 320;
         const height = baseWidth / realRatio;
         const goalRatio = fieldSize.goalWidth / fieldSize.width;
-        console.log(fieldSize.goalWidth);
         
         return {
             width: baseWidth,

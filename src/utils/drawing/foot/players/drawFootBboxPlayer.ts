@@ -19,7 +19,6 @@ export const drawFootPlayerBBox = (
     videoHeight: number,
     context: CanvasRenderingContext2D
 ): void => {
-    console.log('player foot', player);
     if (!player?.bbox) return;
 
     const canvas = context.canvas;

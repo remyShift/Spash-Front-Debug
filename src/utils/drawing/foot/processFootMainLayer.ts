@@ -17,7 +17,6 @@ export function processFootMainLayer(
     switch (layer) {
         case 'players':
             if (players) {
-                console.log("players", players);
                 players.forEach(([, player]) => {
                     drawFootPlayerBBox(player, videoWidth, videoHeight, mainCtx);
                 });

@@ -72,13 +72,16 @@ export default function HomographyPoints({ videoRef }: { videoRef: React.RefObje
                 const y = (point.camera[1] / videoRef.current!.videoHeight) * 100;
                 
                 return (
-                    <FontAwesomeIcon
-                        key={key}
-                        icon={faCrosshairs}
-                        className="absolute w-3 h-3 -translate-x-1/2 text-red-500 -translate-y-1/2 cursor-grab active:cursor-grabbing pointer-events-auto" 
-                        style={{ left: `${x}%`, top: `${y}%` }} 
-                        onMouseDown={() => handleMouseDown(key)}
-                    />
+                    <div key={key} className="absolute" style={{ left: `${x}%`, top: `${y}%` }}>
+                        <FontAwesomeIcon
+                            icon={faCrosshairs}
+                            className="absolute w-3 h-3 -translate-x-1/2 text-red-500 -translate-y-1/2 cursor-grab active:cursor-grabbing pointer-events-auto"
+                            onMouseDown={() => handleMouseDown(key)}
+                        />
+                        <div className="absolute left-4 -top-2 bg-black/50 px-2 py-1 rounded text-white text-xs whitespace-nowrap">
+                            {`${Math.round(point.camera[0])}, ${Math.round(point.camera[1])}`}
+                        </div>
+                    </div>
                 );
             })}
             

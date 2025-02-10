@@ -17,7 +17,7 @@ export const calculateFootFieldSize = (jsonInfo: JSONData["info"]) => {
     if (!goalLeft || !goalRight) return;
 
     const goalWidth = Math.abs(goalRight.object[1]) + Math.abs(goalLeft.object[1]);
-    console.log("goalWidth", goalWidth);
+
     return {
         height,
         width,
