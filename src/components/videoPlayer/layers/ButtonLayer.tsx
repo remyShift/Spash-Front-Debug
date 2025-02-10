@@ -16,13 +16,13 @@ export default function ButtonLayer({
 }) {
     const { activeLayers } = useActiveLayers();
     const { mainCanvasRef, persistentCanvasRef } = useCanvas();
-    const { sport } = useSport();
+    const { currentSport } = useSport();
     
-    const typedActiveLayers = sport === 'padel' 
+    const typedActiveLayers = currentSport === 'padel' 
         ? (activeLayers as PadelLayers[]) 
         : (activeLayers as FootballLayers[]);
 
-    const typedContent = sport === 'padel' 
+    const typedContent = currentSport === 'padel' 
         ? (content as PadelLayers) 
         : (content as FootballLayers);
     const isActive = typedActiveLayers.includes(typedContent) || content === "layers";
@@ -40,7 +40,7 @@ export default function ButtonLayer({
             : [...typedActiveLayers, typedContent];
 
         drawSportElements(
-            sport,
+            currentSport,
             jsonData,
             updatedLayers,
             video,
@@ -49,7 +49,7 @@ export default function ButtonLayer({
                 persistentCanvas: persistentCanvasRef.current
             },
         );
-    }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, typedActiveLayers, typedContent, isActive, sport]);
+    }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, typedActiveLayers, typedContent, isActive, currentSport]);
 
     return (
         <div 

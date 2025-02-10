@@ -17,7 +17,7 @@ interface FrameInfosProps {
 
 export default function FrameInfos({ framesData, events }: FrameInfosProps) {
     const { currentFrame } = useFrame();
-    const { sport } = useSport();
+    const { currentSport } = useSport();
     const [frameData, setFrameData] = useState<JSONData['data'][number] | null>(null);
 
     useEffect(() => {
@@ -32,8 +32,8 @@ export default function FrameInfos({ framesData, events }: FrameInfosProps) {
             {events && <EventsSection events={events} currentFrame={currentFrame} />}
             <InfosSection frameData={frameData} />
             <BallSection frameData={frameData} />
-            {sport === "padel" && <PadelPlayersSection frameData={frameData} />}
-            {sport === "foot" && <FootballPlayersSection frameData={frameData} />}
+            {currentSport === "padel" && <PadelPlayersSection frameData={frameData} />}
+            {currentSport === "foot" && <FootballPlayersSection frameData={frameData} />}
         </div>
     )
 } 

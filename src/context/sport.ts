@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Sport = 'padel' | 'foot';
+type Sport = 'padel' | 'foot';
 
 interface SportStore {
     currentSport: Sport;

@@ -5,9 +5,9 @@ import { isValidBBox } from "../../boundingBox";
 const getFootPlayerColor = (playerClass: number): string => {
     switch (playerClass) {
         case 2:
-            return '#00FF00'; // Vert pour la classe 3
+            return '#00FF00'; // Vert pour la classe 2
         case 3:
-            return '#FF0000'; // Rouge pour la classe 2
+            return '#FF0000'; // Rouge pour la classe 3
         default:
             return '#FFFFFF'; // Blanc par défaut
     }
@@ -46,10 +46,10 @@ export const drawFootPlayerBBox = (
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
-    const text = `${player.id} | Class: ${player.class} | Conf: ${player.confidence.toFixed(2)}`;
+    const text = `${player.id} | ${player.class} | ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
     const padding = 4;
-    const textHeight = 30;
+    const textHeight = 20;
 
     context.fillStyle = playerColor;
     context.fillRect(
@@ -59,16 +59,16 @@ export const drawFootPlayerBBox = (
         textHeight
     );
 
+    context.font = '12px Arial';
     context.fillStyle = '#000000';
     context.textBaseline = 'middle';
     context.textAlign = 'left';
     context.fillText(
         text, 
-        scaledX1 + padding - 1,
+        scaledX1 + padding,
         scaledY1 - (textHeight / 2)
     );
 
-    // Ajout du point pour les jambes du joueur
     const centerX = scaledX1 + (boxWidth / 2);
     const bottomY = scaledLegsY;
 

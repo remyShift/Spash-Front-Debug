@@ -20,7 +20,7 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const { mainCanvasRef, persistentCanvasRef } = useCanvas();
     const { activeLayers } = useActiveLayers();
-    const { sport } = useSport();
+    const { currentSport } = useSport();
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
     const {
         selectedPoint,
@@ -108,7 +108,7 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
         if (!frameData) return;
         
         drawSportElements(
-            sport,
+            currentSport,
             videoData,
             activeLayers,
             videoRef.current,
@@ -124,7 +124,7 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     return (
         <div className="flex flex-col gap-6 p-6">
             <GotoFrame handleFrameChange={handleFrameChange} videoData={videoData}/>
-            {sport === "padel" && <GotoPlayer handleFrameChange={handleFrameChange} videoData={videoData}/>}
+            {currentSport === "padel" && <GotoPlayer handleFrameChange={handleFrameChange} videoData={videoData}/>}
             <div className="flex gap-4 items-center justify-center px-4">
                 <div className="flex flex-wrap 2xl:flex-nowrap w-auto lg:flex-col lg:w-1/2 xl:flex-row xl:w-auto gap-4 items-center">
                     <ControlBtn icon={faBackwardFast} onClick={() => handleFrameChange(0)} text="Start" />

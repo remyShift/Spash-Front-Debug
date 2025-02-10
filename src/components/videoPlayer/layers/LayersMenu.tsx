@@ -9,9 +9,9 @@ import { useSport } from '@/context/sport';
 export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
     const [isOpen, setIsOpen] = useState(false);
     const { toggleActiveLayers } = useActiveLayers();
-    const { sport } = useSport();
+    const { currentSport } = useSport();
 
-    const layers = sport === 'padel' ? [
+    const layers = currentSport === 'padel' ? [
         { content: "players", handleClick: () => toggleActiveLayers('players') },
         { content: "ball", handleClick: () => toggleActiveLayers('ball') },
         { content: "areas-ab", handleClick: () => toggleActiveLayers('areas-ab') },

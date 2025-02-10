@@ -27,7 +27,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     const persistentCanvasRef = useRef<HTMLCanvasElement>(null);
     const { setMainCanvasRef, setPersistentCanvasRef } = useCanvas();
     const lastDrawnFrame = useRef<number>(-1);
-    const { sport } = useSport();
+    const { currentSport } = useSport();
     const { setMainTiming, setPersistentTiming } = usePerformance();
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
         
         drawSportElements(
-            sport,
+            currentSport,
             jsonData, 
             activeLayers,
             videoRef.current, 
@@ -58,7 +58,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 }
             }
         );
-    }, [jsonData, activeLayers, setMainTiming, setPersistentTiming, sport]);
+    }, [jsonData, activeLayers, setMainTiming, setPersistentTiming, currentSport]);
 
     const animate = useCallback(() => {
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
@@ -107,7 +107,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     ref={persistentCanvasRef}
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
-                {(sport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
+                {(currentSport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
                     <>
                         <HomographyPoints videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
                         <KillFeed 

@@ -17,6 +17,7 @@ export function processFootMainLayer(
     switch (layer) {
         case 'players':
             if (players) {
+                console.log("players", players);
                 players.forEach(([, player]) => {
                     drawFootPlayerBBox(player, videoWidth, videoHeight, mainCtx);
                 });
@@ -29,7 +30,6 @@ export function processFootMainLayer(
                 speed: frameData.speed || 0,
                 score: frameData["ball.score"] || 0
             };
-            console.log("ball", ball);
             drawBall(ball, videoWidth, videoHeight, mainCtx);
             break;
         case 'homography':
@@ -38,9 +38,6 @@ export function processFootMainLayer(
             }
             break;
         case 'homography':
-            console.log("videoData", videoData);
-            console.log("videoData.zones", videoData.zones);
-            console.log("videoData.zones.homography", videoData.zones.homography);
             if (videoData.zones.homography) {
                 drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
             }
