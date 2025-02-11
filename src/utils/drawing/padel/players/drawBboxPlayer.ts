@@ -69,7 +69,7 @@ export const drawPlayerBBox = (
     context.fillRect(
         scaledX1 - 1,
         scaledY1 - textHeight,
-        textMetrics.width + speedMetrics.width + (padding * 3),
+        textMetrics.width + speedMetrics.width + (padding * 7),
         textHeight
     );
 
@@ -77,7 +77,6 @@ export const drawPlayerBBox = (
     context.textBaseline = 'middle';
     context.textAlign = 'left';
 
-    // Texte normal
     context.font = '14px Arial';
     context.fillText(
         text, 
