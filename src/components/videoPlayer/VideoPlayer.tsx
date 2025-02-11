@@ -112,13 +112,14 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     videoRef={videoRef as React.RefObject<HTMLVideoElement>} 
                     videoData={jsonData}
                 />
-
+            {/* 
                 {jsonData.info.cfg.sport === 'padel'  && (
                     <KillFeed 
                         currentFrame={currentFrame}
                         frameData={jsonData.data[currentFrame] || {}}
                     />
-                )}
+                )} */}
+
             </div>
             {videoRef.current && (
                 <VideoControls
