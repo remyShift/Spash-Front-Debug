@@ -1,6 +1,7 @@
 import { JSONData } from "@/types/files";
 import { getPlayerColor } from "@/utils/drawing/colors";
-import { drawBounceOnRadar } from "./drawBounceOnRadar";
+import { drawBounceOnRadar } from "./padel/radar/drawBounceOnRadar";
+import { drawRadarDistance } from "./padel/radar/drawRadarDistance";
 
 export const drawRadar = (
     framesData: JSONData['data'],
@@ -19,6 +20,8 @@ export const drawRadar = (
     ctx.clearRect(0, 0, width, height);
     
     drawBounceOnRadar(frameData, currentFrame, width, height, ctx);
+    
+    drawRadarDistance(frameData, width, height, ctx);
     
     if (frameData?.persontracking) {
         Object.entries(frameData.persontracking).forEach(([, player]) => {
