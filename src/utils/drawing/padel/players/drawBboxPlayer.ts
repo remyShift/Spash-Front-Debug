@@ -57,11 +57,8 @@ export const drawPlayerBBox = (
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
-    const text = `${player.id} ${player.old_id ? `[${player.old_id}]` : ''} | ${player.name || 'N/A'} | ${player.confidence.toFixed(2)}`;
-    const speedText = `${player.speed_legs?.toFixed(2) || 0}km/h`;
-
+    const text = `${player.id} ${player.old_id ? `[${player.old_id}]` : ''} | ${player.name || 'N/A'} | ${player.speed_legs?.toFixed(2) || 0}km/h | ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
-    const speedMetrics = context.measureText(speedText);
     const padding = 4;
     const textHeight = 30;
 
@@ -69,26 +66,16 @@ export const drawPlayerBBox = (
     context.fillRect(
         scaledX1 - 1,
         scaledY1 - textHeight,
-        textMetrics.width + speedMetrics.width + (padding * 7),
+        textMetrics.width + (padding * 2),
         textHeight
     );
 
     context.fillStyle = '#000000';
     context.textBaseline = 'middle';
     context.textAlign = 'left';
-
-    context.font = '14px Arial';
     context.fillText(
         text, 
         scaledX1 + padding - 1,
-        scaledY1 - (textHeight / 2)
-    );
-
-    // Vitesse en plus gros
-    context.font = 'bold 18px Arial';
-    context.fillText(
-        speedText,
-        scaledX1 + padding + textMetrics.width + padding - 1,
         scaledY1 - (textHeight / 2)
     );
 
