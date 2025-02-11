@@ -24,11 +24,12 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
         { content: "divorces", handleClick: () => toggleActiveLayers('divorces') },
         { content: "top lob", handleClick: () => toggleActiveLayers('top lob') },
         { content: "safe ball", handleClick: () => toggleActiveLayers('safe ball') },
-        { content: "cumulative distances", handleClick: () => toggleActiveLayers('cumulative distances') }
+        { content: "cumulative distances", handleClick: () => toggleActiveLayers('cumulative distances') },
+        { content: "killfeed", handleClick: () => toggleActiveLayers('killfeed') }
     ] : [
         { content: "players", handleClick: () => toggleActiveLayers('players') },
         { content: "ball", handleClick: () => toggleActiveLayers('ball') },
-        { content: "homography", handleClick: () => toggleActiveLayers('homography') }
+        { content: "homography", handleClick: () => toggleActiveLayers('homography') },
     ];
 
     return (
