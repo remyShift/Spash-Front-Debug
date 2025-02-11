@@ -2,12 +2,14 @@ import { JSONData } from "@/types/files";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@/context/frame";
 import { drawRadar } from "@/utils/drawing/drawRadar";
+import { useSport } from "@/context/sport";
 
 export default function PadelHomographyRadar({ framesData }: { framesData: JSONData['data'] }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvas = useRef<HTMLCanvasElement>(null);
     const currentFrame = useFrame(state => state.currentFrame);
     const [dimensions, setDimensions] = useState({ width: 280, height: 560 });
+    const { currentSport } = useSport();
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -34,8 +36,8 @@ export default function PadelHomographyRadar({ framesData }: { framesData: JSOND
 
     useEffect(() => {
         if (!canvas.current) return;
-        drawRadar(framesData, currentFrame, canvas.current, dimensions.width, dimensions.height);
-    }, [framesData, dimensions.width, dimensions.height, currentFrame]);
+        drawRadar(framesData, currentFrame, canvas.current, dimensions.width, dimensions.height, currentSport);
+    }, [framesData, dimensions.width, dimensions.height, currentFrame, currentSport]);
 
     return (
         <div ref={containerRef} className='flex flex-col gap-2 items-center justify-center py-4'>

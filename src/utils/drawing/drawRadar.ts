@@ -8,7 +8,8 @@ export const drawRadar = (
     currentFrame: number,
     canvas: HTMLCanvasElement,
     width: number,
-    height: number
+    height: number,
+    sport: string
 ) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -18,11 +19,12 @@ export const drawRadar = (
     
     const frameData = framesData[currentFrame];
     ctx.clearRect(0, 0, width, height);
-    
-    drawBounceOnRadar(frameData, currentFrame, width, height, ctx);
-    
-    drawRadarDistance(frameData, width, height, ctx);
-    
+
+    if (sport === "padel") {
+        drawBounceOnRadar(frameData, currentFrame, width, height, ctx);
+        drawRadarDistance(frameData, width, height, ctx);
+    }
+
     if (frameData?.persontracking) {
         Object.entries(frameData.persontracking).forEach(([, player]) => {
             if (!player?.court_legs) return;
