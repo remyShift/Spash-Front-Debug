@@ -6,7 +6,7 @@ import { VideoInfo } from "@/types/files";
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '5');
+    const limit = parseInt(searchParams.get('limit') || '7');
     const directoryPath = path.join(process.cwd(), "public", "videos");
 
     return fs.promises.access(directoryPath)

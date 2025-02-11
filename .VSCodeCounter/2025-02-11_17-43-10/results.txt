@@ -1,0 +1,236 @@
+Date : 2025-02-11 17:43:10
+Directory : /Users/remy_mac/Desktop/Code/Spash/spash-front-debug
+Total : 150 files,  18192 codes, 9 comments, 908 blanks, all 19109 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |          3 |     11,920 |          0 |          3 |     11,923 |
+| TypeScript JSX     |         61 |      2,987 |          6 |        386 |      3,379 |
+| TypeScript         |         76 |      2,881 |          1 |        464 |      3,346 |
+| CSS                |          1 |        237 |          0 |         27 |        264 |
+| Markdown           |          1 |         64 |          0 |         16 |         80 |
+| XML                |          3 |         43 |          1 |          2 |         46 |
+| JSON with Comments |          1 |         27 |          0 |          1 |         28 |
+| JavaScript         |          2 |         18 |          1 |          7 |         26 |
+| YAML               |          1 |          8 |          0 |          1 |          9 |
+| Docker             |          1 |          7 |          0 |          1 |          8 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                    | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                       |        150 |     18,192 |          9 |        908 |     19,109 |
+| . (Files)                                                                                                               |         11 |     12,145 |          2 |         34 |     12,181 |
+| public                                                                                                                  |          3 |         43 |          1 |          2 |         46 |
+| public/svg                                                                                                              |          3 |         43 |          1 |          2 |         46 |
+| src                                                                                                                     |        136 |      6,004 |          6 |        872 |      6,882 |
+| src/app                                                                                                                 |          8 |        642 |          0 |         72 |        714 |
+| src/app (Files)                                                                                                         |          3 |        312 |          0 |         34 |        346 |
+| src/app/api                                                                                                             |          4 |        192 |          0 |         27 |        219 |
+| src/app/api/v1                                                                                                          |          4 |        192 |          0 |         27 |        219 |
+| src/app/api/v1/files                                                                                                    |          2 |        125 |          0 |         18 |        143 |
+| src/app/api/v1/files (Files)                                                                                            |          1 |         65 |          0 |          8 |         73 |
+| src/app/api/v1/files/[id]                                                                                               |          1 |         60 |          0 |         10 |         70 |
+| src/app/api/v1/proxy                                                                                                    |          1 |         22 |          0 |          1 |         23 |
+| src/app/api/v1/upload                                                                                                   |          1 |         45 |          0 |          8 |         53 |
+| src/app/debug                                                                                                           |          1 |        138 |          0 |         11 |        149 |
+| src/app/debug/[id]                                                                                                      |          1 |        138 |          0 |         11 |        149 |
+| src/components                                                                                                          |         58 |      2,774 |          6 |        368 |      3,148 |
+| src/components/PlayersPresenceTimeline                                                                                  |          1 |        149 |          0 |         16 |        165 |
+| src/components/StatsArray                                                                                               |          7 |        265 |          2 |         31 |        298 |
+| src/components/home                                                                                                     |          3 |        152 |          0 |         16 |        168 |
+| src/components/timelines                                                                                                |          5 |        289 |          0 |         50 |        339 |
+| src/components/toolBox                                                                                                  |         17 |        787 |          4 |        105 |        896 |
+| src/components/toolBox (Files)                                                                                          |          3 |        198 |          0 |         24 |        222 |
+| src/components/toolBox/frameInfos                                                                                       |          8 |        246 |          4 |         24 |        274 |
+| src/components/toolBox/radar                                                                                            |          2 |        109 |          0 |         23 |        132 |
+| src/components/toolBox/toolboxControls                                                                                  |          4 |        234 |          0 |         34 |        268 |
+| src/components/ui                                                                                                       |         13 |        285 |          0 |         32 |        317 |
+| src/components/ui (Files)                                                                                               |          8 |        130 |          0 |         13 |        143 |
+| src/components/ui/accordion                                                                                             |          2 |         93 |          0 |         16 |        109 |
+| src/components/ui/icons                                                                                                 |          3 |         62 |          0 |          3 |         65 |
+| src/components/upload                                                                                                   |          1 |        145 |          0 |         16 |        161 |
+| src/components/videoPlayer                                                                                              |         11 |        702 |          0 |        102 |        804 |
+| src/components/videoPlayer (Files)                                                                                      |          2 |        184 |          0 |         28 |        212 |
+| src/components/videoPlayer/layers                                                                                       |          4 |        310 |          0 |         47 |        357 |
+| src/components/videoPlayer/videoControls                                                                                |          5 |        208 |          0 |         27 |        235 |
+| src/context                                                                                                             |         11 |        159 |          0 |         30 |        189 |
+| src/hooks                                                                                                               |          3 |        150 |          0 |         19 |        169 |
+| src/lib                                                                                                                 |          1 |          5 |          0 |          2 |          7 |
+| src/types                                                                                                               |          7 |        309 |          0 |         20 |        329 |
+| src/utils                                                                                                               |         48 |      1,965 |          0 |        361 |      2,326 |
+| src/utils (Files)                                                                                                       |         14 |        373 |          0 |         58 |        431 |
+| src/utils/drawing                                                                                                       |         31 |      1,486 |          0 |        287 |      1,773 |
+| src/utils/drawing (Files)                                                                                               |         10 |        248 |          0 |         42 |        290 |
+| src/utils/drawing/foot                                                                                                  |          3 |        150 |          0 |         27 |        177 |
+| src/utils/drawing/foot (Files)                                                                                          |          2 |         85 |          0 |         12 |         97 |
+| src/utils/drawing/foot/players                                                                                          |          1 |         65 |          0 |         15 |         80 |
+| src/utils/drawing/padel                                                                                                 |         18 |      1,088 |          0 |        218 |      1,306 |
+| src/utils/drawing/padel (Files)                                                                                         |          3 |        223 |          0 |         16 |        239 |
+| src/utils/drawing/padel/areas                                                                                           |          1 |        141 |          0 |         30 |        171 |
+| src/utils/drawing/padel/ball                                                                                            |          3 |        145 |          0 |         42 |        187 |
+| src/utils/drawing/padel/players                                                                                         |          6 |        293 |          0 |         71 |        364 |
+| src/utils/drawing/padel/radar                                                                                           |          2 |         88 |          0 |         20 |        108 |
+| src/utils/drawing/padel/zones                                                                                           |          3 |        198 |          0 |         39 |        237 |
+| src/utils/upload                                                                                                        |          3 |        106 |          0 |         16 |        122 |
++-------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                                | language           | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/Dockerfile                                                         | Docker             |          7 |          0 |          1 |          8 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/README.md                                                          | Markdown           |         64 |          0 |         16 |         80 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/docker-compose.yaml                                                | YAML               |          8 |          0 |          1 |          9 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/eslint.config.mjs                                                  | JavaScript         |         12 |          0 |          5 |         17 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/next.config.ts                                                     | TypeScript         |         23 |          0 |          3 |         26 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/package-lock 2.json                                                | JSON               |      5,961 |          0 |          1 |      5,962 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/package-lock.json                                                  | JSON               |      5,917 |          0 |          1 |      5,918 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/package.json                                                       | JSON               |         42 |          0 |          1 |         43 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/postcss.config.mjs                                                 | JavaScript         |          6 |          1 |          2 |          9 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/public/svg/ball.svg                                                | XML                |          1 |          0 |          0 |          1 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/public/svg/logo.svg                                                | XML                |          1 |          0 |          1 |          2 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/public/svg/serve.svg                                               | XML                |         41 |          1 |          1 |         43 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/api/v1/files/[id]/route.ts                                 | TypeScript         |         60 |          0 |         10 |         70 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/api/v1/files/route.ts                                      | TypeScript         |         65 |          0 |          8 |         73 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/api/v1/proxy/route.ts                                      | TypeScript         |         22 |          0 |          1 |         23 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/api/v1/upload/route.ts                                     | TypeScript         |         45 |          0 |          8 |         53 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/debug/[id]/page.tsx                                        | TypeScript JSX     |        138 |          0 |         11 |        149 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/globals.css                                                | CSS                |        237 |          0 |         27 |        264 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/layout.tsx                                                 | TypeScript JSX     |         67 |          0 |          5 |         72 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/app/page.tsx                                                   | TypeScript JSX     |          8 |          0 |          2 |         10 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/PlayersPresenceTimeline/PlayersPresenceTimeline.tsx | TypeScript JSX     |        149 |          0 |         16 |        165 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/PlayerStatsColumn.tsx                    | TypeScript JSX     |         75 |          0 |         10 |         85 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/StatBlock.tsx                            | TypeScript JSX     |         43 |          0 |          6 |         49 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/StatBlockSpacer.tsx                      | TypeScript JSX     |          5 |          0 |          1 |          6 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/StatText.tsx                             | TypeScript JSX     |         12 |          0 |          0 |         12 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/StatsArray.tsx                           | TypeScript JSX     |         62 |          2 |          7 |         71 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/StatsCategoryColumn.tsx                  | TypeScript JSX     |         20 |          0 |          3 |         23 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/StatsArray/StatsNameColumn.tsx                      | TypeScript JSX     |         48 |          0 |          4 |         52 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/home/Home.tsx                                       | TypeScript JSX     |        123 |          0 |         13 |        136 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/home/VideoBtn.tsx                                   | TypeScript JSX     |         16 |          0 |          2 |         18 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/home/VideoList.tsx                                  | TypeScript JSX     |         13 |          0 |          1 |         14 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/timelines/AllTimelines.tsx                          | TypeScript JSX     |         15 |          0 |          1 |         16 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/timelines/Timeline.tsx                              | TypeScript JSX     |         86 |          0 |         18 |        104 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/timelines/TimelineChronology.tsx                    | TypeScript JSX     |        101 |          0 |         18 |        119 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/timelines/TimelineControl.tsx                       | TypeScript JSX     |         79 |          0 |         12 |         91 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/timelines/TimelineUI.tsx                            | TypeScript JSX     |          8 |          0 |          1 |          9 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/HomographyEditor.tsx                        | TypeScript JSX     |         99 |          0 |         12 |        111 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/KeyboardShortcuts.tsx                       | TypeScript JSX     |         79 |          0 |          9 |         88 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/ToolBox.tsx                                 | TypeScript JSX     |         20 |          0 |          3 |         23 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/BallSection.tsx                  | TypeScript JSX     |         33 |          0 |          2 |         35 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/EventsSection.tsx                | TypeScript JSX     |         22 |          0 |          2 |         24 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/FootballPlayersSection.tsx       | TypeScript JSX     |         45 |          4 |          5 |         54 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/FrameHeader.tsx                  | TypeScript JSX     |         21 |          0 |          2 |         23 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/FrameInfos.tsx                   | TypeScript JSX     |         35 |          0 |          4 |         39 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/InfosSection.tsx                 | TypeScript JSX     |         17 |          0 |          2 |         19 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/PadelPlayersSection.tsx          | TypeScript JSX     |         47 |          0 |          4 |         51 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/frameInfos/PerformanceSection.tsx           | TypeScript JSX     |         26 |          0 |          3 |         29 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/radar/FootballRadar.tsx                     | TypeScript JSX     |         51 |          0 |         11 |         62 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/radar/PadelRadar.tsx                        | TypeScript JSX     |         58 |          0 |         12 |         70 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/toolboxControls/ControlBtn.tsx              | TypeScript JSX     |         18 |          0 |          3 |         21 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/toolboxControls/GotoFrame.tsx               | TypeScript JSX     |         35 |          0 |          4 |         39 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/toolboxControls/GotoPlayer.tsx              | TypeScript JSX     |         57 |          0 |          7 |         64 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/toolBox/toolboxControls/ToolBoxControls.tsx         | TypeScript JSX     |        124 |          0 |         20 |        144 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/BackBtn.tsx                                      | TypeScript JSX     |         12 |          0 |          2 |         14 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/ErrorMsg.tsx                                     | TypeScript JSX     |          7 |          0 |          0 |          7 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/EventMarker.tsx                                  | TypeScript JSX     |         35 |          0 |          3 |         38 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/Footer.tsx                                       | TypeScript JSX     |         22 |          0 |          1 |         23 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/Loader.tsx                                       | TypeScript JSX     |         11 |          0 |          1 |         12 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/Progress.tsx                                     | TypeScript JSX     |         20 |          0 |          1 |         21 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/Spacer.tsx                                       | TypeScript JSX     |          5 |          0 |          1 |          6 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/SwitchModeBtn.tsx                                | TypeScript JSX     |         18 |          0 |          4 |         22 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/accordion/Accordion.tsx                          | TypeScript JSX     |         59 |          0 |         10 |         69 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/accordion/AccordionItem.tsx                      | TypeScript JSX     |         34 |          0 |          6 |         40 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/icons/BallIcon.tsx                               | TypeScript JSX     |         25 |          0 |          0 |         25 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/icons/LobIcon.tsx                                | TypeScript JSX     |          6 |          0 |          3 |          9 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/ui/icons/ServeIcon.tsx                              | TypeScript JSX     |         31 |          0 |          0 |         31 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/upload/UploadZone.tsx                               | TypeScript JSX     |        145 |          0 |         16 |        161 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/KillFeed.tsx                            | TypeScript JSX     |         68 |          0 |         12 |         80 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/VideoPlayer.tsx                         | TypeScript JSX     |        116 |          0 |         16 |        132 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/layers/ButtonLayer.tsx                  | TypeScript JSX     |         58 |          0 |          9 |         67 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/layers/HomographyPoints.tsx             | TypeScript JSX     |        134 |          0 |         24 |        158 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/layers/LayersMenu.tsx                   | TypeScript JSX     |         60 |          0 |          4 |         64 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/layers/ZoomWindow.tsx                   | TypeScript JSX     |         58 |          0 |         10 |         68 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/videoControls/MainTimeline.tsx          | TypeScript JSX     |         70 |          0 |          9 |         79 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/videoControls/PlayPauseButton.tsx       | TypeScript JSX     |         20 |          0 |          2 |         22 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/videoControls/PlaybackSpeed.tsx         | TypeScript JSX     |         20 |          0 |          2 |         22 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/videoControls/TimeDisplay.tsx           | TypeScript JSX     |         16 |          0 |          2 |         18 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/components/videoPlayer/videoControls/VideoControls.tsx         | TypeScript JSX     |         82 |          0 |         12 |         94 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/accordion.ts                                           | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/canvas.ts                                              | TypeScript         |         13 |          0 |          3 |         16 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/editMode.ts                                            | TypeScript         |          8 |          0 |          1 |          9 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/frame.ts                                               | TypeScript         |         28 |          0 |          3 |         31 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/homographyPoints.ts                                    | TypeScript         |         16 |          0 |          3 |         19 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/layers.ts                                              | TypeScript         |         22 |          0 |          2 |         24 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/mode.ts                                                | TypeScript         |         14 |          0 |          6 |         20 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/performance.ts                                         | TypeScript         |         14 |          0 |          2 |         16 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/sport.ts                                               | TypeScript         |         12 |          0 |          3 |         15 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/store.ts                                               | TypeScript         |         14 |          0 |          2 |         16 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/context/timeline.ts                                            | TypeScript         |          9 |          0 |          3 |         12 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/hooks/useHomographyPointsDrag.ts                               | TypeScript         |         34 |          0 |          5 |         39 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/hooks/useKeyboardShortcuts.ts                                  | TypeScript         |         76 |          0 |          8 |         84 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/hooks/useVideoPlayer.ts                                        | TypeScript         |         40 |          0 |          6 |         46 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/lib/utils.ts                                                   | TypeScript         |          5 |          0 |          2 |          7 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/draw.ts                                                  | TypeScript         |         11 |          0 |          1 |         12 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/events.ts                                                | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/files.ts                                                 | TypeScript         |        225 |          0 |         10 |        235 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/layers.ts                                                | TypeScript         |         17 |          0 |          3 |         20 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/performance.ts                                           | TypeScript         |          4 |          0 |          0 |          4 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/stats.ts                                                 | TypeScript         |         29 |          0 |          3 |         32 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/types/upload.ts                                                | TypeScript         |         14 |          0 |          1 |         15 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/calculateDistance.ts                                     | TypeScript         |          8 |          0 |          1 |          9 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/calculateFootFieldSize.ts                                | TypeScript         |         18 |          0 |         10 |         28 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/boundingBox.ts                                   | TypeScript         |         25 |          0 |          3 |         28 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/canvas.ts                                        | TypeScript         |         18 |          0 |          2 |         20 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/colors.ts                                        | TypeScript         |         15 |          0 |          3 |         18 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/config.ts                                        | TypeScript         |         20 |          0 |          3 |         23 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/drawBall.ts                                      | TypeScript         |         33 |          0 |          8 |         41 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/drawFrames.ts                                    | TypeScript         |         15 |          0 |          2 |         17 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/drawHomography.ts                                | TypeScript         |         28 |          0 |          5 |         33 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/drawRadar.ts                                     | TypeScript         |         42 |          0 |          9 |         51 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/drawSportElements.ts                             | TypeScript         |         28 |          0 |          3 |         31 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/foot/drawFootElements.ts                         | TypeScript         |         41 |          0 |         11 |         52 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/foot/players/drawFootBboxPlayer.ts               | TypeScript         |         65 |          0 |         15 |         80 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/foot/processFootMainLayer.ts                     | TypeScript         |         44 |          0 |          1 |         45 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/areas/drawAreas.ts                         | TypeScript         |        141 |          0 |         30 |        171 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/ball/drawBallTrajectory.ts                 | TypeScript         |         57 |          0 |         15 |         72 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/ball/drawBounces.ts                        | TypeScript         |         62 |          0 |         19 |         81 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/ball/drawNextReboundPrediction.ts          | TypeScript         |         26 |          0 |          8 |         34 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/drawPadelElements.ts                       | TypeScript         |         61 |          0 |         11 |         72 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/players/drawBboxPlayer.ts                  | TypeScript         |         74 |          0 |         17 |         91 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/players/drawCumulativeDistances.ts         | TypeScript         |         33 |          0 |          7 |         40 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/players/drawHits.ts                        | TypeScript         |         66 |          0 |         21 |         87 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/players/drawPlayerDistance.ts              | TypeScript         |         33 |          0 |          8 |         41 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/players/drawPlayerTrajectories.ts          | TypeScript         |         54 |          0 |         15 |         69 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/players/drawTeamDistances.ts               | TypeScript         |         33 |          0 |          3 |         36 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/processPadelMainLayer.ts                   | TypeScript         |         71 |          0 |          4 |         75 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/processPadelPersistenLayer.ts              | TypeScript         |         91 |          0 |          1 |         92 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/radar/drawBounceOnRadar.ts                 | TypeScript         |         42 |          0 |          9 |         51 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/radar/drawRadarDistance.ts                 | TypeScript         |         46 |          0 |         11 |         57 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/zones/drawDivorceZones.ts                  | TypeScript         |         66 |          0 |         13 |         79 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/zones/drawSafeBallZones.ts                 | TypeScript         |         66 |          0 |         13 |         79 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/padel/zones/drawTopLobZones.ts                   | TypeScript         |         66 |          0 |         13 |         79 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/drawing/performance.ts                                   | TypeScript         |         24 |          0 |          4 |         28 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/fetchFiles.ts                                            | TypeScript         |         50 |          0 |          7 |         57 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/fetchHomography.ts                                       | TypeScript         |         25 |          0 |          2 |         27 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/fetchVideoData.ts                                        | TypeScript         |         37 |          0 |          6 |         43 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/formatTime.ts                                            | TypeScript         |          5 |          0 |          0 |          5 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/getAllPlayerId.ts                                        | TypeScript         |         14 |          0 |          4 |         18 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/getNextReboundFrame.ts                                   | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/getPlayerHits.ts                                         | TypeScript         |          4 |          0 |          1 |          5 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/insertCumulativeDistances.ts                             | TypeScript         |         26 |          0 |          4 |         30 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/insertCumulativeHits.ts                                  | TypeScript         |         87 |          0 |         12 |         99 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/insertIsPlaying.ts                                       | TypeScript         |         15 |          0 |          2 |         17 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/statsStructure.ts                                        | TypeScript         |         39 |          0 |          3 |         42 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/updateHomographyOnCanvas.ts                              | TypeScript         |         36 |          0 |          4 |         40 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/upload/calculateProgress.ts                              | TypeScript         |          9 |          0 |          2 |         11 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/upload/processDroppedFiles.ts                            | TypeScript         |         23 |          0 |          3 |         26 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/src/utils/upload/uploadFile.ts                                     | TypeScript         |         74 |          0 |         11 |         85 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/tailwind.config.ts                                                 | TypeScript         |         78 |          1 |          2 |         81 |
+| /Users/remy_mac/Desktop/Code/Spash/spash-front-debug/tsconfig.json                                                      | JSON with Comments |         27 |          0 |          1 |         28 |
+| Total                                                                                                                   |                    |     18,192 |          9 |        908 |     19,109 |
++-------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

@@ -7,9 +7,13 @@ import Loader from "../ui/Loader";
 import ErrorMsg from "../ui/ErrorMsg";
 import UploadZone from "../upload/UploadZone";
 import SwitchModeBtn from "../ui/SwitchModeBtn";
+import { VideoInfo } from "@/types/files";
 
 export default function Home() {
-  const { videos, setVideos } = useStore();
+  const { videos, setVideos } = useStore() as { 
+    videos: VideoInfo[], 
+    setVideos: (videos: VideoInfo[] | ((prev: VideoInfo[]) => VideoInfo[])) => void 
+  };
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -27,7 +31,7 @@ export default function Home() {
         setVideos,
         videos,
         page, 
-        limit: 5,
+        limit: 10,
         setHasMore
       }).then((pagination: { hasMore: boolean }) => {
         if (pagination.hasMore) {
@@ -50,7 +54,7 @@ export default function Home() {
         setVideos,
         videos,
         page, 
-        limit: 5,
+        limit: 10,
         setHasMore
       }).then((pagination: { hasMore: boolean }) => {
         if (pagination.hasMore) {
@@ -64,7 +68,7 @@ export default function Home() {
         initialLoadDone.current = true;
       });
     }
-  }, []);
+  }, [page, setVideos, videos]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -82,6 +86,10 @@ export default function Home() {
 
     return () => observer.disconnect();
   }, [loadMoreVideos, loading, hasMore]);
+
+  const handleDeleteVideo = useCallback((folderName: string) => {
+    setVideos(prevVideos => prevVideos.filter(video => video.folderName !== folderName));
+  }, [setVideos]);
 
   if (initialLoading) {
     return (
@@ -121,7 +129,7 @@ export default function Home() {
           <p className="text-white text-center">No files found in the videos folder, please add one !</p>
         ) : (
           <>
-            <VideoList videos={videos}/>
+            <VideoList videos={videos} onDeleteVideo={handleDeleteVideo} />
             <div ref={observerTarget} className="h-10">
               {loading && <Loader />}
             </div>
