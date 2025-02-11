@@ -31,8 +31,14 @@ export default function HomographyPoints({ videoRef, videoData }: {
     const updateHomography = useCallback(async () => {
         if (!videoRef.current || !editMode) return;
 
+        const homographyData = Object.values(homographyPoints).map(point => ({
+            name: point.name,
+            camera: point.camera,
+            object: point.object || [0, 0]
+        }));
+
         const response = await fetchHomography({
-            camera: Object.values(homographyPoints).map(point => point.camera),
+            camera: homographyData.map(point => point.camera),
             height: videoData.info.video.height,
             width: videoData.info.video.width,
             sport: currentSport
@@ -53,12 +59,14 @@ export default function HomographyPoints({ videoRef, videoData }: {
                 }
             }
         } else {
-            console.error('Invalid homography response:', response);
+            console.error('Réponse homographie invalide:', response);
         }
     }, [homographyPoints, videoRef, currentSport, videoData.info.video.height, videoData.info.video.width, editMode]);
 
     const handleMouseDown = (key: string) => {
+        if (!editMode) return;
         dragRef.current = key;
+        setMousePos(null);
     };
 
     const handleMouseMove = useCallback((e: MouseEvent) => {

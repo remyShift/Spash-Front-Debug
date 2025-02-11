@@ -22,16 +22,13 @@ export default function HomographyEditor({ videoData, accordionOpen }: Homograph
     }, [setHomographyPoints, jsonHomographyPoints]);
 
     useEffect(() => {
-        if (!accordionOpen) {
-            setHomographyPoints(originalPointsRef.current);
-        }
-    }, [accordionOpen, setHomographyPoints]);
-
-    useEffect(() => {
         if (accordionOpen) {
             setEditMode(true);
+        } else {
+            setEditMode(false);
+            setHomographyPoints(originalPointsRef.current);
         }
-    }, [accordionOpen, setEditMode]);
+    }, [accordionOpen, setEditMode, setHomographyPoints]);
 
     const handleCopyToClipboard = () => {
         const coordinates = Object.values(homographyPoints).map(point => point.camera);
