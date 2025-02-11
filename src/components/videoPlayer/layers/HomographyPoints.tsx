@@ -4,12 +4,58 @@ import { useActiveLayers } from '@/context/layers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import ZoomWindow from './ZoomWindow';
+import { fetchHomography } from '@/utils/fetchHomography';
+import { drawHomography } from '@/utils/drawing/drawHomography';
+import { useSport } from '@/context/sport';
+import { JSONData } from '@/types/files';
+import { useEditMode } from '@/context/editMode';
 
-export default function HomographyPoints({ videoRef }: { videoRef: React.RefObject<HTMLVideoElement> }) {
+export default function HomographyPoints({ videoRef, videoData }: { 
+    videoRef: React.RefObject<HTMLVideoElement>;
+    videoData: JSONData;
+}) {
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
     const dragRef = useRef<string | null>(null);
     const { activeLayers } = useActiveLayers();
     const [mousePos, setMousePos] = useState<{ x: number, y: number } | null>(null);
+    const { currentSport } = useSport();
+    const originalPointsRef = useRef(videoData.info.homography);
+    const { editMode } = useEditMode();
+
+    useEffect(() => {
+        if (activeLayers.includes('homography')) {
+            setHomographyPoints(originalPointsRef.current);
+        }
+    }, [activeLayers, setHomographyPoints]);
+
+    const updateHomography = useCallback(async () => {
+        if (!videoRef.current || !editMode) return;
+
+        const response = await fetchHomography({
+            camera: Object.values(homographyPoints).map(point => point.camera),
+            height: videoData.info.video.height,
+            width: videoData.info.video.width,
+            sport: currentSport
+        });
+
+        if (response?.code === 0 && response?.data?.homography) {
+            const mainCanvas = document.querySelector('canvas');
+            if (mainCanvas) {
+                const context = mainCanvas.getContext('2d');
+                if (context) {
+                    context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
+                    drawHomography(
+                        response.data.homography,
+                        videoRef.current.videoWidth,
+                        videoRef.current.videoHeight,
+                        context
+                    );
+                }
+            }
+        } else {
+            console.error('Invalid homography response:', response);
+        }
+    }, [homographyPoints, videoRef, currentSport, videoData.info.video.height, videoData.info.video.width, editMode]);
 
     const handleMouseDown = (key: string) => {
         dragRef.current = key;
@@ -49,9 +95,12 @@ export default function HomographyPoints({ videoRef }: { videoRef: React.RefObje
     }, [homographyPoints, setHomographyPoints, videoRef]);
 
     const handleMouseUp = useCallback(() => {
+        if (dragRef.current) {
+            updateHomography();
+        }
         dragRef.current = null;
         setMousePos(null);
-    }, []);
+    }, [updateHomography]);
 
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
@@ -71,6 +120,8 @@ export default function HomographyPoints({ videoRef }: { videoRef: React.RefObje
                 const x = (point.camera[0] / videoRef.current!.videoWidth) * 100;
                 const y = (point.camera[1] / videoRef.current!.videoHeight) * 100;
                 
+                if (point.camera[0] === -1 || point.camera[1] === -1) return null;
+
                 return (
                     <div key={key} className="absolute" style={{ left: `${x}%`, top: `${y}%` }}>
                         <FontAwesomeIcon

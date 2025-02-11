@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { JSONData } from '@/types/files';
 import { useHomographyPoints } from '@/context/homographyPoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { fetchHomography } from '@/utils/fetchHomography';
 import { useEditMode } from '@/context/editMode';
-import { drawHomography } from '@/utils/drawing/drawHomography';
 
 interface HomographyEditorProps {
     videoData: JSONData;
@@ -16,10 +14,18 @@ export default function HomographyEditor({ videoData, accordionOpen }: Homograph
     const jsonHomographyPoints = videoData.info.homography;
     const { homographyPoints, setHomographyPoints } = useHomographyPoints();
     const { setEditMode } = useEditMode();
+    const originalPointsRef = useRef(jsonHomographyPoints);
 
     useEffect(() => {
         setHomographyPoints(jsonHomographyPoints);
+        originalPointsRef.current = jsonHomographyPoints;
     }, [setHomographyPoints, jsonHomographyPoints]);
+
+    useEffect(() => {
+        if (!accordionOpen) {
+            setHomographyPoints(originalPointsRef.current);
+        }
+    }, [accordionOpen, setHomographyPoints]);
 
     useEffect(() => {
         if (accordionOpen) {
@@ -38,33 +44,6 @@ export default function HomographyEditor({ videoData, accordionOpen }: Homograph
                 console.error('Error copying coordinates :', err);
                 alert('Error copying coordinates');
             });
-    };
-
-    const handleUpdateHomography = async () => {
-        const response = await fetchHomography({
-            camera: Object.values(homographyPoints).map(point => point.camera),
-            height: videoData.info.video.height,
-            width: videoData.info.video.width,
-            sport: videoData.info.cfg.sport
-        });
-
-        if (response && response.code === 0) {
-            const video = document.querySelector('video');
-            const mainCanvas = document.querySelector('canvas');
-            
-            if (video && mainCanvas) {
-                const context = mainCanvas.getContext('2d');
-                if (context) {
-                    context.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-                    drawHomography(
-                        response.data.homography,
-                        video.videoWidth,
-                        video.videoHeight,
-                        context
-                    );
-                }
-            }
-        }
     };
 
     const handleCoordinateChange = (key: string, coordIndex: number, value: number) => {
@@ -88,12 +67,6 @@ export default function HomographyEditor({ videoData, accordionOpen }: Homograph
                         className='px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-80 transition-all'
                     >
                         Save to Clipboard
-                    </button>
-                    <button 
-                        onClick={handleUpdateHomography}
-                        className='px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-80 transition-all'
-                    >
-                        Update Homography
                     </button>
                 </div>
             </div>

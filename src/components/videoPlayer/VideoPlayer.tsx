@@ -108,7 +108,10 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     className="absolute top-0 left-0 z-40 pointer-events-none w-full h-full"
                 />
 
-                <HomographyPoints videoRef={videoRef as React.RefObject<HTMLVideoElement>} />
+                <HomographyPoints 
+                    videoRef={videoRef as React.RefObject<HTMLVideoElement>} 
+                    videoData={jsonData}
+                />
 
                 {(currentSport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
                     <KillFeed 
