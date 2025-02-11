@@ -17,7 +17,7 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
     const updateVideoTime = useCallback((frame: number) => {
         if (videoRef.current) {
             const timeInSeconds = frame / FPS;
-            videoRef.current.currentTime = timeInSeconds;
+            videoRef.current.currentTime = timeInSeconds - 1;
         }
     }, [videoRef]);
 

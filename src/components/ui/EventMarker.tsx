@@ -24,7 +24,7 @@ export default function EventMarker({ event, frame, isActive }: { event: Event, 
                     if (video) {
                         const FPS = 25;
                         const timeInSeconds = frame / FPS;
-                        video.currentTime = timeInSeconds;
+                        video.currentTime = timeInSeconds - 1;
                     }
                 });
             }}
