@@ -6,6 +6,7 @@ import { fetchFiles } from "@/utils/fetchFiles";
 import Loader from "../ui/Loader";
 import ErrorMsg from "../ui/ErrorMsg";
 import UploadZone from "../upload/UploadZone";
+import SwitchModeBtn from "../ui/SwitchModeBtn";
 
 export default function Home() {
   const { videos, setVideos } = useStore();
@@ -100,6 +101,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-16">
+      <div className="absolute top-5 right-5">
+        <SwitchModeBtn />
+      </div>
       <div className="flex flex-col items-center justify-center gap-8 w-full max-w-2xl">
         <h1 className="text-4xl text-white font-semibold italic">
           Welcome to the debug devtool !

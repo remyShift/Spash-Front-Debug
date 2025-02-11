@@ -20,6 +20,7 @@ import Footer from "@/components/ui/Footer";
 import PlayersPresenceTimeline from "@/components/PlayersPresenceTimeline/PlayersPresenceTimeline";
 import { insertIsPlaying } from "@/utils/insertIsPlaying";
 import { useSport } from "@/context/sport";
+import { useMode } from "@/context/mode";
 
 export default function VideoPage() {
     const params = useParams();
@@ -32,7 +33,7 @@ export default function VideoPage() {
     const [error, setError] = useState<string>("");
     const [dataInitialized, setDataInitialized] = useState(false);
     const { setSport } = useSport();
-
+    const { mode } = useMode();
     const paramsId = params.id;
 
     useEffect(() => {
@@ -138,7 +139,9 @@ export default function VideoPage() {
                     </div>
                 </div>
             </div>
-            <PlayersPresenceTimeline jsonData={jsonData} />
+            {mode === "dev" && (
+                <PlayersPresenceTimeline jsonData={jsonData} />
+            )}
             <StatsArray statsData={statsData} />
             <Footer />
         </div>

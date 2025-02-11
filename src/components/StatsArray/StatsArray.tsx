@@ -2,6 +2,8 @@ import StatsCategoryColumn from "./StatsCategoryColumn";
 import PlayerStatsColumn from "./PlayerStatsColumn";
 import StatsNameColumn from "./StatsNameColumn";
 import { PlayerStats } from "@/types/stats";
+import { useAccordionHeight } from "@/context/accordion";
+import { useMode } from "@/context/mode";
 
 interface StatsData {
     players: Array<PlayerStats>;
@@ -10,10 +12,22 @@ interface StatsData {
 export default function StatsArray({ statsData }: { statsData: StatsData }) {
     const playersAB = statsData.players.slice(0, 2);
     const playersCD = statsData.players.slice(2, 4);
+    const { accordionHeight } = useAccordionHeight();
+    const { mode } = useMode();
+
+    let containerStyle = {};
+
+    if (mode === "commercial") {
+        containerStyle = {
+            marginTop: accordionHeight > 0 ? `${accordionHeight / 4}px` : '0px',
+            transition: 'margin-top 300ms ease-in-out'
+        };
+    }
 
     return (
         <div 
             className="flex flex-col gap-8 w-full pb-4"
+            style={containerStyle}
         >
             <div className="flex flex-wrap justify-center gap-3">
                 <div className="flex gap-3">

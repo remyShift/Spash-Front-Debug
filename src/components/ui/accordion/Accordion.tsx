@@ -10,11 +10,13 @@ import HomographyEditor from '@/components/toolBox/HomographyEditor'
 import { useSport } from '@/context/sport'
 import FootballRadar from '@/components/toolBox/radar/FootballRadar'
 import { calculateFootFieldSize } from '@/utils/calculateFootFieldSize'
+import { useMode } from '@/context/mode'
 
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     const accordionRef = useRef<HTMLDivElement>(null);
     const { currentSport } = useSport();
     const { setAccordionHeight } = useAccordionHeight();
+    const { mode } = useMode();
 
     useEffect(() => {
         const updateHeight = () => {
@@ -55,8 +57,12 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
             <Spacer />
             <AccordionItem title="Frame Info" content={<FrameInfos framesData={videoData.data} events={videoData.events} />} />
             <Spacer />
-            <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} accordionOpen={false} />} />
-            <Spacer />
+            {mode === "dev" && (
+                <>
+                    <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} accordionOpen={false} />} />
+                    <Spacer />
+                </>
+            )}
             <AccordionItem title="Keyboard Shortcuts" content={<KeyboardShortcuts accordionOpen={false} />} />
         </div>
     )

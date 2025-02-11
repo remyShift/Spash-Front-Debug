@@ -196,3 +196,69 @@
     left: 90%;
   }
 }
+
+
+
+
+
+
+
+
+.switch-holder {
+  display: flex;
+  padding: 10px 20px;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch-label {
+  padding: 0 20px 0 10px
+}
+
+.switch-label i {
+  margin-right: 5px;
+}
+
+.switch-toggle {
+  height: 40px;
+}
+
+.switch-toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  z-index: -2;
+}
+
+.switch-toggle input[type="checkbox"]+label {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  border-radius: 20px;
+  margin: 0;
+  cursor: pointer;
+  background-color: #72728B;
+}
+
+.switch-toggle input[type="checkbox"]+label::before {
+  position: absolute;
+  content: 'OFF';
+  font-size: 10px;
+  text-align: center;
+  line-height: 25px;
+  top: 8px;
+  left: 8px;
+  width: 45px;
+  height: 25px;
+  border-radius: 20px;
+  background-color: #eeeeee;
+  transition: .3s ease-in-out;
+}
+
+.switch-toggle input[type="checkbox"]:checked+label::before {
+  left: 50%;
+  content: 'ON';
+  color: #fff;
+  background-color: #FF5F49;
+}
