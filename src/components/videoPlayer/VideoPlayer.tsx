@@ -113,7 +113,7 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     videoData={jsonData}
                 />
 
-                {(currentSport === 'padel' && (activeLayers as PadelLayers[]).includes('homography') && videoRef.current) && (
+                {jsonData.info.cfg.sport === 'padel'  && (
                     <KillFeed 
                         currentFrame={currentFrame}
                         frameData={jsonData.data[currentFrame] || {}}
