@@ -73,6 +73,7 @@ export interface JSONData {
             "ball.rect"?: [number, number, number, number];
             "ball.center"?: [number, number];
             "ball.center.video"?: [number, number];
+            "ball.court"?: [number, number];
             "ball.score"?: number;
             "ball.zones"?: {
                 divorce_zone_right?: boolean;
