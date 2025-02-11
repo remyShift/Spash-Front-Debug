@@ -4,6 +4,7 @@ import { useHomographyPoints } from '@/context/homographyPoints';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { useEditMode } from '@/context/editMode';
+import { updateHomographyOnCanvas } from '@/utils/updateHomographyOnCanvas';
 
 interface HomographyEditorProps {
     videoData: JSONData;
@@ -47,16 +48,22 @@ export default function HomographyEditor({ videoData, accordionOpen }: Homograph
         const newPoints = { ...homographyPoints };
         newPoints[key].camera[coordIndex] = value;
         setHomographyPoints(Object.values(newPoints));
+        
+        const videoElement = document.querySelector('video');
+        updateHomographyOnCanvas(newPoints, videoData, videoElement);
     };
 
     const adjustCoordinate = (key: string, coordIndex: number, increment: boolean) => {
         const newPoints = { ...homographyPoints };
         newPoints[key].camera[coordIndex] += increment ? 1 : -1;
         setHomographyPoints(Object.values(newPoints));
+        
+        const videoElement = document.querySelector('video');
+        updateHomographyOnCanvas(newPoints, videoData, videoElement);
     };
 
     return (
-        <div className='flex flex-col gap-6 p-4'>
+        <div className='flex flex-col gap-6 p-4 hide-scrollbar h-[450px] overflow-y-auto'>
             <div className='flex justify-between items-center mb-4'>
                 <div className='w-full flex justify-center items-center gap-2'>
                     <button 
