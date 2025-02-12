@@ -11,6 +11,7 @@ import { useSport } from '@/context/sport'
 import FootballRadar from '@/components/toolBox/radar/FootballRadar'
 import { calculateFootFieldSize } from '@/utils/calculateFootFieldSize'
 import { useMode } from '@/context/mode'
+import TimelineFilters from '@/components/toolBox/timelineFilters/TimelineFilters'
 
 export default function Accordion({ videoData }: { videoData: JSONData }) {
     const accordionRef = useRef<HTMLDivElement>(null);
@@ -60,6 +61,8 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
             {mode === "dev" && (
                 <>
                     <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} accordionOpen={false} />} />
+                    <Spacer />
+                    <AccordionItem title="Timeline Filters" content={<TimelineFilters />} />
                     <Spacer />
                 </>
             )}

@@ -204,6 +204,8 @@
 
 
 
+
+
 .switch-holder {
   display: flex;
   padding: 10px 20px;
@@ -261,4 +263,58 @@
   content: 'ON';
   color: #fff;
   background-color: #FF5F49;
+}
+
+
+
+
+
+
+
+
+
+
+.checkbox-wrapper input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+
+.checkbox-wrapper *,
+.checkbox-wrapper ::after,
+.checkbox-wrapper ::before {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.checkbox-wrapper .label {
+  cursor: pointer;
+}
+
+.checkbox-wrapper .check {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  opacity: 0;
+}
+
+.checkbox-wrapper .label svg {
+  vertical-align: middle;
+}
+
+.checkbox-wrapper .path1 {
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  transition: 0.5s stroke-dashoffset;
+  opacity: 1;
+}
+
+.checkbox-wrapper .check:checked + label svg g path {
+  stroke-dashoffset: 0;
+  opacity: 1;
 }
