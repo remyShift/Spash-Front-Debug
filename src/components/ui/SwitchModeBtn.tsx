@@ -13,7 +13,12 @@ export default function SwitchModeBtn() {
                 <i className="fa fa-bluetooth-b" /><span className="text-sm font-bold text-white">Advanced</span>
             </div>
             <div className="switch-toggle">
-                <input type="checkbox" id="bluetooth" onChange={handleChange} />
+                <input 
+                    type="checkbox" 
+                    id="bluetooth"
+                    checked={mode === "dev"} 
+                    onChange={handleChange}
+                />
                 <label htmlFor="bluetooth" />
             </div>
         </div>
