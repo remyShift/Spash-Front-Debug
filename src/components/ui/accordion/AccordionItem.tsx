@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Spacer from "../Spacer";
 
 export default function AccordionItem({ title, content }: { title: string, content: React.ReactElement<{ accordionOpen: boolean }> }) {
@@ -16,8 +16,8 @@ export default function AccordionItem({ title, content }: { title: string, conte
                 onClick={() => setAccordionOpen(!accordionOpen)}
                 className="flex justify-center items-center w-full gap-4 p-4"
             >
+                <FontAwesomeIcon icon={faArrowRight} className={`${accordionOpen ? "rotate-90" : ""} transition-all duration-200 ease-out text-primary`} />
                 <span className="text-white font-semibold text-lg text-center">{title}</span>
-                <FontAwesomeIcon icon={faArrowDown} className={`${accordionOpen ? "rotate-180" : ""} transition-all duration-200 ease-out text-primary`} />
             </button>
 
             {accordionOpen && <Spacer />}
