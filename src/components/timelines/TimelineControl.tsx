@@ -3,12 +3,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFrame } from "@/context/frame";
 import { useRef, useEffect, useCallback } from "react";
 import { useActiveTimeline } from "@/context/timeline";
+import { useMode } from "@/context/mode";
 
 export default function TimelineControl({ event, framesEvent }: { event: string, framesEvent: number[] }) {
     const { currentFrame, setCurrentFrame } = useFrame();
     const { activeTimeline, setActiveTimeline } = useActiveTimeline();
     const videoRef = useRef<HTMLVideoElement | null>(null);
+    const { mode } = useMode();
+
     const FPS = 25;
+    const delayEvent = mode === 'dev' ? 0 : 1;
 
     useEffect(() => {
         videoRef.current = document.querySelector('video');
@@ -17,9 +21,9 @@ export default function TimelineControl({ event, framesEvent }: { event: string,
     const updateVideoTime = useCallback((frame: number) => {
         if (videoRef.current) {
             const timeInSeconds = frame / FPS;
-            videoRef.current.currentTime = timeInSeconds - 1;
+            videoRef.current.currentTime = timeInSeconds - delayEvent;
         }
-    }, [videoRef]);
+    }, [videoRef, delayEvent]);
 
     const goToPreviousEvent = useCallback(() => {
         if (videoRef.current) {
