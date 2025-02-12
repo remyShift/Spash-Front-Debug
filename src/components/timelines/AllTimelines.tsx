@@ -9,7 +9,7 @@ export default function AllTimelines({ events, timeline, jsonData }: { events: E
         <div className="flex flex-col gap-2 justify-evenly h-full">
             <TimelineChronology timeline={timeline} jsonData={jsonData} />
             {Object.keys(events).map((event) => (
-                <Timeline key={event} event={event as Event} framesEvent={events[event]} />
+                <Timeline key={event} event={event as Event} framesEvent={events[event]} jsonData={jsonData} />
             ))}
         </div>
     )

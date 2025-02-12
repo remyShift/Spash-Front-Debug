@@ -62,6 +62,10 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
                 <>
                     <AccordionItem title="Homography Editor" content={<HomographyEditor videoData={videoData} accordionOpen={false} />} />
                     <Spacer />
+                </>
+            )}
+            {currentSport === "padel" && (
+                <>
                     <AccordionItem title="Timeline Filters" content={<TimelineFilters />} />
                     <Spacer />
                 </>

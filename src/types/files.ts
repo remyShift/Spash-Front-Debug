@@ -91,6 +91,8 @@ export interface JSONData {
             frame_idx: number;
             detection?: string;
             isPlaying?: boolean;
+            team_checks?: boolean;
+            team_checks_players?: string[];
         };
     };
     events: {

@@ -3,13 +3,21 @@ import TimelineControl from "./TimelineControl";
 import { useFrame } from "@/context/frame";
 import { useEffect, useRef, useState } from "react";
 import { Event } from "@/types/events";
+import { usePlayersFilters } from "@/context/playersFilters";
+import { JSONData } from "@/types/files";
+import { filterEventsByPlayers } from "@/utils/filterEventsByPlayers";
 
 const TIMELINE_DURATION = 500;
 const FPS = 25;
 const VISIBLE_WINDOW = 100;
 const BUFFER_WINDOW = 30;
 
-export default function Timeline({ event, framesEvent }: { event: Event; framesEvent: number[] }) {
+export default function Timeline({ event, framesEvent, jsonData }: { 
+    event: Event; 
+    framesEvent: number[];
+    jsonData: JSONData["data"];
+}) {
+    const { playersFilters } = usePlayersFilters();
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -43,11 +51,13 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
 
         const visible = framesEvent.filter(frame => {
             const frameTime = frame / FPS;
-            return frameTime >= startWindow && frameTime <= endWindow;
+            const isInWindow = frameTime >= startWindow && frameTime <= endWindow;
+
+            return isInWindow && filterEventsByPlayers(frame, event, jsonData, playersFilters);
         });
 
         setVisibleMarkers(visible);
-    }, [currentFrame, framesEvent]);
+    }, [currentFrame, framesEvent, event, jsonData, playersFilters]);
 
     const calculateMarkerPosition = (frame: number): string => {
         if (!containerWidth) return '';
@@ -71,7 +81,11 @@ export default function Timeline({ event, framesEvent }: { event: Event; framesE
     return (
         <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
-                <TimelineControl event={event.charAt(0).toUpperCase() + event.slice(1)} framesEvent={framesEvent} />
+                <TimelineControl 
+                    event={event} 
+                    framesEvent={framesEvent} 
+                    jsonData={jsonData}
+                />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 
                 <div className="flex items-end w-full h-full pb-3 overflow-hidden">

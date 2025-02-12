@@ -7,6 +7,8 @@ export default function CheckBox({
     onChange: () => void,
     checked: boolean
 }) {
+    const uniqueId = `checkbox-${label.toLowerCase().replace(/\s+/g, '-')}`;
+
     const handleChange = () => {
         onChange();
     }
@@ -16,11 +18,11 @@ export default function CheckBox({
             <input 
                 type="checkbox" 
                 className={`${isChecked ? "check" : ""}`} 
-                id="check1-61" 
+                id={uniqueId} 
                 onChange={handleChange}
                 checked={isChecked} 
             />
-            <label htmlFor="check1-61" className="label flex items-center gap-2">
+            <label htmlFor={uniqueId} className="label flex items-center gap-2">
                 <svg width={35} height={35} viewBox="0 0 95 95">
                     <rect x={30} y={20} width={50} height={50} stroke="white" fill="none" />
                     <g transform="translate(0,-952.36222)">

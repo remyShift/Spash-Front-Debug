@@ -3,12 +3,14 @@ import { useFrame } from '@/context/frame';
 import { useVideoPlayer } from './useVideoPlayer';
 import { useActiveLayers } from '@/context/layers';
 import { useActiveTimeline } from '@/context/timeline';
+import { useMode } from '@/context/mode';
 
 export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void) => {
     const { currentFrame } = useFrame();
     const { togglePlay } = useVideoPlayer();
     const { toggleActiveLayers } = useActiveLayers();
     const { activeTimeline } = useActiveTimeline();
+    const { mode, setMode } = useMode();
 
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
@@ -35,6 +37,15 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
 
             if (shiftKey && key === 'ArrowRight') {
                 handleFrameChange(currentFrame + 100);
+                return;
+            }
+
+            if (shiftKey && key === 'P') {
+                if (mode === 'dev') {
+                    setMode('commercial');
+                } else {
+                    setMode('dev');
+                }
                 return;
             }
 

@@ -27,4 +27,4 @@ export const insertCumulativeDistances = (data: JSONData): void => {
                 previousLegs[player.id] = player.court_legs;
             });
         });
-} 
+}

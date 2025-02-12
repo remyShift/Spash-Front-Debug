@@ -10,6 +10,7 @@ const KEYBOARD_SHORTCUTS: ShortcutItem[] = [
     { key: "➡️", action: "+ 1 frame" },
     { key: "Shift + ⬅️", action: "- 100 frames" },
     { key: "Shift + ➡️", action: "+ 100 frames" },
+    { key: "Shift + P", action: "Advanced mode" },
     { key: "Espace", action: "Play/Pause" },
 ];
 
