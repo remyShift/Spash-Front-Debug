@@ -1,5 +1,5 @@
 import { useFrame } from "@/context/frame";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { TimelineInterval } from "@/types/events";
 import TimelineControl from "./TimelineControl";
 import TimelineUI from "./TimelineUI";
@@ -18,6 +18,28 @@ export default function TimelineChronology({ timeline, jsonData }: { timeline: T
     const [visibleIntervals, setVisibleIntervals] = useState<TimelineInterval[]>([]);
     const [title, setTitle] = useState<string>('');
 
+    const updateTimelinePosition = useCallback((currentTimeInSeconds: number) => {
+        const newOffset = (currentTimeInSeconds / TIMELINE_DURATION) * 100;
+        if (timelineRef.current) {
+            timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
+        }
+    }, []);
+
+    const updateVisibleIntervals = useCallback((currentTimeInSeconds: number) => {
+        const startWindow = Math.max(0, currentTimeInSeconds - VISIBLE_WINDOW - BUFFER_WINDOW);
+        const endWindow = currentTimeInSeconds + VISIBLE_WINDOW + BUFFER_WINDOW;
+
+        const visible = timeline.filter(interval => {
+            const startTime = interval.start / FPS;
+            const endTime = interval.end / FPS;
+            return (startTime >= startWindow && startTime <= endWindow) || 
+                    (endTime >= startWindow && endTime <= endWindow) ||
+                    (startTime <= startWindow && endTime >= endWindow);
+        });
+
+        setVisibleIntervals(visible);
+    }, [timeline]);
+
     useEffect(() => {
         const updateContainerWidth = () => {
             if (timelineRef.current) {
@@ -35,33 +57,9 @@ export default function TimelineChronology({ timeline, jsonData }: { timeline: T
 
     useEffect(() => {
         const currentTimeInSeconds = currentFrame / FPS;
-        const newOffset = (currentTimeInSeconds / TIMELINE_DURATION) * 100;
-
-        if (timelineRef.current) {
-            timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
-        }
-    }, [currentFrame]);
-
-    useEffect(() => {
-        const currentTimeInSeconds = currentFrame / FPS;
-        const startWindow = Math.max(0, currentTimeInSeconds - VISIBLE_WINDOW - BUFFER_WINDOW);
-        const endWindow = currentTimeInSeconds + VISIBLE_WINDOW + BUFFER_WINDOW;
-
-        const visible = timeline.filter(interval => {
-            const startTime = interval.start / FPS;
-            const endTime = interval.end / FPS;
-            return (startTime >= startWindow && startTime <= endWindow) || 
-                    (endTime >= startWindow && endTime <= endWindow) ||
-                    (startTime <= startWindow && endTime >= endWindow);
-        });
-
-        setVisibleIntervals(visible);
-
-        const newOffset = (currentTimeInSeconds / TIMELINE_DURATION) * 100;
-        if (timelineRef.current) {
-            timelineRef.current.style.transform = `translateX(-${newOffset}%)`;
-        }
-    }, [currentFrame, timeline]);
+        updateTimelinePosition(currentTimeInSeconds);
+        updateVisibleIntervals(currentTimeInSeconds);
+    }, [currentFrame, updateTimelinePosition, updateVisibleIntervals]);
 
     useEffect(() => {
         setTitle(jsonData[currentFrame]?.isPlaying ? 'Point' : 'InterPoint');

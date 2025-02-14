@@ -12,12 +12,15 @@ interface FrameStore {
 
 export const useFrame = create<FrameStore>((set, get) => ({
     currentFrame: 0,
-    frameQueue: [] as number[],
+    frameQueue: [],
     isPlaying: false,
     setCurrentFrame: async (frame) => {
         const currentState = get();
-        if (currentState.currentFrame !== frame) {
-            set({ currentFrame: frame });
+        const newFrame = Math.round(frame);
+        if (currentState.currentFrame !== newFrame) {
+            requestAnimationFrame(() => {
+                set({ currentFrame: newFrame });
+            });
         }
     },
     addToFrameQueue: (frame: number) => {

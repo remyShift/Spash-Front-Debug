@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { MainTimeline } from './MainTimeline';
 import { PlayPauseButton } from './PlayPauseButton';
 import { PlaybackSpeed } from './PlaybackSpeed';
@@ -19,20 +19,29 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
     const [playbackRate, setPlaybackRate] = useState(1);
+    const lastTimeRef = useRef(0);
+
+    const handleTimeUpdate = useCallback(() => {
+        if (!videoRef.current) return;
+        const newTime = videoRef.current.currentTime;
+        if (Math.abs(newTime - lastTimeRef.current) >= 0.01) {
+            lastTimeRef.current = newTime;
+            setCurrentTime(newTime);
+        }
+    }, [videoRef]);
+
+    const handleLoadedMetadata = useCallback(() => {
+        if (!videoRef.current) return;
+        setDuration(videoRef.current.duration);
+    }, [videoRef]);
+
+    const handlePlay = useCallback(() => setIsPlaying(true), []);
+    const handlePause = useCallback(() => setIsPlaying(false), []);
 
     useEffect(() => {
         if (!videoRef.current) return;
 
         const video = videoRef.current;
-
-        const handleLoadedMetadata = () => {
-            setDuration(video.duration);
-        };
-        
-        const handleTimeUpdate = () => setCurrentTime(video.currentTime);
-        const handlePlay = () => setIsPlaying(true);
-        const handlePause = () => setIsPlaying(false);
-
         video.addEventListener('loadedmetadata', handleLoadedMetadata);
         video.addEventListener('timeupdate', handleTimeUpdate);
         video.addEventListener('play', handlePlay);
@@ -44,6 +53,31 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
             video.removeEventListener('play', handlePlay);
             video.removeEventListener('pause', handlePause);
         };
+    }, [videoRef, handleLoadedMetadata, handleTimeUpdate, handlePlay, handlePause]);
+
+    const handleTimeChange = useCallback((time: number) => {
+        if (videoRef.current) {
+            videoRef.current.currentTime = time;
+            lastTimeRef.current = time;
+            setCurrentTime(time);
+        }
+    }, [videoRef]);
+
+    const handlePlayPause = useCallback(() => {
+        if (videoRef.current) {
+            if (isPlaying) {
+                videoRef.current.pause();
+            } else {
+                videoRef.current.play();
+            }
+        }
+    }, [isPlaying, videoRef]);
+
+    const handleSpeedChange = useCallback((speed: number) => {
+        if (videoRef.current) {
+            videoRef.current.playbackRate = speed;
+            setPlaybackRate(speed);
+        }
     }, [videoRef]);
 
     return (
@@ -53,41 +87,20 @@ export const VideoControls = ({ videoRef, reels }: VideoControlsProps) => {
                     currentTime={currentTime}
                     reels={reels}
                     duration={duration}
-                    onTimeChange={(time) => {
-                        if (videoRef.current) {
-                            videoRef.current.currentTime = time;
-                            setCurrentTime(time);
-                        }
-                    }}
+                    onTimeChange={handleTimeChange}
                 />
-
                 <TimeDisplay 
                     currentTime={currentTime}
                     duration={duration}
                 />
             </div>
-
             <PlayPauseButton 
                 isPlaying={isPlaying}
-                onToggle={() => {
-                    if (videoRef.current) {
-                        if (isPlaying) {
-                            videoRef.current.pause();
-                        } else {
-                            videoRef.current.play();
-                        }
-                    }
-                }}
+                onToggle={handlePlayPause}
             />
-
             <PlaybackSpeed 
                 speed={playbackRate}
-                onSpeedChange={(speed) => {
-                if (videoRef.current) {
-                    videoRef.current.playbackRate = speed;
-                    setPlaybackRate(speed);
-                }
-                }}
+                onSpeedChange={handleSpeedChange}
             />
         </div>
     );
