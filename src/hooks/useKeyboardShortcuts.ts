@@ -91,5 +91,5 @@ export const useKeyboardShortcuts = (handleFrameChange: (frame: number) => void)
 
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
-    }, [currentFrame, handleFrameChange, togglePlay, toggleActiveLayers, activeTimeline]);
+    }, [currentFrame, handleFrameChange, togglePlay, toggleActiveLayers, activeTimeline, mode, setMode]);
 };
