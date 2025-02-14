@@ -6,6 +6,7 @@ import { Event } from "@/types/events";
 import { usePlayersFilters } from "@/context/playersFilters";
 import { JSONData } from "@/types/files";
 import { filterEventsByPlayers } from "@/utils/filterEventsByPlayers";
+import { useEventsFilters } from "@/context/eventsFilters";
 
 const TIMELINE_DURATION = 500;
 const FPS = 25;
@@ -18,6 +19,7 @@ export default function Timeline({ event, framesEvent, jsonData }: {
     jsonData: JSONData["data"];
 }) {
     const { playersFilters } = usePlayersFilters();
+    const { eventsFilters } = useEventsFilters();
     const { currentFrame } = useFrame();
     const timelineRef = useRef<HTMLDivElement>(null);
     const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -79,7 +81,7 @@ export default function Timeline({ event, framesEvent, jsonData }: {
     };
 
     return (
-        <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
+        <div className={`w-full h-9 bg-lightBackground rounded-lg overflow-hidden ${eventsFilters.includes(event) ? "border-filter-event" : ""}`}>
             <div className="flex items-center w-full h-full gap-0">
                 <TimelineControl 
                     event={event} 

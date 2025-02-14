@@ -66,7 +66,7 @@ export default function Accordion({ videoData }: { videoData: JSONData }) {
             )}
             {currentSport === "padel" && (
                 <>
-                    <AccordionItem title="Timeline Filters" content={<TimelineFilters />} />
+                    <AccordionItem title="Timeline Filters" content={<TimelineFilters jsonData={videoData} />} />
                     <Spacer />
                 </>
             )}

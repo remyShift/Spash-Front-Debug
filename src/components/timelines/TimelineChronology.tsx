@@ -4,6 +4,7 @@ import { TimelineInterval } from "@/types/events";
 import TimelineControl from "./TimelineControl";
 import TimelineUI from "./TimelineUI";
 import { JSONData } from "@/types/files";
+import { Event } from "@/types/events";
 
 const TIMELINE_DURATION = 300;
 const FPS = 25;
@@ -89,7 +90,7 @@ export default function TimelineChronology({ timeline, jsonData }: { timeline: T
     return (
         <div className="w-full h-9 bg-lightBackground rounded-lg overflow-hidden">
             <div className="flex items-center w-full h-full gap-0">
-                <TimelineControl event={title} framesEvent={timeline.map((interval) => interval.start)} />
+                <TimelineControl event={title as Event} framesEvent={timeline.map((interval) => interval.start)} jsonData={jsonData} />
                 <div className="w-[2px] h-full bg-lighterBackground"></div>
 
                 <div className="flex items-end w-full h-full pb-3 overflow-hidden">

@@ -19,25 +19,25 @@ export default function EventsFilters() {
                 <div className="flex flex-col gap-2">
                     <CheckBox 
                         label="Hits" 
-                        onChange={() => handleEventFilterChange("Hits")} 
-                        checked={eventsFilters.includes("Hits")}
+                        onChange={() => handleEventFilterChange("hits")} 
+                        checked={eventsFilters.includes("hits")}
                     />
                     <CheckBox 
                         label="Services" 
-                        onChange={() => handleEventFilterChange("Services")} 
-                        checked={eventsFilters.includes("Services")}
+                        onChange={() => handleEventFilterChange("services")} 
+                        checked={eventsFilters.includes("services")}
                     />
                 </div>
                 <div className="flex flex-col gap-2">
                     <CheckBox 
                         label="Lobs" 
-                        onChange={() => handleEventFilterChange("Lobs")} 
-                        checked={eventsFilters.includes("Lobs")}
+                        onChange={() => handleEventFilterChange("lobs")} 
+                        checked={eventsFilters.includes("lobs")}
                     />
                     <CheckBox 
                         label="Checks" 
-                        onChange={() => handleEventFilterChange("Checks")} 
-                        checked={eventsFilters.includes("Checks")}
+                        onChange={() => handleEventFilterChange("checks")} 
+                        checked={eventsFilters.includes("checks")}
                     />
                 </div>
             </div>

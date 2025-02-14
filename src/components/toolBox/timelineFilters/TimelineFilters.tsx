@@ -1,17 +1,16 @@
 import PlayersFilters from "./PlayersFilters";
 import EventsFilters from "./EventsFilters";
-import ControlBtn from "../toolboxControls/ControlBtn";
-import { faPause, faPlay } from "@fortawesome/free-solid-svg-icons";
-import { useVideoPlayer } from "@/hooks/useVideoPlayer";
+import PlayFilteredControl from "./PlayFilteredControl";
+import { JSONData } from "@/types/files";
 
-export default function TimelineFilters() {
-    const { isVideoPlaying } = useVideoPlayer();
-
+export default function TimelineFilters({ jsonData }: { jsonData: JSONData }) {
     return (
         <div className="flex flex-col gap-4 p-4">
             <PlayersFilters />
             <EventsFilters />
-            {/* <ControlBtn icon={isVideoPlaying ? faPause : faPlay} onClick={togglePlay} text={isVideoPlaying ? "Pause" : "Play"} /> */}
+            <div className="flex justify-center">
+                <PlayFilteredControl jsonData={jsonData} />
+            </div>
         </div>
     );
 }
