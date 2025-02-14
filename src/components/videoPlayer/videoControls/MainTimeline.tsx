@@ -40,7 +40,7 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
     );
 
     return (
-        <div className="relative w-[78%] md:w-[87%] xl:w-[92%] h-1 bg-lighterBackground rounded-full">
+        <div className="relative w-[78%] md:w-[85%] xl:w-[90%] h-1 bg-lighterBackground rounded-full">
             <input
                 type="range"
                 min="0"
