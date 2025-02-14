@@ -42,7 +42,7 @@ export const VideoList = ({ videos, onDeleteVideo }: VideoListProps) => {
     }
 
     return (
-        <div className="w-1/2 flex flex-col gap-4">
+        <div className="w-fit flex flex-col gap-4">
             {videos.map((video) => (
                 <div key={video.videoPath}>
                     <VideoBtn video={video} onDelete={handleDelete} />

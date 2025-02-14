@@ -23,7 +23,12 @@ export default function VideoBtn({ video, onDelete }: VideoBtnProps) {
                 className="w-full flex gap-4 items-center justify-center"
             >
                 <p className="text-primary group-hover:text-white font-semibold transition-colors">{video.folderName.toUpperCase()}</p>
-                <p className="text-primary group-hover:text-white transition-colors font-semibold">{video.videoName}</p>
+                <div className="flex flex-col">
+                    <p className="text-primary group-hover:text-white transition-colors font-semibold">{video.videoName}</p>
+                    <p className="text-sm text-gray-600 group-hover:text-white italic transition-colors">
+                        {video.pipelineJsonName}
+                    </p>
+                </div>
                 <p className="text-sm text-gray-600 group-hover:text-white italic transition-colors">
                     Taille: {video.size > 1024 * 1024 * 1024 ? `${Math.round(video.size / 1024 / 1024 / 1024)} GB` : 
                         video.size > 1024 * 1024 ? `${Math.round(video.size / 1024 / 1024)} MB` : 

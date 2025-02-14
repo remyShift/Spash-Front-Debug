@@ -30,6 +30,10 @@ export async function GET(request: Request) {
                         return isVideo && !isPlayerVideo;
                     });
 
+                    const jsonFile = files.find(file => path.extname(file).toLowerCase() === '.json' && file !== 'stats.json');
+
+                    if (!jsonFile) throw new Error("No JSON file found");
+
                     if (mainVideoFile) {
                         const videoPath = path.join(fullPath, mainVideoFile);
                         const videoStats = await fs.promises.stat(videoPath);
@@ -38,6 +42,7 @@ export async function GET(request: Request) {
                             folderName: entry.name,
                             videoName: mainVideoFile,
                             videoPath: `/videos/${entry.name}/${mainVideoFile}`,
+                            pipelineJsonName: jsonFile,
                             path: `/videos/${entry.name}`,
                             size: videoStats.size,
                             createdAt: videoStats.birthtime.toISOString(),

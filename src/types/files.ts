@@ -4,6 +4,7 @@ export interface VideoInfo {
     folderName: string;
     videoName: string;
     videoPath: string;
+    pipelineJsonName: string;
     path: string;
     size: number;
     createdAt: string;
