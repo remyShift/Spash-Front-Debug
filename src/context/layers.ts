@@ -8,7 +8,7 @@ interface ActiveLayers {
 }
 
 export const useActiveLayers = create<ActiveLayers>((set) => ({
-    activeLayers: [],
+    activeLayers: ['players'],
     setActiveLayers: (layers: PadelLayers[] | FootballLayers[]) => {
         set({ activeLayers: layers });
     },
