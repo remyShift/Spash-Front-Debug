@@ -85,27 +85,19 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
     const handleFrameChange = async (frameNumber: number) => {
         if (!mainCanvasRef?.current || !persistentCanvasRef?.current || !videoRef.current) return;
 
-        const maxFrame = Object.keys(videoData.data).length - 1;
-        const safeFrame = Math.max(0, Math.min(Math.round(frameNumber), maxFrame));
-        
         const fps = 25;
-        const timeInSeconds = safeFrame / fps;
+        const totalVideoFrames = Math.floor(videoRef.current.duration * fps);
         
-        if (safeFrame === maxFrame) {
-            videoRef.current.pause();
-        }
+        const safeFrame = Math.min(Math.max(0, frameNumber), totalVideoFrames);
         
-        if (safeFrame === 0) {
-            videoRef.current.pause();
-            videoRef.current.currentTime = 0;
-            await setCurrentFrame(0);
-        } else {
-            videoRef.current.currentTime = timeInSeconds;
-            await setCurrentFrame(safeFrame);
-        }
+        videoRef.current.currentTime = safeFrame / fps;
+
+        const availableFrames = Object.keys(videoData.data).map(Number).sort((a, b) => a - b);
+        const closestFrame = availableFrames.reduce((prev, curr) => {
+            return Math.abs(curr - safeFrame) < Math.abs(prev - safeFrame) ? curr : prev;
+        });
         
-        const frameData = videoData?.data[safeFrame];
-        if (!frameData) return;
+        await setCurrentFrame(closestFrame);
         
         drawSportElements(
             currentSport,
@@ -135,7 +127,12 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
                 <div className="flex flex-wrap 2xl:flex-nowrap w-auto lg:flex-col lg:w-1/2 xl:flex-row xl:w-auto gap-4 items-center">
                     <ControlBtn icon={faForwardStep} onClick={() => handleFrameChange(currentFrame + 1)} text="+1" />
                     <ControlBtn icon={faForward} onClick={() => handleFrameChange(currentFrame + 100)} text="+100" />
-                    <ControlBtn icon={faForwardFast} onClick={() => handleFrameChange(Object.keys(videoData.data).length - 1)} text="End" />
+                    <ControlBtn icon={faForwardFast} onClick={() => {
+                        if (videoRef.current) {
+                            const totalFrames = Math.floor(videoRef.current.duration * 25);
+                            handleFrameChange(totalFrames);
+                        }
+                    }} text="End" />
                 </div>
             </div>
         </div>

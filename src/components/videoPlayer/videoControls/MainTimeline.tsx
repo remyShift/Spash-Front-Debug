@@ -1,3 +1,5 @@
+import React, { useRef, useEffect, useCallback } from 'react';
+
 interface MainTimelineProps {
     currentTime: number;
     duration: number;
@@ -11,6 +13,8 @@ interface MainTimelineProps {
 }
 
 export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: MainTimelineProps) => {
+    const timelineRef = useRef<HTMLDivElement>(null);
+    const isDragging = useRef(false);
     const maxDuration = isNaN(duration) ? 0 : duration;
     const currentTimeValue = isNaN(currentTime) ? 0 : currentTime;
     const progressWidth = maxDuration > 0 ? (currentTimeValue / maxDuration) * 100 : 0;
@@ -39,18 +43,56 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
         )
     );
 
+    const handleTimeChange = useCallback((newTime: number) => {
+        const videoElement = document.querySelector('video');
+        if (!videoElement) return;
+        
+        const maxTime = videoElement.duration;
+        const clampedTime = Math.min(Math.max(0, newTime), maxTime);
+        
+        videoElement.currentTime = clampedTime;
+        onTimeChange(clampedTime);
+    }, [onTimeChange]);
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        isDragging.current = true;
+        handleMouseMove(e.nativeEvent);
+    };
+
+    const handleMouseMove = useCallback((e: MouseEvent) => {
+        if (!isDragging.current || !timelineRef.current) return;
+        
+        const rect = timelineRef.current.getBoundingClientRect();
+        const position = (e.clientX - rect.left) / rect.width;
+        const newTime = position * maxDuration;
+        
+        if (newTime >= 0 && newTime <= maxDuration) {
+            handleTimeChange(newTime);
+        }
+    }, [maxDuration, handleTimeChange]);
+
+    const handleMouseUp = useCallback(() => {
+        isDragging.current = false;
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('mouseup', handleMouseUp);
+        document.addEventListener('mousemove', handleMouseMove);
+        
+        return () => {
+            document.removeEventListener('mouseup', handleMouseUp);
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, [maxDuration, handleMouseMove, handleMouseUp]);
+
     return (
-        <div className="relative w-[78%] md:w-[85%] xl:w-[90%] h-1 bg-lighterBackground rounded-full">
-            <input
-                type="range"
-                min="0"
-                max={maxDuration.toString()}
-                value={currentTimeValue}
-                onChange={(e) => onTimeChange(parseFloat(e.target.value))}
-                className="absolute w-full h-full opacity-0 cursor-pointer z-20"
-            />
+        <div 
+            ref={timelineRef}
+            className="relative w-[78%] md:w-[85%] xl:w-[90%] h-1 bg-lighterBackground rounded-full cursor-pointer"
+            onMouseDown={handleMouseDown}
+        >
             <div
-                className="absolute h-full bg-primary rounded-full transition-all"
+                className="absolute bottom-0 h-1 bg-primary rounded-full transition-all"
                 style={{ width: `${progressWidth}%` }}
             />
             
@@ -65,10 +107,10 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
             {reels?.map((reel, index) => (
                 <div 
                     key={index}
-                    className="absolute top-1/2 -translate-y-1/2 z-10"
+                    className="absolute bottom-0 h-3 z-10"
                     style={{ left: `${(reel.end_timecode / maxDuration) * 100}%` }}
                 >
-                    <div className="w-1 h-4 bg-yellow-500 rounded-full group-hover:opacity-100" />
+                    <div className="w-1 h-full bg-yellow-500 rounded-full" />
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-1 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap">
                         {reel.reel_type}
                     </div>

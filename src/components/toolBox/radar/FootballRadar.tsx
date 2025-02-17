@@ -2,6 +2,7 @@ import { JSONData } from "@/types/files";
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@/context/frame";
 import { drawRadar } from "@/utils/drawing/drawRadar";
+import { useSport } from "@/context/sport";
 
 interface FieldSize {
     width: number;
@@ -16,6 +17,7 @@ export default function FootballRadar({ framesData, fieldSize }: {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvas = useRef<HTMLCanvasElement>(null);
     const currentFrame = useFrame(state => state.currentFrame);
+    const currentSport = useSport(state => state.currentSport);
 
     const dimensions = useMemo<FieldSize>(() => {
         const realRatio = fieldSize.width / fieldSize.height;
@@ -32,8 +34,8 @@ export default function FootballRadar({ framesData, fieldSize }: {
 
     useEffect(() => {
         if (!canvas.current) return;
-        drawRadar(framesData, currentFrame, canvas.current, dimensions.width, dimensions.height);
-    }, [framesData, dimensions.width, dimensions.height, currentFrame]);
+        drawRadar(framesData, currentFrame, canvas.current, dimensions.width, dimensions.height, currentSport);
+    }, [framesData, dimensions.width, dimensions.height, currentFrame, currentSport]);
 
     const middleLineY = dimensions.height / 2;
 
@@ -41,7 +43,7 @@ export default function FootballRadar({ framesData, fieldSize }: {
         <div ref={containerRef} className='flex flex-col gap-2 items-center justify-center py-4'>
             <div className='relative bg-green-800/80 foot-radar-border' style={{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }}>
                 <div className='absolute inset-0 border-2 border-white'></div>
-                
+
                 <div className='absolute left-0 right-0 h-0.5 bg-white'
                     style={{ top: `${middleLineY}px` }}></div>
 
