@@ -21,6 +21,7 @@ import PlayersPresenceTimeline from "@/components/PlayersPresenceTimeline/Player
 import { insertIsPlaying } from "@/utils/insertIsPlaying";
 import { useSport } from "@/context/sport";
 import { useMode } from "@/context/mode";
+import { insertZoneCount } from "@/utils/insertZoneCount";
 
 export default function VideoPage() {
     const params = useParams();
@@ -71,6 +72,7 @@ export default function VideoPage() {
                             insertCumulativeHits(data.jsonData);
                             insertCumulativeDistances(data.jsonData);
                             insertIsPlaying(data.jsonData.data, data.jsonData.timeline);
+                            insertZoneCount(data.jsonData);
                         }
                         setJsonData(data.jsonData);
                         setStatsData(data.statsData); 

@@ -7,21 +7,21 @@ import StatBlockSpacer from "./StatBlockSpacer";
 import { extractStatsStructure } from "@/utils/statsStructure";
 import { PlayerStats, Category, Badge, SubcategoryData } from "@/types/stats";
 
-export default function PlayerStatsColumn({ index, player }: { index: number, player: PlayerStats }) {
-    const playerNameColor = player.name === "A" || player.name === "B" ? "text-primary" : "text-green-500";
+export default function PlayerStatsColumn({ index, playerStats }: { index: number, playerStats: PlayerStats }) {
+    const playerNameColor = playerStats.name === "A" || playerStats.name === "B" ? "text-primary" : "text-green-500";
     const params = useParams();
     const paramsId = params.id as string;
     
     const videos = useStore((state) => state.videos);
     const currentFolder = videos.find(v => v.videoPath === decodeURIComponent(paramsId));
     const playerVideoPaths = Object.values(currentFolder?.playerVideoPath || {});
-    const playerVideo = playerVideoPaths.find(p => p.split("/")[p.split("/").length - 1] === player.video_path);
+    const playerVideo = playerVideoPaths.find(p => p.split("/")[p.split("/").length - 1] === playerStats.video_path);
     const isEven = (blockIndex: number) => (index + blockIndex) % 2 === 0;
-    const structure = extractStatsStructure(player);
+    const structure = extractStatsStructure(playerStats);
 
     const renderStatBlockContent = (category: Category) => {
         if (category.type === 'badges') {
-            return player.badges?.map((badge: Badge, i) => (
+            return playerStats.badges?.map((badge: Badge, i) => (
                 badge.top_badge ? (
                     <div key={i}>
                         <StatText value={badge.value} label={badge.badge_type} />
@@ -31,7 +31,7 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
         }
 
         if (category.type === 'text') {
-            const value = player[category.key];
+            const value = playerStats[category.key];
             return typeof value === 'string' ? <StatText value={value} /> : null;
         }
 
@@ -42,7 +42,7 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
         }
 
         if (category.subcategories) {
-            const categoryData = player[category.key] as SubcategoryData;
+            const categoryData = playerStats[category.key] as SubcategoryData;
             return (
                 <>
                     {category.subcategories.map((subcat: string, idx: number) => {
@@ -65,7 +65,7 @@ export default function PlayerStatsColumn({ index, player }: { index: number, pl
     return (
         <div className="flex flex-col justify-start gap-3">
             <StatBlock index={index} isEven={isEven(0)} rowCount={3}>
-                <StatText value={`Player ${player.name}`} playerColor={playerNameColor} />
+                <StatText value={`Player ${playerStats.name}`} playerColor={playerNameColor} />
             </StatBlock>
 
             {structure.map((category, blockIndex) => (

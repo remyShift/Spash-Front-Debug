@@ -42,6 +42,13 @@ const handleServiceHit = (
 ) => {
     if (!player.id) return;
     const playerId = player.id.toString();
+    
+    player.hit_count = player.hit_count || {
+        service: 0,
+        lob: 0,
+        hit: 0
+    };
+    
     if (playerStats?.hits?.includes(frameIdx)) {
         player.do_hit.service = true;
         cumulativeHits[playerId].service++;
@@ -57,6 +64,13 @@ const handleNormalHit = (
 ) => {
     if (!player.id) return;
     const playerId = player.id.toString();
+
+    player.hit_count = player.hit_count || {
+        service: 0,
+        lob: 0,
+        hit: 0
+    };
+
     if (playerStats?.lobs?.includes(frameIdx)) {
         player.do_hit.lob = true;
         cumulativeHits[playerId].lob++;

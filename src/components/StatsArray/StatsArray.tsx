@@ -37,7 +37,7 @@ export default function StatsArray({ statsData }: { statsData: StatsData }) {
                         <PlayerStatsColumn 
                             key={index} 
                             index={index} 
-                            player={playerStats as PlayerStats}
+                            playerStats={playerStats as PlayerStats}
                         />
                     ))}
                 </div>
@@ -48,7 +48,7 @@ export default function StatsArray({ statsData }: { statsData: StatsData }) {
                         <PlayerStatsColumn 
                             key={index + 2} 
                             index={index + 2} 
-                            player={playerStats as PlayerStats} 
+                            playerStats={playerStats as PlayerStats} 
                         />
                     ))}
                 </div>
@@ -61,7 +61,7 @@ export default function StatsArray({ statsData }: { statsData: StatsData }) {
                         <PlayerStatsColumn 
                             key={index + 2} 
                             index={index + 2} 
-                            player={playerStats as PlayerStats} 
+                            playerStats={playerStats as PlayerStats} 
                         />
                     ))}
                 </div>

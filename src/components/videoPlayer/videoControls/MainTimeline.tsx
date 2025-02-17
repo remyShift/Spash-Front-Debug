@@ -49,7 +49,7 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
                 onChange={(e) => onTimeChange(parseFloat(e.target.value))}
                 className="absolute w-full h-full opacity-0 cursor-pointer z-20"
             />
-            <div 
+            <div
                 className="absolute h-full bg-primary rounded-full transition-all"
                 style={{ width: `${progressWidth}%` }}
             />

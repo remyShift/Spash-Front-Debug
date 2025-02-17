@@ -44,10 +44,15 @@ export interface PersonTracking {
         lob: boolean;
         hit: boolean;
     };
-    hit_count: {
+    hit_count?: {
         service: number;
         lob: number;
         hit: number;
+    };
+    zone_count?: {
+        nomansland: number;
+        attack: number;
+        defense: number;
     };
     cumulate_distance?: number;
 };
