@@ -48,7 +48,7 @@ export function processPadelPersistentLayer(
                     attack_left: videoData.zones.attack_left,
                     defense_left: videoData.zones.defense_left
                 };
-                drawAreasAB(players, currentFrame, videoWidth, videoHeight, persistentCtx, zonesAB);
+                drawAreasAB(players, videoWidth, videoHeight, persistentCtx, zonesAB);
             }
             break;
         case 'areas-cd':
@@ -58,7 +58,7 @@ export function processPadelPersistentLayer(
                     attack_right: videoData.zones.attack_right,
                     defense_right: videoData.zones.defense_right
                 };
-                drawAreasCD(players, currentFrame, videoWidth, videoHeight, persistentCtx, zonesCD);
+                drawAreasCD(players, videoWidth, videoHeight, persistentCtx, zonesCD);
             }
             break;
         case 'divorces':
@@ -67,7 +67,7 @@ export function processPadelPersistentLayer(
                     divorce_right: videoData.zones.divorce_right,
                     divorce_left: videoData.zones.divorce_left
                 };
-                drawDivorceZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, divorceZones);
+                drawDivorceZones(currentFrame, videoWidth, videoHeight, persistentCtx, videoData, divorceZones);
             }
             break;
         case 'top lob':
@@ -76,7 +76,7 @@ export function processPadelPersistentLayer(
                     top_lob_right: videoData.zones.toplob_right,
                     top_lob_left: videoData.zones.toplob_left
                 };
-                drawTopLobZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, topLobZones);
+                drawTopLobZones(currentFrame, videoWidth, videoHeight, persistentCtx, videoData, topLobZones);
             }
             break;
         case 'safe ball':
@@ -85,7 +85,7 @@ export function processPadelPersistentLayer(
                     balle_sure_right: videoData.zones.balle_sure_right,
                     balle_sure_left: videoData.zones.balle_sure_left
                 };
-                drawSafeBallZones(players, currentFrame, videoWidth, videoHeight, persistentCtx, videoData, safeBallZones);
+                drawSafeBallZones(currentFrame, videoWidth, videoHeight, persistentCtx, videoData, safeBallZones);
             }
             break;
     }

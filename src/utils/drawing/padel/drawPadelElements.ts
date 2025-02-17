@@ -1,5 +1,5 @@
 import { JSONData } from "@/types/files";
-import { PadelLayers, FootballLayers } from "@/types/layers";
+import { PadelLayers } from "@/types/layers";
 import { initializeAnimation } from "../config";
 import { RenderTiming } from "@/types/performance";
 import { measureRenderTime } from "@/utils/drawing/performance";
@@ -44,26 +44,16 @@ export const drawPadelElements = (
     mainCtx.clearRect(0, 0, canvasRefs.mainCanvas.width, canvasRefs.mainCanvas.height);
     
     const players = frameData.persontracking ? Object.entries(frameData.persontracking) : [];
-    const sport = videoData.info.cfg.sport;
 
-    if (sport === 'padel') {
-        activeLayers.forEach(layer => {
-            const padelLayer = layer as PadelLayers;
-            if (['areas-ab', 'areas-cd', 'hits', 'trajectories', 'divorces', 'top lob', 'safe ball'].includes(padelLayer)) {
-                processPadelPersistentLayer(padelLayer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
-            }
-            if (['players', 'ball', 'distance', 'rebounds', 'homography', 'cumulative distances'].includes(padelLayer)) {
-                processPadelMainLayer(padelLayer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
-            }
-        });
-    } else if (sport === 'foot') {
-        activeLayers.forEach(layer => {
-            const footballLayer = layer as FootballLayers;
-            if (['players', 'ball'].includes(footballLayer)) {
-                processPadelMainLayer(footballLayer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
-            }
-        });
-    }
+    activeLayers.forEach(layer => {
+        const padelLayer = layer as PadelLayers;
+        if (['areas-ab', 'areas-cd', 'hits', 'trajectories', 'divorces', 'top lob', 'safe ball'].includes(padelLayer)) {
+            processPadelPersistentLayer(padelLayer, players, frameData, videoData, videoWidth, videoHeight, persistentCtx, currentFrame);
+        }
+        if (['players', 'ball', 'distance', 'rebounds', 'homography', 'cumulative distances'].includes(padelLayer)) {
+            processPadelMainLayer(padelLayer, players, frameData, videoWidth, videoHeight, mainCtx, videoData, currentFrame);
+        }
+    });
 
     const persistentTiming = persistentMeasure();
     const mainTiming = mainMeasure();

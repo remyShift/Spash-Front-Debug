@@ -36,10 +36,5 @@ export function processFootMainLayer(
                 drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
             }
             break;
-        case 'homography':
-            if (videoData.zones.homography) {
-                drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
-            }
-            break;
     }
 }

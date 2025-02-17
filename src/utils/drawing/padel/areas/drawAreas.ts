@@ -18,7 +18,17 @@ export const drawAreasAB = (
         defense_left: [number, number][];
     }
 ) => {
+    if (!context || !(context instanceof CanvasRenderingContext2D)) {
+        console.error('Contexte de canvas invalide');
+        return;
+    }
+
     const canvas = context.canvas;
+    if (!canvas) {
+        console.error('Canvas non trouvé');
+        return;
+    }
+
     configureContext(context);
 
     const zonesConfig: TacticalZone[] = [
@@ -91,7 +101,6 @@ export const drawAreasAB = (
 
 export const drawAreasCD = (
     players: [string, PersonTracking][],
-    currentFrame: number,
     videoWidth: number,
     videoHeight: number,
     context: CanvasRenderingContext2D,

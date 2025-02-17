@@ -22,6 +22,7 @@ import { insertIsPlaying } from "@/utils/insertData/insertIsPlaying";
 import { useSport } from "@/context/sport";
 import { useMode } from "@/context/mode";
 import { insertZoneCount } from "@/utils/insertData/insertZoneCount";
+import { PadelLayers, FootballLayers } from "@/types/layers";
 
 export default function VideoPage() {
     const params = useParams();
@@ -125,7 +126,7 @@ export default function VideoPage() {
                                 <VideoPlayer
                                     currentVideo={currentVideo} 
                                     jsonData={jsonData}
-                                    activeLayers={activeLayers}
+                                    activeLayers={activeLayers as PadelLayers[] | FootballLayers[]}
                                     statsData={statsData}
                                 />
                                 {(jsonData.events && jsonData.timeline) && (

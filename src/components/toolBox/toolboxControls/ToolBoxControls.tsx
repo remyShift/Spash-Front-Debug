@@ -13,6 +13,7 @@ import GotoPlayer from './GotoPlayer';
 import { useHomographyPoints } from '@/context/homographyPoints';
 import { useHomographyPointsDrag } from '@/hooks/useHomographyPointsDrag';
 import { useSport } from '@/context/sport';
+import { PadelLayers, FootballLayers } from '@/types/layers';
 
 export default function ToolBoxControls({ videoData }: { videoData: JSONData }) {
     const { currentFrame, setCurrentFrame } = useFrame();
@@ -102,7 +103,7 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
         drawSportElements(
             currentSport,
             videoData,
-            activeLayers,
+            activeLayers as PadelLayers[] | FootballLayers[],
             videoRef.current,
             { 
                 mainCanvas: mainCanvasRef.current!, 
