@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useStore } from "@/context/store";
 import { VideoList } from "./VideoList";
-import { fetchFiles } from "@/utils/fetchFiles";
+import { fetchFiles } from "@/utils/fetchs/fetchFiles";
 import Loader from "../ui/Loader";
 import ErrorMsg from "../ui/ErrorMsg";
 import UploadZone from "../upload/UploadZone";

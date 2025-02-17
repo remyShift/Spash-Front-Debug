@@ -43,6 +43,14 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
     const renderLayers = useCallback(() => {
         if (!videoRef.current || !mainCanvasRef.current || !persistentCanvasRef.current) return;
         
+        const mainCtx = mainCanvasRef.current.getContext('2d');
+        const persistentCtx = persistentCanvasRef.current.getContext('2d');
+        
+        if (mainCtx && persistentCtx) {
+            mainCtx.clearRect(0, 0, mainCanvasRef.current.width, mainCanvasRef.current.height);
+            persistentCtx.clearRect(0, 0, persistentCanvasRef.current.width, persistentCanvasRef.current.height);
+        }
+        
         drawSportElements(
             currentSport,
             jsonData, 

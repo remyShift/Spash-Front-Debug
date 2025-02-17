@@ -1,6 +1,6 @@
 import VideoBtn from "./VideoBtn";
 import { VideoInfo } from "@/types/files";
-import { fetchFiles } from "@/utils/fetchFiles";
+import { fetchFiles } from "@/utils/fetchs/fetchFiles";
 import { useStore } from "@/context/store";
 
 interface VideoListProps {
