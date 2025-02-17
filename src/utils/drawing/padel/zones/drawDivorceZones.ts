@@ -1,5 +1,5 @@
 import { configureContext } from "../../canvas";
-import { JSONData, PersonTracking } from "@/types/files";
+import { JSONData } from "@/types/files";
 
 interface DivorceZone {
     name: string;
@@ -9,7 +9,6 @@ interface DivorceZone {
 }
 
 export const drawDivorceZones = (
-    players: [string, PersonTracking][],
     currentFrame: number,
     videoWidth: number,
     videoHeight: number,

@@ -1,5 +1,5 @@
 import { configureContext } from "../../canvas";
-import { JSONData, PersonTracking } from "@/types/files";
+import { JSONData } from "@/types/files";
 
 interface SafeBallZone {
     name: string;
@@ -9,7 +9,6 @@ interface SafeBallZone {
 }
 
 export const drawSafeBallZones = (
-    players: [string, PersonTracking][],
     currentFrame: number,
     videoWidth: number,
     videoHeight: number,

@@ -1,5 +1,5 @@
 import { configureContext } from "../../canvas";
-import { JSONData, PersonTracking } from "@/types/files";
+import { JSONData } from "@/types/files";
 
 interface TopLobZone {
     name: string;
@@ -9,7 +9,6 @@ interface TopLobZone {
 }
 
 export const drawTopLobZones = (
-    players: [string, PersonTracking][],
     currentFrame: number,
     videoWidth: number,
     videoHeight: number,

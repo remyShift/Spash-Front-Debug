@@ -9,7 +9,6 @@ interface TacticalZone {
 
 export const drawAreasAB = (
     players: [string, PersonTracking][],
-    currentFrame: number,
     videoWidth: number,
     videoHeight: number,
     context: CanvasRenderingContext2D,
