@@ -11,7 +11,6 @@ import { RenderTiming } from '@/types/performance';
 import { usePerformance } from '@/context/performance';
 import HomographyPoints from '@/components/videoPlayer/layers/HomographyPoints';
 import { useSport } from '@/context/sport';
-import FrameIdx from '../ui/FrameIdx';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -121,8 +120,6 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                     videoRef={videoRef as React.RefObject<HTMLVideoElement>} 
                     videoData={jsonData}
                 />
-
-                <FrameIdx frameIdx={currentFrame} />
 
                 {(jsonData.info.cfg.sport === 'padel' && activeLayers.includes('killfeed')) && (
                     <KillFeed 
