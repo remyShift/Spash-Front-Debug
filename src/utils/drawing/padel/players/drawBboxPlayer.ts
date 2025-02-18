@@ -51,7 +51,7 @@ export const drawPlayerBBox = (
     const boxWidth = Math.abs(scaledX2 - scaledX1);
     const boxHeight = Math.abs(y2 - y1) * scaleY;
 
-    const playerColor = getPlayerColor(player?.id || 0);
+    const playerColor = getPlayerColor(player.id);
     configureContext(context, { strokeStyle: playerColor });
     
     context.strokeStyle = playerColor;

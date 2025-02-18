@@ -145,7 +145,7 @@ export default function PlayersPresenceTimeline({ jsonData }: { jsonData: JSONDa
                                                         style={{
                                                             left: `${startPercent}%`,
                                                             width: `${width}%`,
-                                                            backgroundColor: getPlayerColor(player.id)
+                                                            backgroundColor: getPlayerColor(player.id, jsonData.info.cfg.sport)
                                                         }}
                                                         onClick={() => handleRangeClick(range.start)}
                                                     />

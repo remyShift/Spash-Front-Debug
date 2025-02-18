@@ -45,7 +45,7 @@ export const drawFootPlayerBBox = (
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
-    const text = `${player.id} | ${player.class} | ${player.confidence.toFixed(2)}`;
+    const text = `ID: ${player.id} | ${player.class} | ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
     const padding = 4;
     const textHeight = 20;

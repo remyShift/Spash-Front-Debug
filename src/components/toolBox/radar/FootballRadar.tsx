@@ -34,7 +34,12 @@ export default function FootballRadar({ framesData, fieldSize }: {
 
     useEffect(() => {
         if (!canvas.current) return;
-        drawRadar(framesData, currentFrame, canvas.current, dimensions.width, dimensions.height, currentSport);
+
+        const frameData = framesData[currentFrame];
+
+        if (!frameData) return;
+
+        drawRadar(frameData, currentFrame, canvas.current, dimensions.width, dimensions.height, currentSport);
     }, [framesData, dimensions.width, dimensions.height, currentFrame, currentSport]);
 
     const middleLineY = dimensions.height / 2;

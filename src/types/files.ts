@@ -28,12 +28,13 @@ export interface PersonTracking {
     bbox: [number, number, number, number];
     confidence: number;
     class?: number;
-    id?: number;
+    id: number;
     old_id: number;
     legs: [number, number];
     player_legs: [number, number];
     speed_legs: number;
     court_legs: [number, number];
+    player2D: [number, number];
     zones: {
         attack: boolean;
         defense: boolean;
