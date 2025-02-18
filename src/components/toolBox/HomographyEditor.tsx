@@ -32,7 +32,7 @@ export default function HomographyEditor({ videoData, accordionOpen }: Homograph
     }, [accordionOpen, setEditMode, setHomographyPoints]);
 
     const handleCopyToClipboard = () => {
-        const coordinates = Object.values(homographyPoints).map(point => point.camera);
+        const coordinates = Object.values(homographyPoints).map(point => point.camera.map(coord => coord.toFixed(2)));
         
         navigator.clipboard.writeText(JSON.stringify(coordinates, null, 2))
             .then(() => {

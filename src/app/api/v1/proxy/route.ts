@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
     const data = await req.json();
-    console.log('Data received:', data);
+    console.log('Data sent to proxy:', data);
     return fetch('http://10.0.0.50:38001/api/homography', {
         method: 'POST',
         headers: {
@@ -15,7 +15,10 @@ export async function POST(req: Request) {
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(data => NextResponse.json(data))
+    .then(data => {
+        console.log('Data received from proxy:', data);
+        return NextResponse.json(data);
+    })
     .catch(error => {
         console.error('Error fetching homography:', error);
         return NextResponse.json({ error: 'Erreur lors de la requête proxy' });

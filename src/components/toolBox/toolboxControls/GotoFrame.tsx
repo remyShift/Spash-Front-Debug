@@ -1,38 +1,30 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { JSONData } from '@/types/files';
 
-export default function GotoFrame({ handleFrameChange, videoData }: { handleFrameChange: (frameNumber: number) => void, videoData: JSONData }) {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const target = e.target as HTMLFormElement;
-        const input = target.querySelector('input');
-        const frameId = input?.value;
+export default function GotoFrame({ handleFrameChange, videoData }: { 
+    handleFrameChange: (frameNumber: number) => void, 
+    videoData: JSONData 
+}) {
+
+    const changeFrame = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const frameId = e.target.value;
         
         if (frameId) {
             const frameNumber = parseInt(frameId);
             handleFrameChange(frameNumber);
-            if (input) {
-                input.value = '';
-            }
         }
     }
 
     return (
         <div className="flex gap-4 items-center justify-center">
             <p className="text-white font-semibold text-base">Go to Frame :</p>
-            <form className="flex gap-2 items-center" onSubmit={handleSubmit}>
-                <input 
-                    type="number" 
-                    min={0}
-                    max={Object.keys(videoData.data).length - 1}
-                    className="w-24 h-6 bg-lighterBackground rounded-md p-2 text-center text-white font-semibold text-base outline-none border-none focus:ring-primary focus:ring-1" 
-                />
-                <button className="bg-primary text-white font-semibold text-base rounded-md flex items-center justify-center px-2 py-1 active:bg-primary/80 transition-all duration-200" type="submit">
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
-                </button>
-            </form>
+            <input 
+                type="number" 
+                min={0}
+                max={Object.keys(videoData.data).length - 1}
+                className="w-24 h-6 bg-lighterBackground rounded-md p-2 text-center text-white font-semibold text-base outline-none border-none focus:ring-primary focus:ring-1"
+                onChange={changeFrame}
+            />
         </div>
     )
 }
