@@ -1,4 +1,5 @@
 import { JSONData } from '@/types/files';
+import { PersonTracking } from '@/types/files';
 
 interface PlayersSectionProps {
     frameData: JSONData['data'][number] | null;
@@ -21,33 +22,54 @@ const PlayerLegs = ({ legs }: { legs: number[] }) => (
     </div>
 );
 
-/// TODO UPDATE FOR FOOTBALL
-// - Group by team
-// - Show arbitre
-// - Show ball
+const TeamSection = ({ label, players, color }: { 
+    label: string; 
+    players: Array<[string, PersonTracking]>; 
+    color: string 
+}) => (
+    <div className='flex flex-col gap-4'>
+        <p className='font-semibold text-center text-lg' style={{ color }}>{label}</p>
+        <div className='flex flex-col gap-6'>
+            {players.map(([id, player]) => (
+                <div key={id} className='flex flex-col gap-1 border border-gray-700 p-2 rounded'>
+                    <PlayerInfo label="ID" value={id} />
+                    <PlayerInfo label="Class" value={player.class?.toString() || ''} />
+                    <PlayerInfo label="Team" value={player.team} />
+                    <PlayerInfo label="Confidence" value={`${player.confidence?.toFixed(2) || 0}`} />
+                    <PlayerLegs legs={player.player_legs} />
+                    <PlayerInfo label="Speed" value={`${player.speed_legs?.toFixed(2) || 0} km/h`} />
+                    <PlayerInfo label="Distance" value={`${player.cumulate_distance?.toFixed(2) || 0} m`} />
+                </div>
+            ))}
+        </div>
+    </div>
+);
 
-export default function PadelPlayersSection({ frameData }: PlayersSectionProps) {
+export default function FootballPlayersSection({ frameData }: PlayersSectionProps) {
+    const players = Object.entries(frameData?.persontracking || {});
+    
+    const blueTeam = players.filter(([, player]) => player?.class === 2);
+    const orangeTeam = players.filter(([, player]) => player?.class === 3);
+    const referee = players.find(([, player]) => player?.class === 1);
+
     return (
-        <div className='flex flex-col gap-2'>
-            <p className='text-white font-semibold text-center text-lg'>- - - - - Players - - - - -</p>
-            <div className='flex flex-col gap-6'>
-                {Object.keys(frameData?.persontracking || {}).map((player) => {
-                    const playerData = frameData?.persontracking?.[player];
-                    return (
-                        <div key={player} className='flex flex-col gap-1'>
-                            {playerData?.class == 2 && <PlayerInfo label="Class" value={playerData?.class || 'N/A'} />}
-                            {playerData?.player_legs && <PlayerLegs legs={playerData?.player_legs} />}
-                            {playerData?.speed_legs && <PlayerInfo label="Speed" value={`${playerData?.speed_legs?.toFixed(2) || 0} km/h`} />}
-                            {playerData?.cumulate_distance && <PlayerInfo label="Distance" value={`${playerData?.cumulate_distance?.toFixed(2) || 0} m`} />}
-                            {playerData?.do_hit && <PlayerInfo label="Do Service" value={`${playerData?.do_hit.service ? 'Yes' : 'No'}`} />}
-                            {playerData?.do_hit && <PlayerInfo label="Do Lob" value={`${playerData?.do_hit.lob ? 'Yes' : 'No'}`} />}
-                            {playerData?.do_hit && <PlayerInfo label="Do Hit" value={`${playerData?.do_hit.hit ? 'Yes' : 'No'}`} />}
-                            {playerData?.hit_count && <PlayerInfo label="Hits count" value={playerData?.hit_count.hit || 0} />}
-                            {playerData?.hit_count && <PlayerInfo label="Lob count" value={playerData?.hit_count.lob || 0} />}
-                            {playerData?.hit_count && <PlayerInfo label="Service count" value={playerData?.hit_count.service || 0} />}
-                        </div>
-                    );
-                })}
+        <div className='flex flex-col gap-6'>
+            <p className='text-white font-semibold text-center text-lg'>- - - - - Teams - - - - -</p>
+            
+            <div className='flex flex-col gap-8'>
+                {referee && (
+                    <div className='flex flex-col gap-2 border border-yellow-500 p-2 rounded'>
+                        <p className='text-yellow-500 font-semibold text-center'>Referee</p>
+                        {referee[1]?.player_legs && <PlayerLegs legs={referee[1]?.player_legs} />}
+                        {referee[1]?.speed_legs && <PlayerInfo label="Speed" value={`${referee[1]?.speed_legs?.toFixed(2) || 0} km/h`} />}
+                        {referee[1]?.cumulate_distance && <PlayerInfo label="Distance" value={`${referee[1]?.cumulate_distance?.toFixed(2) || 0} m`} />}
+                    </div>
+                )}
+
+                <div className='grid grid-cols-2 gap-4'>
+                    <TeamSection label="Blue Team" players={blueTeam} color="#00FFFF" />
+                    <TeamSection label="Orange Team" players={orangeTeam} color="#FFA500" />
+                </div>
             </div>
         </div>
     );

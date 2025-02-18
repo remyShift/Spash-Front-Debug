@@ -30,6 +30,7 @@ export interface PersonTracking {
     class?: number;
     id: number;
     old_id: number;
+    team: string;
     legs: [number, number];
     player_legs: [number, number];
     speed_legs: number;
