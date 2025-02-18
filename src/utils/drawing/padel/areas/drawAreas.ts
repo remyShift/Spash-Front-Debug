@@ -1,5 +1,6 @@
 import { configureContext } from "../../canvas";
 import { PersonTracking } from "@/types/files";
+import { drawZonePolygon } from "@/utils/drawing/drawZonePolygon";
 
 interface TacticalZone {
     name: string;
@@ -50,54 +51,23 @@ export const drawAreasAB = (
     ];
 
     zonesConfig.forEach(zone => {
-        if (zone.points.length === 0) return;
-
-        const scaledPoints = zone.points.map(([x, y]): [number, number] => [
-            (x / videoWidth) * canvas.width,
-            (y / videoHeight) * canvas.height
-        ]);
-
-        context.beginPath();
-        context.moveTo(scaledPoints[0][0], scaledPoints[0][1]);
-
-        for (let i = 1; i < scaledPoints.length; i++) {
-            context.lineTo(scaledPoints[i][0], scaledPoints[i][1]);
-        }
-
-        context.lineTo(scaledPoints[0][0], scaledPoints[0][1]);
-        context.closePath();
-
         const isPlayersInZone = players.filter(([, player]) => {
             const zoneName = zone.name.toLowerCase().replace(/\s+/g, '');
             return player.zones[zoneName as keyof typeof player.zones];
         });
 
         const teamA = isPlayersInZone.filter(([, player]) => ['A', 'B'].includes(player.name));
-
-        const baseOpacity = Math.max(
-            teamA.length > 1 ? 0.6 : teamA.length === 1 ? 0.4 : 0.2
-        );
-
-        context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());
-        context.shadowColor = zone.color.replace("0.2", "1");
-        context.fill();
-
-        context.shadowBlur = 0;
-        context.strokeStyle = zone.color.replace("0.2", "0.8");
-        context.lineWidth = 2;
-        context.stroke();
-
-        context.fillStyle = "white";
-        context.font = "bold 18px Arial";
-        context.textAlign = "center";
-        const centerX = scaledPoints.reduce((sum, [x]) => sum + x, 0) / scaledPoints.length;
-        const centerY = scaledPoints.reduce((sum, [, y]) => sum + y, 0) / scaledPoints.length;
-        context.fillText(zone.name, centerX, centerY);
+        const isHighlighted = teamA.length > 0;
+        
+        drawZonePolygon(videoWidth, videoHeight, context, {
+            name: zone.name,
+            points: zone.points,
+            color: zone.color,
+            isHighlighted,
+            displayText: zone.name
+        });
     });
 };
-
-
-
 
 export const drawAreasCD = (
     players: [string, PersonTracking][],
@@ -110,7 +80,6 @@ export const drawAreasCD = (
         defense_right: [number, number][];
     }
 ) => {
-    const canvas = context.canvas;
     configureContext(context);
 
     const zonesConfig: TacticalZone[] = [
@@ -132,48 +101,20 @@ export const drawAreasCD = (
     ];
 
     zonesConfig.forEach(zone => {
-        if (zone.points.length === 0) return;
-
-        const scaledPoints = zone.points.map(([x, y]): [number, number] => [
-            (x / videoWidth) * canvas.width,
-            (y / videoHeight) * canvas.height
-        ]);
-
-        context.beginPath();
-        context.moveTo(scaledPoints[0][0], scaledPoints[0][1]);
-
-        for (let i = 1; i < scaledPoints.length; i++) {
-            context.lineTo(scaledPoints[i][0], scaledPoints[i][1]);
-        }
-
-        context.lineTo(scaledPoints[0][0], scaledPoints[0][1]);
-        context.closePath();
-
         const isPlayersInZone = players.filter(([, player]) => {
             const zoneName = zone.name.toLowerCase().replace(/\s+/g, '');
             return player.zones[zoneName as keyof typeof player.zones];
         });
 
         const teamC = isPlayersInZone.filter(([, player]) => ['C', 'D'].includes(player.name));
-
-        const baseOpacity = Math.max(
-            teamC.length > 1 ? 0.6 : teamC.length === 1 ? 0.4 : 0.2
-        );
-
-        context.fillStyle = zone.color.replace("0.2", baseOpacity.toString());
-        context.shadowColor = zone.color.replace("0.2", "1");
-        context.fill();
-
-        context.shadowBlur = 0;
-        context.strokeStyle = zone.color.replace("0.2", "0.8");
-        context.lineWidth = 2;
-        context.stroke();
-
-        context.fillStyle = "white";
-        context.font = "bold 18px Arial";
-        context.textAlign = "center";
-        const centerX = scaledPoints.reduce((sum, [x]) => sum + x, 0) / scaledPoints.length;
-        const centerY = scaledPoints.reduce((sum, [, y]) => sum + y, 0) / scaledPoints.length;
-        context.fillText(zone.name, centerX, centerY);
+        const isHighlighted = teamC.length > 0;
+        
+        drawZonePolygon(videoWidth, videoHeight, context, {
+            name: zone.name,
+            points: zone.points,
+            color: zone.color,
+            isHighlighted,
+            displayText: zone.name
+        });
     });
 };

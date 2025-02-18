@@ -4,6 +4,8 @@ import { PersonTracking } from "@/types/files";
 import { drawFootPlayerBBox } from "./players/drawFootBboxPlayer";
 import { drawBall } from "@/utils/drawing/drawBall";
 import { drawHomography } from "@/utils/drawing/drawHomography";
+import { drawCoverAreas } from "./zones/drawCoverAreas";
+import { drawZones } from "./zones/drawZones";
 
 export function processFootMainLayer(
     layer: AllLayers,
@@ -35,6 +37,12 @@ export function processFootMainLayer(
             if (videoData.zones.homography) {
                 drawHomography(videoData.zones.homography, videoWidth, videoHeight, mainCtx);
             }
+            break;
+        case 'cover-areas':
+            drawCoverAreas(videoWidth, videoHeight, mainCtx, videoData.zones);
+            break;
+        case 'zones':
+            drawZones(videoWidth, videoHeight, mainCtx, videoData.zones);
             break;
     }
 }

@@ -5,12 +5,13 @@ import { useCallback } from "react";
 import { JSONData } from "@/types/files";
 import { useSport } from "@/context/sport";
 import { drawSportElements } from "@/utils/drawing/drawSportElements";
+
 export default function ButtonLayer({ 
     content, 
     handleClick, 
     jsonData 
 }: { 
-    content: string, 
+    content: FootballLayers | PadelLayers, 
     handleClick: () => void,
     jsonData?: JSONData 
 }) {
@@ -18,14 +19,7 @@ export default function ButtonLayer({
     const { mainCanvasRef, persistentCanvasRef } = useCanvas();
     const { currentSport } = useSport();
     
-    const typedActiveLayers = currentSport === 'padel' 
-        ? (activeLayers as PadelLayers[]) 
-        : (activeLayers as FootballLayers[]);
-
-    const typedContent = currentSport === 'padel' 
-        ? (content as PadelLayers) 
-        : (content as FootballLayers);
-    const isActive = typedActiveLayers.includes(typedContent) || content === "layers";
+    const isActive = activeLayers.includes(content);
 
     const handleButtonClick = useCallback(() => {
         handleClick();
@@ -36,20 +30,20 @@ export default function ButtonLayer({
         if (!video) return;
 
         const updatedLayers = isActive 
-            ? typedActiveLayers.filter(layer => layer !== typedContent)
-            : [...typedActiveLayers, typedContent];
+            ? activeLayers.filter(layer => layer !== content)
+            : [...activeLayers, content];
 
         drawSportElements(
             currentSport,
             jsonData,
-            updatedLayers,
+            updatedLayers as FootballLayers[] | PadelLayers[],
             video,
             {
                 mainCanvas: mainCanvasRef.current,
                 persistentCanvas: persistentCanvasRef.current
             },
         );
-    }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, typedActiveLayers, typedContent, isActive, currentSport]);
+    }, [handleClick, jsonData, mainCanvasRef, persistentCanvasRef, activeLayers, content, isActive, currentSport]);
 
     return (
         <div 
@@ -58,7 +52,7 @@ export default function ButtonLayer({
         >
             <div className="flex items-center whitespace-nowrap overflow-hidden">
                 <p className="text-white font-semibold truncate text-sm">
-                    {typedContent.charAt(0).toUpperCase() + typedContent.slice(1)}
+                    {content.charAt(0).toUpperCase() + content.slice(1)}
                 </p>
             </div>
         </div>

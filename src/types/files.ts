@@ -126,6 +126,13 @@ export interface JSONData {
         balle_sure_left: [number, number][];
         toplob_right: [number, number][];
         toplob_left: [number, number][];
+        zone_right: [number, number][];
+        zone_left: [number, number][];
+        zone_mid: [number, number][];
+        zone_1: [number, number][];
+        zone_2: [number, number][];
+        zone_3: [number, number][];
+        zone_4: [number, number][]
     };
 }
 

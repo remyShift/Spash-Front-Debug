@@ -40,7 +40,7 @@ export const drawFootElements = (
 
     activeLayers.forEach(layer => {
         const footballLayer = layer as FootballLayers;
-        if (['players', 'ball', 'homography'].includes(footballLayer)) {
+        if (['players', 'ball', 'homography', 'cover-areas', 'zones'].includes(footballLayer)) {
             processFootMainLayer(footballLayer, players, frameData, videoWidth, videoHeight, mainCtx, videoData);
         }
     });

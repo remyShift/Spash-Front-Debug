@@ -30,7 +30,8 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
         { content: "players", handleClick: () => toggleActiveLayers('players') },
         { content: "ball", handleClick: () => toggleActiveLayers('ball') },
         { content: "homography", handleClick: () => toggleActiveLayers('homography') },
-        { content: "areas-toto", handleClick: () => toggleActiveLayers('areas-toto') },
+        { content: "cover-areas", handleClick: () => toggleActiveLayers('cover-areas') },
+        { content: "zones", handleClick: () => toggleActiveLayers('zones') },
     ];
 
     return (
