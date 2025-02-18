@@ -1,26 +1,11 @@
 import { JSONData } from '@/types/files';
 import { PersonTracking } from '@/types/files';
+import { PlayerInfo } from './PlayerInfos';
+import { PlayerLegs } from './PlayerLegs';
 
 interface PlayersSectionProps {
     frameData: JSONData['data'][number] | null;
 }
-
-const PlayerInfo = ({ label, value }: { label: string; value: string | number }) => (
-    <p className='text-white flex gap-1 font-semibold'>{label} : 
-        <span className='text-white font-normal'>{value}</span>
-    </p>
-);
-
-const PlayerLegs = ({ legs }: { legs: number[] }) => (
-    <div className='flex gap-1'>
-        <p className='text-white flex gap-2 font-semibold'>Legs :</p>
-        <div className='flex gap-2'>
-            {legs.map((coord, index) => (
-                <span key={index} className='text-white font-normal'>{coord.toFixed(2)}</span>
-            ))}
-        </div>
-    </div>
-);
 
 const TeamSection = ({ label, players, color }: { 
     label: string; 

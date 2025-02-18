@@ -1,34 +1,11 @@
 import { JSONData } from '@/types/files';
+import { PlayerLegs } from './PlayerLegs';
+import { PlayerZoneTime } from './PlayerZoneTime';
+import { PlayerInfo } from './PlayerInfos';
 
 interface PlayersSectionProps {
     frameData: JSONData['data'][number] | null;
 }
-
-const PlayerInfo = ({ label, value }: { label: string; value: string | number }) => (
-    <p className='text-white flex gap-1 font-semibold'>{label} : 
-        <span className='text-white font-normal'>{value}</span>
-    </p>
-);
-
-const PlayerZoneTime = ({ label, value }: { label: string; value: number }) => {
-    const formattedTime = (value / 25) > 60 ? `${Math.floor((value / 25) / 60)}m${Math.floor((value / 25) % 60)}s` : `${value / 25}s`;
-    return (
-        <p className='text-white flex gap-1 font-semibold'>{label} : 
-            <span className='text-white font-normal'>{formattedTime}</span>
-        </p>
-    );
-};
-
-const PlayerLegs = ({ legs }: { legs: number[] }) => (
-    <div className='flex gap-1'>
-        <p className='text-white flex gap-2 font-semibold'>Legs :</p>
-        <div className='flex gap-2'>
-            {legs.map((coord, index) => (
-                <span key={index} className='text-white font-normal'>{coord.toFixed(2)}</span>
-            ))}
-        </div>
-    </div>
-);
 
 export default function PadelPlayersSection({ frameData }: PlayersSectionProps) {
     return (

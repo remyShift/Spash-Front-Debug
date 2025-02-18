@@ -5,10 +5,10 @@ import FrameHeader from './FrameHeader';
 import EventsSection from './EventsSection';
 import InfosSection from './InfosSection';
 import BallSection from './BallSection';
-import PadelPlayersSection from './PadelPlayersSection';
+import PadelPlayersSection from './PlayerSection/PadelPlayersSection';
 import PerformanceSection from './PerformanceSection';
 import { useSport } from '@/context/sport';
-import FootballPlayersSection from './FootballPlayersSection';
+import FootballPlayersSection from './PlayerSection/FootballPlayersSection';
 
 interface FrameInfosProps {
     framesData: JSONData['data'];
