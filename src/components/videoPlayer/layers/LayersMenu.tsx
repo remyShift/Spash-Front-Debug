@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { JSONData } from '@/types/files';
 import ButtonLayer from './ButtonLayer';
 import { useSport } from '@/context/sport';
+import { PadelLayers } from '@/types/layers';
+import { FootballLayers } from '@/types/layers';
 
 export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +34,7 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
         { content: "homography", handleClick: () => toggleActiveLayers('homography') },
         { content: "cover-areas", handleClick: () => toggleActiveLayers('cover-areas') },
         { content: "zones", handleClick: () => toggleActiveLayers('zones') },
+        { content: "corridors", handleClick: () => toggleActiveLayers('corridors') }
     ];
 
     return (
@@ -49,7 +52,7 @@ export default function LayersMenu({ jsonData }: { jsonData: JSONData }) {
                         {layers.map((layer, index) => (
                             <div key={layer.content}>
                                 <ButtonLayer
-                                    content={layer.content}
+                                    content={layer.content as FootballLayers | PadelLayers}
                                     handleClick={layer.handleClick}
                                     jsonData={jsonData}
                                 />

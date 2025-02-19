@@ -6,6 +6,7 @@ import { drawBall } from "@/utils/drawing/drawBall";
 import { drawHomography } from "@/utils/drawing/drawHomography";
 import { drawCoverAreas } from "./zones/drawCoverAreas";
 import { drawZones } from "./zones/drawZones";
+import { drawCorridors } from "./zones/drawCorridors";
 
 export function processFootMainLayer(
     layer: AllLayers,
@@ -43,6 +44,9 @@ export function processFootMainLayer(
             break;
         case 'zones':
             drawZones(videoWidth, videoHeight, mainCtx, videoData.zones);
+            break;
+        case 'corridors':
+            drawCorridors(videoWidth, videoHeight, mainCtx, videoData.zones);
             break;
     }
 }

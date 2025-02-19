@@ -16,7 +16,6 @@ export const drawZonePolygon = (
 ) => {
     const canvas = context.canvas;
     configureContext(context);
-
     if (config.points.length === 0) return;
 
     const scaledPoints = config.points.map(([x, y]): [number, number] => [

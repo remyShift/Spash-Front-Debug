@@ -132,7 +132,10 @@ export interface JSONData {
         zone_1: [number, number][];
         zone_2: [number, number][];
         zone_3: [number, number][];
-        zone_4: [number, number][]
+        zone_4: [number, number][];
+        top_corridor: [number, number][];
+        mid_corridor: [number, number][];
+        bottom_corridor: [number, number][];
     };
 }
 
