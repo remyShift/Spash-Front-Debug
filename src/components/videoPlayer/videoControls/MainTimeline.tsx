@@ -88,11 +88,11 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
     return (
         <div 
             ref={timelineRef}
-            className="relative w-[78%] md:w-[85%] xl:w-[90%] h-1 bg-lighterBackground rounded-full cursor-pointer"
+            className="relative w-[78%] md:w-[85%] xl:w-[90%] z-0 h-1 bg-lighterBackground rounded-full cursor-pointer"
             onMouseDown={handleMouseDown}
         >
             <div
-                className="absolute bottom-0 h-1 bg-primary rounded-full transition-all"
+                className="absolute bottom-0 h-1 bg-primary z-10 rounded-full transition-all"
                 style={{ width: `${progressWidth}%` }}
             />
             
@@ -107,11 +107,11 @@ export const MainTimeline = ({ currentTime, duration, onTimeChange, reels }: Mai
             {reels?.map((reel, index) => (
                 <div 
                     key={index}
-                    className="absolute bottom-0 h-3 z-10"
+                    className="absolute bottom-0 h-3 z-20"
                     style={{ left: `${(reel.end_timecode / maxDuration) * 100}%` }}
                 >
                     <div className="w-1 h-full bg-yellow-500 rounded-full" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-1 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap">
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-1 py-1 bg-black/80 text-white text-xs rounded whitespace-nowrap opacity-0 hover:opacity-100 hover:z-[999999] z-30 transition-opacity duration-200">
                         {reel.reel_type}
                     </div>
                 </div>
