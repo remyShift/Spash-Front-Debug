@@ -22,7 +22,7 @@ export default function TimelineControl({ event, framesEvent, jsonData }: Timeli
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const { mode } = useMode();
 
-    const FPS = 25;
+    const FPS = 25; 
     const delayEvent = mode === 'dev' ? 0 : 1;
 
     const getFilteredFrames = useCallback(() => {
@@ -35,12 +35,12 @@ export default function TimelineControl({ event, framesEvent, jsonData }: Timeli
         videoRef.current = document.querySelector('video');
     }, []);
 
-    const updateVideoTime = useCallback((frame: number) => {
-        if (videoRef.current) {
-            const timeInSeconds = frame / FPS;
-            videoRef.current.currentTime = timeInSeconds - delayEvent;
-        }
-    }, [videoRef, delayEvent]);
+    // const updateVideoTime = useCallback((frame: number) => {
+    //     if (videoRef.current) {
+    //         const timeInSeconds = frame / FPS;
+    //         videoRef.current.currentTime = timeInSeconds - delayEvent;
+    //     }
+    // }, [videoRef, delayEvent]);
 
     const goToPreviousEvent = useCallback(() => {
         if (videoRef.current) {
@@ -48,12 +48,14 @@ export default function TimelineControl({ event, framesEvent, jsonData }: Timeli
             const filteredFrames = getFilteredFrames();
             const previousFrame = [...filteredFrames].reverse().find(frame => frame < currentFrame);
             if (previousFrame) {
-                setCurrentFrame(previousFrame).then(() => {
-                    updateVideoTime(previousFrame);
+                const adjustedFrame = previousFrame + (mode === 'dev' ? 0 : FPS);
+                setCurrentFrame(adjustedFrame).then(() => {
+                    const timeInSeconds = previousFrame / FPS;
+                    videoRef.current!.currentTime = timeInSeconds - delayEvent;
                 });
             }
         }
-    }, [currentFrame, getFilteredFrames, setCurrentFrame, updateVideoTime]);
+    }, [currentFrame, getFilteredFrames, setCurrentFrame, FPS, mode, delayEvent]);
 
     const goToNextEvent = useCallback(() => {
         if (videoRef.current) {
@@ -61,12 +63,14 @@ export default function TimelineControl({ event, framesEvent, jsonData }: Timeli
             const filteredFrames = getFilteredFrames();
             const nextFrame = filteredFrames.find(frame => frame > currentFrame);
             if (nextFrame) {
-                setCurrentFrame(nextFrame).then(() => {
-                    updateVideoTime(nextFrame);
+                const adjustedFrame = nextFrame + (mode === 'dev' ? 0 : FPS);
+                setCurrentFrame(adjustedFrame).then(() => {
+                    const timeInSeconds = nextFrame / FPS;
+                    videoRef.current!.currentTime = timeInSeconds - delayEvent;
                 });
             }
         }
-    }, [currentFrame, getFilteredFrames, setCurrentFrame, updateVideoTime]);
+    }, [currentFrame, getFilteredFrames, setCurrentFrame, FPS, mode, delayEvent]);
 
     useEffect(() => {
         const handleTimelineNavigation = (e: CustomEvent<{ direction: string }>) => {
