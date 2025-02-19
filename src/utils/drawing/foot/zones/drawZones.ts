@@ -14,19 +14,19 @@ export const drawZones = (
         {
             name: "ZONE LEFT",
             points: zones.zone_left,
-            color: "rgba(255, 0, 255, 0.2)",
+            color: "rgba(255, 0, 0, 0.2)",
             zoneKey: "zone_left"
         },
         {
             name: "ZONE MID",
             points: zones.zone_mid,
-            color: "rgba(255, 0, 255, 0.2)",
+            color: "rgba(0, 255, 0, 0.2)",
             zoneKey: "zone_mid"
         },
         {
             name: "ZONE RIGHT",
             points: zones.zone_right,
-            color: "rgba(255, 0, 255, 0.2)",
+            color: "rgba(0, 0, 255, 0.2)",
             zoneKey: "zone_right"
         }
     ];
