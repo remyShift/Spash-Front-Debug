@@ -1,6 +1,6 @@
 import { PersonTracking } from "@/types/files";
 
-export const getPlayersInZone = (
+export const countPlayersInZone = (
     players: [string, PersonTracking][],
     zoneName: string,
     teamFilter?: string[]

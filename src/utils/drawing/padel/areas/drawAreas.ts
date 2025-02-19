@@ -1,7 +1,7 @@
 import { configureContext } from "../../canvas";
 import { PersonTracking } from "@/types/files";
 import { drawZonePolygon } from "@/utils/drawing/drawZonePolygon";
-import { getPlayersInZone } from "@/utils/drawing/countPlayerInZones";
+import { countPlayersInZone } from "@/utils/drawing/countPlayerInZones";
 
 interface TacticalZone {
     name: string;
@@ -52,7 +52,7 @@ export const drawAreasAB = (
     ];
 
     zonesConfig.forEach(zone => {
-        const playersInZone = getPlayersInZone(players, zone.name, ['A', 'B']);
+        const playersInZone = countPlayersInZone(players, zone.name, ['A', 'B']);
         const isHighlighted = playersInZone > 0;
         
         drawZonePolygon(videoWidth, videoHeight, context, {
