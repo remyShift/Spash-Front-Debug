@@ -14,6 +14,7 @@ A debugging tool for Spash developers to analyze AI results on videos.
 - Interactive timeline with event markers
 - Frame-by-frame navigation
 - Keyboard shortcuts for efficient use
+- Real time homography edit
 
 ## Installation 🛠️
 
@@ -21,37 +22,17 @@ A debugging tool for Spash developers to analyze AI results on videos.
 ```bash
 git clone https://github.com/spash-ai/debug-devtool.git
 ```
-2. Install dependencies:
+2. Create docker image :
 ```bash
-npm install
+docker compose build
 ```
 
-3. In the `public/videos` folder, create 1 subfolder per video to be analyzed with the associated json inside as follows :
-
-You should have something like this :
-```
-public/
-    videos/
-        match1/
-            pipeline.json
-            stats.json
-            video.mp4
-            player1-video.mp4
-            player2-video.mp4
-            player3-video.mp4
-            player4-video.mp4
-        match2/
-            ...
-```
-
-4. Start the development server:
+3. Start the app :
 ```bash
-npm run dev
+docker compose up -d
 ```
 
-5. Open the browser and go to `http://localhost:3000`
-
-6. Select the video from the list and happy debugging.
+4. Happy debugging !
 
 ## Keyboard shortcuts ⌨️
 
@@ -62,9 +43,12 @@ npm run dev
 - `Shift + →` : +100 frames
 - `P` : Show/Hide players
 - `B` : Show/Hide ball
-- `A` : Show/Hide zones
+- `A` : Show/Hide Team A Zones
+- `C` : Show/Hide Team C Zones
 - `H` : Show/Hide homography
 - `T` : Show/Hide trajectories
+- `O` : Show/Hide Homography
+- `Shift + P` : Toggle advanced mode
 
 ## Technologies used 💻
 
