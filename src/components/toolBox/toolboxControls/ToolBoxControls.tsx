@@ -85,31 +85,40 @@ export default function ToolBoxControls({ videoData }: { videoData: JSONData }) 
 
     const handleFrameChange = async (frameNumber: number) => {
         if (!mainCanvasRef?.current || !persistentCanvasRef?.current || !videoRef.current) return;
-
+    
         const fps = 25;
         const totalVideoFrames = Math.floor(videoRef.current.duration * fps);
         
         const safeFrame = Math.min(Math.max(0, frameNumber), totalVideoFrames);
         
+        // Mise à jour de la position vidéo
         videoRef.current.currentTime = safeFrame / fps;
-
+    
+        // Vérification de l'existence des données pour cette frame
         const availableFrames = Object.keys(videoData.data).map(Number).sort((a, b) => a - b);
+        if (availableFrames.length === 0) return;
+    
+        // Recherche de la frame la plus proche uniquement si des données existent
         const closestFrame = availableFrames.reduce((prev, curr) => {
             return Math.abs(curr - safeFrame) < Math.abs(prev - safeFrame) ? curr : prev;
         });
         
+        // Mise à jour de la frame courante et dessin des éléments
         await setCurrentFrame(closestFrame);
         
-        drawSportElements(
-            currentSport,
-            videoData,
-            activeLayers as PadelLayers[] | FootballLayers[],
-            videoRef.current,
-            { 
-                mainCanvas: mainCanvasRef.current!, 
-                persistentCanvas: persistentCanvasRef.current! 
-            },
-        );
+        // Dessin des éléments sportifs uniquement si la frame existe dans les données
+        if (videoData.data[closestFrame]) {
+            drawSportElements(
+                currentSport,
+                videoData,
+                activeLayers as PadelLayers[] | FootballLayers[],
+                videoRef.current,
+                { 
+                    mainCanvas: mainCanvasRef.current!, 
+                    persistentCanvas: persistentCanvasRef.current! 
+                },
+            );
+        }
     }
 
     useKeyboardShortcuts(handleFrameChange);
