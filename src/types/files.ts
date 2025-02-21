@@ -36,6 +36,7 @@ export interface PersonTracking {
     speed_legs: number;
     court_legs: [number, number];
     player2D: [number, number];
+    goalkeeper: boolean;
     zones: {
         attack: boolean;
         defense: boolean;

@@ -42,9 +42,17 @@ export const drawFootPlayerBBox = (
     const playerColor = getFootPlayerColor(player.class);
     configureContext(context, { strokeStyle: playerColor });
     
+    if (player.goalkeeper) {
+        context.setLineDash([5, 5]);
+    } else {
+        context.setLineDash([]);
+    }
+    
     context.strokeStyle = playerColor;
     context.strokeRect(scaledX1, scaledY1, boxWidth, boxHeight);
     
+    context.setLineDash([]);
+
     const text = `ID: ${player.id} | ${player.class} | ${player.confidence.toFixed(2)}`;
     const textMetrics = context.measureText(text);
     const padding = 4;
