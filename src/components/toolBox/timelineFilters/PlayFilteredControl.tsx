@@ -13,9 +13,22 @@ const FPS = 25;
 export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }) {
     const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
+    const isPlayingRef = useRef(false);
     const { playersFilters } = usePlayersFilters();
     const { eventsFilters } = useEventsFilters();
     const { setCurrentFrame } = useFrame();
+
+    const isButtonDisabled = playersFilters.length === 0 && eventsFilters.length === 0;
+
+    useEffect(() => {
+        if (isButtonDisabled && isPlayingRef.current) {
+            setIsPlaying(false);
+            isPlayingRef.current = false;
+            if (videoRef.current) {
+                videoRef.current.pause();
+            }
+        }
+    }, [isButtonDisabled]);
 
     useEffect(() => {
         const video = document.querySelector('video');
@@ -42,8 +55,12 @@ export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }
     };
 
     const playNextEvent = async (filteredFrames: number[], currentIndex = 0) => {
-        if (!videoRef.current || currentIndex >= filteredFrames.length) {
+        if (!videoRef.current || currentIndex >= filteredFrames.length || !isPlayingRef.current) {
             setIsPlaying(false);
+            isPlayingRef.current = false;
+            if (videoRef.current) {
+                videoRef.current.pause();
+            }
             return;
         }
 
@@ -58,6 +75,8 @@ export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }
             videoRef.current!.addEventListener('seeked', () => resolve(), { once: true });
         });
 
+        if (!isPlayingRef.current) return;
+
         const nextIndex = currentIndex + 1;
         if (nextIndex < filteredFrames.length) {
             const nextFrame = filteredFrames[nextIndex];
@@ -67,15 +86,19 @@ export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }
             if (waitTime > 0) {
                 await videoRef.current.play();
                 await new Promise(resolve => setTimeout(resolve, waitTime));
-                videoRef.current.pause();
+                if (isPlayingRef.current) {
+                    videoRef.current.pause();
+                    playNextEvent(filteredFrames, nextIndex);
+                }
+            } else {
+                playNextEvent(filteredFrames, nextIndex);
             }
-            
-            playNextEvent(filteredFrames, nextIndex);
         } else {
             await videoRef.current.play();
             await new Promise(resolve => setTimeout(resolve, 2000));
             videoRef.current.pause();
             setIsPlaying(false);
+            isPlayingRef.current = false;
         }
     };
 
@@ -84,6 +107,7 @@ export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }
 
         if (isPlaying) {
             setIsPlaying(false);
+            isPlayingRef.current = false;
             videoRef.current.pause();
             return;
         }
@@ -92,6 +116,7 @@ export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }
         
         if (filteredFrames.length > 0) {
             setIsPlaying(true);
+            isPlayingRef.current = true;
             const currentTimeInSeconds = videoRef.current.currentTime;
             const currentFrameNumber = Math.round(currentTimeInSeconds * FPS);
             const nextFrameIndex = filteredFrames.findIndex(frame => frame > currentFrameNumber);
@@ -107,6 +132,7 @@ export default function PlayFilteredControl({ jsonData }: { jsonData: JSONData }
                 icon={isPlaying ? faPause : faPlay}
                 onClick={handleClick}
                 text={`${isPlaying ? "Pause" : "Play"} Filtered`}
+                disabled={isButtonDisabled}
             />
         </div>
     );
