@@ -60,6 +60,13 @@ export interface PersonTracking {
     cumulate_distance?: number;
 };
 
+export interface TeamsFoot {
+    id: number;
+    is_attacking: boolean;
+    is_defending: boolean;
+    is_possessing: boolean;
+};
+
 export interface JSONInfo {
     video: {
         width: number;
@@ -83,6 +90,7 @@ export interface JSONData {
             "ball.center"?: [number, number];
             "ball.center.video"?: [number, number];
             "ball.court"?: [number, number];
+            "ball.possession"?: number;
             "ball.score"?: number;
             "ball.zones"?: {
                 divorce_zone_right?: boolean;
@@ -102,6 +110,9 @@ export interface JSONData {
             isPlaying?: boolean;
             team_checks?: boolean;
             team_checks_players?: string[];
+            teams?:{
+                [id: number]: TeamsFoot;
+            }
         };
     };
     events: {
@@ -230,6 +241,70 @@ export interface JSONStats {
         end_frame: number;
         duration: number;
         end_timecode: number;
+    }[];
+}
+
+export interface JSONFootStats {
+    teams: {
+        id: number;
+        side: string;
+        general: {
+            score: number;
+            distance: {
+                score: number;
+            };
+            max_speed: {
+                score: number;
+            };
+            zone_coverage: {
+                score: number;
+            };
+        };
+        attack: {
+            score: number;
+            att_initiated: {
+                score: number;
+            };
+            time_in_att: {
+                score: number;
+            };
+            att_height: {
+                score: number;
+            };
+            att_pres: {
+                score: number;
+            };
+        };
+        defense: {
+            score: number;
+            time_in_def: {
+                score: number;
+            };
+            def_height: {
+                score: number;
+            };
+            def_pres: {
+                score: number;
+            };
+            att_under: {
+                score: number;
+            };
+        };
+        game: {
+            score: number;
+            possession: {
+                score: number;
+            };
+            longest_possession: {
+                score: number;
+            };
+        };
+        physical: {
+            score: number;
+            mean_speed: {
+                score: number;
+            };
+        };
     }[];
 }
 

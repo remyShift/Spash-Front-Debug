@@ -1,4 +1,4 @@
-import { JSONData, JSONStats, VideoInfo } from '@/types/files';
+import { JSONData, JSONFootStats, JSONStats, VideoInfo } from '@/types/files';
 import { useEffect, useRef, useCallback } from 'react';
 import { useFrame } from "@/context/frame";
 import { drawSportElements } from '@/utils/drawing/drawSportElements';
@@ -12,6 +12,7 @@ import { usePerformance } from '@/context/performance';
 import HomographyPoints from '@/components/videoPlayer/layers/HomographyPoints';
 import { useSport } from '@/context/sport';
 import FrameIdx from '@/components/ui/FrameIdx';
+import PossessionIdx from '@/components/ui/PossessionIdx';
 
 interface VideoPlayerProps {
     currentVideo: VideoInfo;
@@ -99,6 +100,29 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
         };
     }, [animate]);
 
+    // ──────────────────────────────────────────────────────────
+    // 1. Récupération de la frame courante et de la possession
+    // ──────────────────────────────────────────────────────────
+    const frameData = jsonData.data[currentFrame];
+
+    // La clé "ball.possessing" peut être un nombre (ex: 0, 1) indiquant l'équipe
+    let possessionIdx = frameData?.['ball.possession'];
+    if (typeof possessionIdx !== 'number') {
+        possessionIdx = -1; // ou n’importe quelle valeur par défaut
+    }
+
+    // ──────────────────────────────────────────────────────────
+    // 2. Debugging (si nécessaire)
+    // ──────────────────────────────────────────────────────────
+    useEffect(() => {
+        console.log('=== DEBUG POSSESSION ===');
+        console.log('Frame:', currentFrame);
+        console.log('frameData:', frameData);
+        console.log("ball.possessing:", frameData?.['ball.possession']);
+        console.log('possessionIdx:', possessionIdx);
+    }, [currentFrame, frameData, possessionIdx]);
+
+
     return (
         <div className="relative">
             <div className="relative">
@@ -130,6 +154,11 @@ export const VideoPlayer = ({ currentVideo, jsonData, activeLayers, statsData }:
                 )}
 
                 <FrameIdx frameIdx={currentFrame} />
+
+                {possessionIdx !== -1 && (
+                    <PossessionIdx possessionIdx={possessionIdx} />
+                )}
+                
             </div>
             {videoRef.current && (
                 <VideoControls
